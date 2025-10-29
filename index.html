@@ -408,8 +408,7 @@
                 </div>
                 <div class="date-display">
                     <div id="currentDate">الاثنين، 1 يناير 2024</div>
-                    <div class="hijri-date" id="hijriDate">1 رجب 1445</div>
-                </div>
+                                   </div>
             </div>
         </div>
     </header>
@@ -463,26 +462,23 @@
                     </div>
                     
                     <div class="form-row">
-                        <div class="form-group">
-                            <label for="class">الصف</label>
-                            <select id="class" required>
-                                 <option value="">اختر الصف</option>
-            <option value="10"10</option>
+    <div class="form-group">
+        <label for="class">الصف</label>
+        <select id="class" required onchange="loadSections()">
+            <option value="">اختر الصف</option>
+            <option value="10">10</option>
             <option value="11">11</option>
             <option value="12">12</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="section">الشعبة</label>
-                            <select id="section" required>
-                                <option value="">اختر الشعبة</option>
-                                <option value="أ">أ</option>
-                                <option value="ب">ب</option>
-                                <option value="ج">ج</option>
-                                <option value="د">د</option>
-                            </select>
-                        </div>
-                    </div>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="section">الشعبة</label>
+        <select id="section" required onchange="loadStudents()" disabled>
+            <option value="">اختر الشعبة أولاً</option>
+        </select>
+    </div>
+</div>
+                        
                     
                     <div class="form-group">
                         <label for="studentName">اسم الطالبة</label>
@@ -919,7 +915,8 @@
                 }
             });
         }
-        async function loadSections() {
+       // دالة لجلب الشعب من السيرفر
+async function loadSections() {
     const classSelect = document.getElementById('class');
     const sectionSelect = document.getElementById('section');
     const selectedClass = classSelect.value;
@@ -988,19 +985,25 @@ async function testConnection() {
         console.error('Connection test failed:', error);
         return null;
     }
-}
-        // تحديث الرسوم البيانية (في تطبيق حقيقي، سيتم جلب البيانات من قاعدة البيانات)
+}        // تحديث الرسوم البيانية (في تطبيق حقيقي، سيتم جلب البيانات من قاعدة البيانات)
         function updateCharts() {
             // سيتم تحديث الرسوم البيانية بالبيانات الفعلية في التطبيق النهائي
         }
         
         // تهيئة التطبيق عند التحميل
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeDate();
-            updateStats();
-            displayRecords();
-            initializeCharts();
-        });
+       document.addEventListener('DOMContentLoaded', function() {
+    initializeDate();
+    updateStats();
+    displayRecords();
+    initializeCharts();
+    
+    // اختبار الاتصال عند التحميل (اختياري)
+    testConnection().then(debugInfo => {
+        if (debugInfo && debugInfo.error) {
+            console.warn('⚠️ هناك مشكلة في الاتصال بالسيرفر:', debugInfo.error);
+        }
+    });
+});
     </script>
 </body>
 </html>
