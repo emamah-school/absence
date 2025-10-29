@@ -480,10 +480,12 @@
 </div>
                         
                     
-                    <div class="form-group">
-                        <label for="studentName">اسم الطالبة</label>
-                        <input type="text" id="studentName" required>
-                    </div>
+                   <div class="form-group">
+    <label for="studentName">اسم الطالبة</label>
+    <select id="studentName" required onchange="updateParentPhone()" disabled>
+        <option value="">اختر الطالبة أولاً</option>
+    </select>
+</div>
                     
                     <div class="form-group">
                         <label for="parentPhone">هاتف ولي الأمر</label>
@@ -1007,3 +1009,4 @@ async function testConnection() {
     </script>
 </body>
 </html>
+
