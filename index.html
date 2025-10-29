@@ -69,6 +69,7 @@
         .date-display {
             text-align: left;
             direction: ltr;
+            font-size: 1.1rem;
         }
         
         .stats-container {
@@ -290,12 +291,33 @@
         .reviewed-check {
             color: var(--success);
             font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .reviewed-times {
+            color: #ccc;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .edit-icon {
+            color: #4361ee;
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
         }
         
         .whatsapp-link {
             color: #25D366;
             font-size: 1.2rem;
             cursor: pointer;
+        }
+        
+        .delete-icon {
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-right: 10px;
         }
         
         footer {
@@ -332,11 +354,6 @@
             display: block;
         }
         
-        .chart-container {
-            height: 300px;
-            margin-top: 1.5rem;
-        }
-        
         .date-day-group {
             display: flex;
             gap: 10px;
@@ -355,16 +372,16 @@
             gap: 10px;
         }
         
-        .alert-warning {
-            background-color: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
-            color: #856404;
-        }
-        
         .alert-info {
             background-color: rgba(23, 162, 184, 0.1);
             border: 1px solid rgba(23, 162, 184, 0.3);
             color: #0c5460;
+        }
+        
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            color: #856404;
         }
         
         .phone-input-container {
@@ -380,7 +397,7 @@
         }
         
         .phone-input-container input {
-            padding-left: 40px;
+            padding-left: 50px;
         }
         
         .message-preview {
@@ -390,49 +407,42 @@
             margin: 15px 0;
             border-right: 4px solid #25D366;
         }
-
-        .loading {
+        
+        .error-message {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 5px;
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
         }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary);
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
+            animation: spin 1s linear infinite;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .debug-section {
-            margin: 15px 0;
-            padding: 15px;
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            display: none;
+        
+        .btn:disabled {
+            background-color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
         }
     </style>
 </head>
 <body>
-    <div class="loading">
-        <div class="spinner"></div>
-    </div>
-
     <header>
         <div class="container">
             <div class="header-content">
@@ -440,9 +450,7 @@
                     <i class="fas fa-school"></i>
                     <h1>نظام الغياب المدرسي</h1>
                 </div>
-                <div class="date-display">
-                    <div id="currentDate">الاثنين، 1 يناير 2024</div>
-                </div>
+                <div class="date-display" id="currentDate"></div>
             </div>
         </div>
     </header>
@@ -498,33 +506,33 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="class">الصف</label>
-                            <select id="class" required>
+                            <select id="class" required onchange="loadClasses()">
                                 <option value="">اختر الصف</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
+                                <option value="10">عاشر</option>
+                                <option value="11">حادي عشر</option>
+                                <option value="12">ثاني عشر</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="section">الشعبة</label>
-                            <select id="section" required disabled>
-                                <option value="">اختر الشعبة أولاً</option>
+                            <select id="section" required>
+                                <option value="">اختر الشعبة</option>
                             </select>
+                            <div class="loading" id="sectionLoading" style="display: none; margin-top: 10px;"></div>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="studentName">اسم الطالبة</label>
-                        <select id="studentName" required disabled>
-                            <option value="">اختر الطالبة أولاً</option>
-                        </select>
+                        <input type="text" id="studentName" required>
                     </div>
                     
                     <div class="form-group">
                         <label for="parentPhone">هاتف ولي الأمر</label>
                         <div class="phone-input-container">
-                            <span class="phone-prefix">+966</span>
-                            <input type="tel" id="parentPhone" placeholder="5xxxxxxxx" required>
+                            <span class="phone-prefix">968</span>
+                            <input type="tel" id="parentPhone" placeholder="xxxxxxxx (8 أرقام)" required maxlength="8">
+                            <div class="error-message" id="phoneError">يجب أن يحتوي الرقم على 8 أرقام</div>
                         </div>
                     </div>
                     
@@ -538,7 +546,10 @@
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn">حفظ البيانات</button>
+                    <button type="submit" class="btn" id="submitBtn">
+                        <span id="submitText">حفظ البيانات</span>
+                        <div class="loading" id="submitLoading" style="display: none;"></div>
+                    </button>
                 </form>
                 
                 <div id="whatsappSection" style="display: none; margin-top: 20px;">
@@ -553,8 +564,6 @@
                         إرسال عبر واتساب
                     </button>
                 </div>
-
-                <div id="debugSection" class="debug-section"></div>
             </div>
 
             <div class="records-section">
@@ -579,11 +588,7 @@
                                 <th>إجراءات</th>
                             </tr>
                         </thead>
-                        <tbody id="todayRecords">
-                            <tr>
-                                <td colspan="5" style="text-align: center;">لا توجد سجلات لهذا اليوم</td>
-                            </tr>
-                        </tbody>
+                        <tbody id="todayRecords"></tbody>
                     </table>
                 </div>
                 
@@ -599,36 +604,8 @@
                                 <th>إجراءات</th>
                             </tr>
                         </thead>
-                        <tbody id="allRecords">
-                            <tr>
-                                <td colspan="6" style="text-align: center;">لا توجد سجلات</td>
-                            </tr>
-                        </tbody>
+                        <tbody id="allRecords"></tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-        
-        <div class="form-section">
-            <h2 class="section-title">
-                <i class="fas fa-chart-bar"></i>
-                الإحصائيات والتقارير
-            </h2>
-            
-            <div class="tabs">
-                <div class="tab active" data-tab="monthly">الشهري</div>
-                <div class="tab" data-tab="yearly">السنوي</div>
-            </div>
-            
-            <div class="tab-content active" id="monthlyTab">
-                <div class="chart-container">
-                    <canvas id="monthlyChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="yearlyTab">
-                <div class="chart-container">
-                    <canvas id="yearlyChart"></canvas>
                 </div>
             </div>
         </div>
@@ -636,314 +613,340 @@
 
     <footer>
         <div class="container">
-            <p>نظام الغياب المدرسي - إدارة المدرسة © 2024</p>
+            <p>نظام الغياب المدرسي - إدارة المدرسة © 2023</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // بيانات التطبيق
-        let scriptUrl = 'https://script.google.com/macros/s/AKfycbxmQ66VaOovcbsQ39CuPHfcbqtKDm6Z4piD84lbFe6MR8JUT_Q1Pg6tbc2c36AbV89E/exec'; // استبدل برابط النشر
-
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw1i0GTR1vHONzLXl88NDx938l2PSQ-OyVlfPkP6AJPBBQROlXvD0r4Hgg9acG-SkFl/exec';
+        let records = [];
+        let currentRecord = null;
+        
         // عناصر DOM
         const absenceForm = document.getElementById('absenceForm');
-        const whatsappSection = document.getElementById('whatsappSection');
-        const messagePreview = document.getElementById('messagePreview');
-        const sendWhatsApp = document.getElementById('sendWhatsApp');
-        const todayRecords = document.getElementById('todayRecords');
-        const allRecords = document.getElementById('allRecords');
-        const currentDateElement = document.getElementById('currentDate');
-        const todayAbsenceElement = document.getElementById('todayAbsence');
-        const todayTasyeebElement = document.getElementById('todayTasyeeb');
-        const todayHuroobElement = document.getElementById('todayHuroob');
-        const totalReviewedElement = document.getElementById('totalReviewed');
-        const dateInput = document.getElementById('date');
-        const dayInput = document.getElementById('day');
-        const classSelect = document.getElementById('class');
-        const sectionSelect = document.getElementById('section');
-        const studentSelect = document.getElementById('studentName');
-        const parentPhoneInput = document.getElementById('parentPhone');
-        const debugSection = document.getElementById('debugSection');
+        const classInput = document.getElementById('class');
+        const sectionInput = document.getElementById('section');
+        const sectionLoading = document.getElementById('sectionLoading');
 
-        // تهيئة التاريخ الحالي
-        function initializeDate() {
-            const now = new Date();
+        // دالة مساعدة للاتصال بـ Google Apps Script
+        async function callGoogleScript(action, data = {}) {
+            const params = new URLSearchParams();
+            params.append('action', action);
             
-            // تحديث التاريخ الميلادي في العنوان
-            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            currentDateElement.textContent = now.toLocaleDateString('ar-SA', gregorianOptions);
-            
-            // تعيين التاريخ الحالي في حقل التاريخ
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            dateInput.value = `${year}-${month}-${day}`;
-            
-            // تعيين اليوم الحالي
-            updateDayFromDate(now);
-        }
-
-        // تحديث اليوم بناءً على التاريخ المحدد
-        function updateDayFromDate(date) {
-            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-            dayInput.value = days[date.getDay()];
-        }
-
-        // إظهار/إخفاء التحميل
-        function showLoading() {
-            document.querySelector('.loading').style.display = 'flex';
-        }
-
-        function hideLoading() {
-            document.querySelector('.loading').style.display = 'none';
-        }
-
-        // جلب الشعب من Google Sheets
-        async function loadSections() {
-            const selectedClass = classSelect.value;
-            sectionSelect.innerHTML = '<option value="">جاري تحميل الشعب...</option>';
-            sectionSelect.disabled = true;
-            studentSelect.disabled = true;
-            studentSelect.innerHTML = '<option value="">اختر الشعبة أولاً</option>';
-            parentPhoneInput.value = '';
-            
-            if (!selectedClass) {
-                sectionSelect.innerHTML = '<option value="">اختر الصف أولاً</option>';
-                return;
+            for (const key in data) {
+                if (data[key] !== null && data[key] !== undefined) {
+                    params.append(key, data[key]);
+                }
             }
             
             try {
-                showLoading();
-                const response = await fetch(`${scriptUrl}?action=getSections&grade=${selectedClass}`);
-                
-                if (!response.ok) {
-                    throw new Error(`خطأ في الاستجابة: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                sectionSelect.innerHTML = '<option value="">اختر الشعبة</option>';
-                
-                if (data.sections && data.sections.length > 0) {
-                    // ترتيب الشعب numerically
-                    const sortedSections = data.sections.sort((a, b) => {
-                        try {
-                            const numA = parseInt(a.split('/')[1]) || 0;
-                            const numB = parseInt(b.split('/')[1]) || 0;
-                            return numA - numB;
-                        } catch (e) {
-                            return a.localeCompare(b);
-                        }
-                    });
-                    
-                    sortedSections.forEach(section => {
-                        const option = document.createElement('option');
-                        option.value = section;
-                        option.textContent = section;
-                        sectionSelect.appendChild(option);
-                    });
-                    
-                    sectionSelect.disabled = false;
-                    
-                    // تحديث التسمية
-                    document.querySelector('label[for="section"]').textContent = `شعب الصف ${selectedClass} (${sortedSections.length} شعبة)`;
-                    
-                    showSuccess(`تم تحميل ${sortedSections.length} شعبة للصف ${selectedClass}`);
-                    
-                } else {
-                    sectionSelect.innerHTML = '<option value="">لا توجد شعب لهذا الصف</option>';
-                    showError('لا توجد شعب مسجلة لهذا الصف في النظام');
-                }
-                
-            } catch (error) {
-                console.error('Error loading sections:', error);
-                sectionSelect.innerHTML = '<option value="">خطأ في تحميل الشعب</option>';
-                showError('خطأ في تحميل الشعب: ' + error.message);
-            } finally {
-                hideLoading();
-            }
-        }
-
-        // جلب الطالبات من Google Sheets
-        async function loadStudents() {
-            const selectedClass = classSelect.value;
-            const selectedSection = sectionSelect.value;
-            
-            studentSelect.innerHTML = '<option value="">جاري تحميل الطالبات...</option>';
-            studentSelect.disabled = true;
-            parentPhoneInput.value = '';
-            
-            if (!selectedSection) {
-                studentSelect.innerHTML = '<option value="">اختر الشعبة أولاً</option>';
-                return;
-            }
-            
-            try {
-                showLoading();
-                const response = await fetch(`${scriptUrl}?action=getStudents&class=${selectedClass}&section=${selectedSection}`);
-                const data = await response.json();
-                
-                studentSelect.innerHTML = '<option value="">اختر الطالبة</option>';
-                
-                if (data.students && data.students.length > 0) {
-                    data.students.forEach((student, index) => {
-                        const option = document.createElement('option');
-                        option.value = student;
-                        option.textContent = student;
-                        option.setAttribute('data-phone', data.phones[index] || '');
-                        studentSelect.appendChild(option);
-                    });
-                    studentSelect.disabled = false;
-                    
-                    // تحديث التسمية
-                    document.querySelector('label[for="studentName"]').textContent = `طالبات ${selectedSection}`;
-                    
-                    showSuccess(`تم تحميل ${data.students.length} طالبة`);
-                } else {
-                    studentSelect.innerHTML = '<option value="">لا توجد طالبات في هذه الشعبة</option>';
-                    showError('لا توجد طالبات مسجلات في هذه الشعبة');
-                }
-            } catch (error) {
-                console.error('Error loading students:', error);
-                studentSelect.innerHTML = '<option value="">خطأ في تحميل الطالبات</option>';
-                showError('خطأ في تحميل الطالبات: ' + error.message);
-            } finally {
-                hideLoading();
-            }
-        }
-
-        // تحديث رقم هاتف ولي الأمر عند اختيار الطالبة
-        function updateParentPhone() {
-            const selectedOption = studentSelect.options[studentSelect.selectedIndex];
-            const phone = selectedOption.getAttribute('data-phone') || '';
-            parentPhoneInput.value = phone;
-        }
-
-        // حفظ السجلات في Google Sheets
-        async function saveRecordToSheet(record) {
-            try {
-                showLoading();
-                const response = await fetch(scriptUrl, {
+                const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=saveRecord&record=${JSON.stringify(record)}`
+                    body: params
                 });
                 
                 const result = await response.json();
-                return result.success;
+                
+                if (!result.success) {
+                    throw new Error(result.error);
+                }
+                
+                return result.data;
             } catch (error) {
-                console.error('Error saving record:', error);
-                showError('خطأ في حفظ البيانات: ' + error.message);
-                return false;
-            } finally {
-                hideLoading();
+                console.error('خطأ في الاتصال:', error);
+                throw error;
             }
         }
 
-        // جلب الإحصائيات من Google Sheets
-        async function loadStatistics() {
+        // جلب الشعب بناءً على الصف المختار من Sheet2
+        async function loadClasses() {
+            const selectedClass = classInput.value;
+            
+            if (!selectedClass) {
+                sectionInput.innerHTML = '<option value="">اختر الشعبة</option>';
+                return;
+            }
+            
+            // إظهار مؤشر التحميل
+            sectionLoading.style.display = 'inline-block';
+            sectionInput.disabled = true;
+            sectionInput.innerHTML = '<option value="">جاري تحميل الشعب...</option>';
+            
             try {
-                const response = await fetch(`${scriptUrl}?action=getStatistics`);
-                const stats = await response.json();
-                updateStatsDisplay(stats);
+                const classes = await callGoogleScript('getClasses', { grade: selectedClass });
+                
+                // تحديث قائمة الشعب
+                sectionInput.innerHTML = '<option value="">اختر الشعبة</option>';
+                classes.forEach(cls => {
+                    const option = document.createElement('option');
+                    option.value = cls;
+                    option.textContent = cls;
+                    sectionInput.appendChild(option);
+                });
+                
             } catch (error) {
-                console.error('Error loading statistics:', error);
+                console.error('خطأ في جلب الشعب:', error);
+                sectionInput.innerHTML = '<option value="">خطأ في تحميل الشعب</option>';
+            } finally {
+                // إخفاء مؤشر التحميل
+                sectionLoading.style.display = 'none';
+                sectionInput.disabled = false;
             }
         }
 
-        // تحديث عرض الإحصائيات
-        function updateStatsDisplay(stats) {
-            todayAbsenceElement.textContent = stats.today.absence;
-            todayTasyeebElement.textContent = stats.today.tasyeeb;
-            todayHuroobElement.textContent = stats.today.huroob;
-            totalReviewedElement.textContent = stats.today.total;
+        // باقي الدوال تبقى كما هي
+        function initializeDate() {
+            const now = new Date();
+            const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('ar-SA', gregorianOptions);
+            
+            const today = now.toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            updateDayFromDate(now);
         }
-
-        // معالجة إرسال النموذج
-        absenceForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const record = {
-                date: document.getElementById('date').value,
-                day: document.getElementById('day').value,
-                studentName: document.getElementById('studentName').value,
-                section: document.getElementById('section').value,
-                parentPhone: document.getElementById('parentPhone').value,
-                status: document.getElementById('status').value,
-                time: new Date().toLocaleTimeString('ar-SA')
-            };
-            
-            const success = await saveRecordToSheet(record);
-            
-            if (success) {
-                // تحضير رسالة الواتساب للسجل الجديد
-                prepareWhatsAppMessage(record);
+        
+        function updateDayFromDate(date) {
+            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            document.getElementById('day').value = days[date.getDay()];
+        }
+        
+        function validatePhone(phone) {
+            const phoneRegex = /^\d{8}$/;
+            return phoneRegex.test(phone);
+        }
+        
+        async function updateStats() {
+            try {
+                const stats = await callGoogleScript('getStats');
                 
-                // إعادة تعيين النموذج
-                absenceForm.reset();
-                initializeDate();
-                
-                // إعادة تعيين القوائم المنسدلة
-                sectionSelect.innerHTML = '<option value="">اختر الشعبة أولاً</option>';
-                sectionSelect.disabled = true;
-                studentSelect.innerHTML = '<option value="">اختر الطالبة أولاً</option>';
-                studentSelect.disabled = true;
-                
-                // تحديث الإحصائيات
-                loadStatistics();
-                
-                showSuccess('تم حفظ البيانات بنجاح');
+                document.getElementById('todayAbsence').textContent = stats.today.absence;
+                document.getElementById('todayTasyeeb').textContent = stats.today.tasyeeb;
+                document.getElementById('todayHuroob').textContent = stats.today.huroob;
+                document.getElementById('totalReviewed').textContent = stats.total.reviewed;
+            } catch (error) {
+                console.error('خطأ في تحديث الإحصائيات:', error);
             }
-        });
-
-        // تحضير رسالة واتساب
-        function prepareWhatsAppMessage(record) {
-            const message = `نفيدكم بأن ابنتكم الطالبة ${record.studentName} المقيدة بالصف ${record.section} قد ${record.status} لأسباب لا نعلمها. - إدارة المدرسة`;
+        }
+        
+        async function displayRecords() {
+            try {
+                records = await callGoogleScript('getRecords');
+                const todayRecordsData = await callGoogleScript('getTodayRecords');
+                
+                // سجلات اليوم
+                const todayRecords = document.getElementById('todayRecords');
+                todayRecords.innerHTML = '';
+                
+                if (todayRecordsData.length === 0) {
+                    todayRecords.innerHTML = '<tr><td colspan="5" style="text-align: center;">لا توجد سجلات لهذا اليوم</td></tr>';
+                } else {
+                    todayRecordsData.forEach(record => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${record.studentName}</td>
+                            <td>${record.class} ${record.section}</td>
+                            <td><span class="status-badge status-${record.status}">${record.status}</span></td>
+                            <td>${record.time}</td>
+                            <td>
+                                <i class="fas fa-whatsapp whatsapp-link" onclick="prepareWhatsAppMessage('${record.id}')"></i>
+                                ${record.reviewed ? 
+                                    '<i class="fas fa-check-circle reviewed-check" onclick="toggleReviewStatus(\'' + record.id + '\')"></i>' : 
+                                    '<i class="fas fa-times reviewed-times" onclick="toggleReviewStatus(\'' + record.id + '\')"></i>'
+                                }
+                            </td>
+                        `;
+                        todayRecords.appendChild(row);
+                    });
+                }
+                
+                // جميع السجلات
+                const allRecords = document.getElementById('allRecords');
+                allRecords.innerHTML = '';
+                
+                if (records.length === 0) {
+                    allRecords.innerHTML = '<tr><td colspan="6" style="text-align: center;">لا توجد سجلات</td></tr>';
+                } else {
+                    records.slice().reverse().forEach(record => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${record.date}</td>
+                            <td>${record.studentName}</td>
+                            <td>${record.class} ${record.section}</td>
+                            <td><span class="status-badge status-${record.status}">${record.status}</span></td>
+                            <td>
+                                ${record.reviewed ? 
+                                    '<i class="fas fa-check-circle reviewed-check" onclick="toggleReviewStatus(\'' + record.id + '\')"></i>' : 
+                                    '<i class="fas fa-times reviewed-times" onclick="toggleReviewStatus(\'' + record.id + '\')"></i>'
+                                }
+                            </td>
+                            <td>
+                                <i class="fas fa-whatsapp whatsapp-link" onclick="prepareWhatsAppMessage('${record.id}')"></i>
+                                <i class="fas fa-edit edit-icon" onclick="editRecord('${record.id}')"></i>
+                                <i class="fas fa-trash delete-icon" onclick="deleteRecord('${record.id}')"></i>
+                            </td>
+                        `;
+                        allRecords.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('خطأ في عرض السجلات:', error);
+            }
+        }
+        
+        async function toggleReviewStatus(recordId) {
+            try {
+                await callGoogleScript('toggleReviewStatus', { id: recordId });
+                await updateStats();
+                await displayRecords();
+            } catch (error) {
+                alert('خطأ في تحديث حالة المراجعة: ' + error.message);
+            }
+        }
+        
+        function prepareWhatsAppMessage(recordId) {
+            const record = records.find(r => r.id === recordId);
+            if (!record) return;
             
-            messagePreview.textContent = message;
-            whatsappSection.style.display = 'block';
+            currentRecord = record;
             
-            // تمرير البيانات إلى زر واتساب
-            sendWhatsApp.onclick = function() {
-                sendWhatsAppMessage(record.parentPhone, message);
-            };
+            const message = `نفيدكم بأن ابنتكم الطالبة ${record.studentName} المقيدة بالصف ${record.class} الشعبة ${record.section} قد ${record.status} لأسباب لا نعلمها. - إدارة المدرسة`;
+            
+            document.getElementById('messagePreview').textContent = message;
+            document.getElementById('whatsappSection').style.display = 'block';
             
             // التمرير إلى قسم الواتساب
-            whatsappSection.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('whatsappSection').scrollIntoView({ behavior: 'smooth' });
         }
-
-        // إرسال رسالة واتساب
+        
         function sendWhatsAppMessage(phone, message) {
-            let formattedPhone = phone.startsWith('+') ? phone : `+966${phone}`;
+            let formattedPhone = phone.startsWith('+') ? phone : `968${phone}`;
             formattedPhone = formattedPhone.replace(/\D/g, '');
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodedMessage}`;
             window.open(whatsappUrl, '_blank');
         }
-
-        // دوال المساعدة
-        function showError(message) {
-            alert('❌ ' + message);
-        }
-
-        function showSuccess(message) {
-            // يمكنك استخدام toast أو alert حسب تفضيلك
-            alert('✅ ' + message);
-        }
-
-        // أحداث المستخدم
-        classSelect.addEventListener('change', loadSections);
-        sectionSelect.addEventListener('change', loadStudents);
-        studentSelect.addEventListener('change', updateParentPhone);
-
+        
+        // إعداد زر إرسال الواتساب
+        document.getElementById('sendWhatsApp').addEventListener('click', function() {
+            if (currentRecord) {
+                sendWhatsAppMessage(currentRecord.parentPhone, document.getElementById('messagePreview').textContent);
+            }
+        });
+        
+        // معالجة إرسال النموذج
+        absenceForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const phoneValue = document.getElementById('parentPhone').value;
+            if (!validatePhone(phoneValue)) {
+                document.getElementById('phoneError').style.display = 'block';
+                document.getElementById('parentPhone').focus();
+                return;
+            } else {
+                document.getElementById('phoneError').style.display = 'none';
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const submitLoading = document.getElementById('submitLoading');
+            
+            submitBtn.disabled = true;
+            submitText.textContent = 'جاري الحفظ...';
+            submitLoading.style.display = 'inline-block';
+            
+            try {
+                const recordData = {
+                    date: document.getElementById('date').value,
+                    day: document.getElementById('day').value,
+                    class: document.getElementById('class').value,
+                    section: document.getElementById('section').value,
+                    studentName: document.getElementById('studentName').value,
+                    parentPhone: phoneValue,
+                    status: document.getElementById('status').value
+                };
+                
+                const result = await callGoogleScript('saveRecord', recordData);
+                
+                prepareWhatsAppMessage(result.record.id);
+                
+                absenceForm.reset();
+                initializeDate();
+                
+                await updateStats();
+                await displayRecords();
+                
+                alert('تم حفظ البيانات بنجاح');
+                
+            } catch (error) {
+                alert('خطأ في حفظ البيانات: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitText.textContent = 'حفظ البيانات';
+                submitLoading.style.display = 'none';
+            }
+        });
+        
         // تحديث اليوم عند تغيير التاريخ
-        dateInput.addEventListener('change', function() {
+        document.getElementById('date').addEventListener('change', function() {
             const selectedDate = new Date(this.value);
             updateDayFromDate(selectedDate);
         });
-
+        
+        // التحقق من صحة رقم الهاتف أثناء الكتابة
+        document.getElementById('parentPhone').addEventListener('input', function() {
+            const phoneValue = this.value;
+            this.value = phoneValue.replace(/\D/g, '');
+            
+            if (phoneValue && !validatePhone(this.value)) {
+                document.getElementById('phoneError').style.display = 'block';
+            } else {
+                document.getElementById('phoneError').style.display = 'none';
+            }
+        });
+        
+        // تعديل سجل
+        async function editRecord(recordId) {
+            const record = records.find(r => r.id === recordId);
+            if (!record) return;
+            
+            document.getElementById('date').value = record.date;
+            document.getElementById('day').value = record.day;
+            document.getElementById('class').value = record.class;
+            
+            // تحميل الشعب أولاً
+            await loadClasses();
+            
+            // بعد تحميل الشعب، تعيين القيمة
+            setTimeout(() => {
+                document.getElementById('section').value = record.section;
+            }, 500);
+            
+            document.getElementById('studentName').value = record.studentName;
+            document.getElementById('parentPhone').value = record.parentPhone;
+            document.getElementById('status').value = record.status;
+            
+            document.getElementById('submitText').textContent = 'تحديث البيانات';
+            absenceForm.dataset.editId = recordId;
+            
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // حذف سجل
+        async function deleteRecord(recordId) {
+            if (!confirm('هل أنت متأكد من حذف هذا السجل؟')) {
+                return;
+            }
+            
+            try {
+                await callGoogleScript('deleteRecord', { id: recordId });
+                await updateStats();
+                await displayRecords();
+                alert('تم حذف السجل بنجاح');
+            } catch (error) {
+                alert('خطأ في حذف السجل: ' + error.message);
+            }
+        }
+        
         // تبديل التبويبات
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
@@ -956,29 +959,13 @@
                 document.getElementById(`${tabId}Tab`).classList.add('active');
             });
         });
-
+        
         // تهيئة التطبيق عند التحميل
         document.addEventListener('DOMContentLoaded', function() {
             initializeDate();
-            loadStatistics();
-            
-            // تعيين رابط السكربت الفعلي (استبدل YOUR_SCRIPT_ID برابطك)
-            // scriptUrl = 'https://script.google.com/macros/s/AKfycbxmQ66VaOovcbsQ39CuPHfcbqtKDm6Z4piD84lbFe6MR8JUT_Q1Pg6tbc2c36AbV89E/exec';
+            updateStats();
+            displayRecords();
         });
-
-        // اختبار الاتصال بالسيرفر
-        async function testConnection() {
-            try {
-                const response = await fetch(`${scriptUrl}?action=getSections&grade=10`);
-                if (response.ok) {
-                    console.log('✅ Connected to server successfully');
-                } else {
-                    console.warn('⚠️ Server connection issue');
-                }
-            } catch (error) {
-                console.error('❌ Server connection failed:', error);
-            }
-        }
     </script>
 </body>
 </html>
