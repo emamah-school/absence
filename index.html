@@ -818,69 +818,88 @@
         }
         
         async function displayRecords() {
-            try {
-                records = await callGoogleScript('getRecords');
-                const todayRecordsData = await callGoogleScript('getTodayRecords');
-                
-                // سجلات اليوم
-                const todayRecords = document.getElementById('todayRecords');
-                todayRecords.innerHTML = '';
-                
-                if (todayRecordsData.length === 0) {
-                    todayRecords.innerHTML = '<tr><td colspan="5" style="text-align: center;">لا توجد سجلات لهذا اليوم</td></tr>';
-                } else {
-                    todayRecordsData.forEach(record => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${record.studentName}</td>
-                            <td>${record.class} ${record.section}</td>
-                            <td><span class="status-badge status-${record.status}">${record.status}</span></td>
-                            <td>${record.time}</td>
-                            <td>
-                                <i class="fas fa-whatsapp whatsapp-link" onclick="prepareWhatsAppMessage('${record.id}')"></i>
-                                ${record.reviewed ? 
-                                    '<i class="fas fa-check-circle reviewed-check" onclick="toggleReviewStatus(\'' + record.id + '\')"></i>' : 
-                                    '<i class="fas fa-times reviewed-times" onclick="toggleReviewStatus(\'' + record.id + '\')"></i>'
-                                }
-                            </td>
-                        `;
-                        todayRecords.appendChild(row);
-                    });
-                }
-                
-                // جميع السجلات
-                const allRecords = document.getElementById('allRecords');
-                allRecords.innerHTML = '';
-                
-                if (records.length === 0) {
-                    allRecords.innerHTML = '<tr><td colspan="6" style="text-align: center;">لا توجد سجلات</td></tr>';
-                } else {
-                    records.slice().reverse().forEach(record => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${record.date}</td>
-                            <td>${record.studentName}</td>
-                            <td>${record.class} ${record.section}</td>
-                            <td><span class="status-badge status-${record.status}">${record.status}</span></td>
-                            <td>
-                                ${record.reviewed ? 
-                                    '<i class="fas fa-check-circle reviewed-check" onclick="toggleReviewStatus(\'' + record.id + '\')"></i>' : 
-                                    '<i class="fas fa-times reviewed-times" onclick="toggleReviewStatus(\'' + record.id + '\')"></i>'
-                                }
-                            </td>
-                            <td>
-                                <i class="fas fa-whatsapp whatsapp-link" onclick="prepareWhatsAppMessage('${record.id}')"></i>
-                                <i class="fas fa-edit edit-icon" onclick="editRecord('${record.id}')"></i>
-                                <i class="fas fa-trash delete-icon" onclick="deleteRecord('${record.id}')"></i>
-                            </td>
-                        `;
-                        allRecords.appendChild(row);
-                    });
-                }
-            } catch (error) {
-                console.error('خطأ في عرض السجلات:', error);
-            }
+    try {
+        // جلب سجلات اليوم فقط للتبويب الأول
+        const todayRecordsData = await callGoogleScript('getTodayRecords');
+        
+        // جلب جميع السجلات للتبويب الثاني
+        const allRecordsData = await callGoogleScript('getRecords');
+        
+        records = allRecordsData; // حفظ جميع السجلات للمراجعة والحذف
+        
+        console.log('📅 سجلات اليوم:', todayRecordsData.length);
+        console.log('📊 جميع السجلات:', allRecordsData.length);
+
+        // سجلات اليوم فقط
+        const todayRecords = document.getElementById('todayRecords');
+        todayRecords.innerHTML = '';
+        
+        if (todayRecordsData.length === 0) {
+            todayRecords.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">لا توجد سجلات لهذا اليوم</td></tr>';
+        } else {
+            todayRecordsData.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.studentName}</td>
+                    <td>${record.class} ${record.section}</td>
+                    <td><span class="status-badge status-${record.status}">${record.status}</span></td>
+                    <td>${record.time}</td>
+                    <td>
+                        <i class="fas fa-whatsapp whatsapp-link" onclick="prepareWhatsAppMessage('${record.id}')" title="إرسال واتساب"></i>
+                        ${record.reviewed ? 
+                            '<i class="fas fa-check-circle reviewed-check" onclick="toggleReviewStatus(\'' + record.id + '\')" title="تمت المراجعة"></i>' : 
+                            '<i class="fas fa-times reviewed-times" onclick="toggleReviewStatus(\'' + record.id + '\')" title="لم تتم المراجعة"></i>'
+                        }
+                    </td>
+                `;
+                todayRecords.appendChild(row);
+            });
         }
+        
+        // جميع السجلات
+        const allRecords = document.getElementById('allRecords');
+        allRecords.innerHTML = '';
+        
+        if (allRecordsData.length === 0) {
+            allRecords.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">لا توجد سجلات</td></tr>';
+        } else {
+            // عرض أحدث السجلات أولاً
+            allRecordsData.slice().reverse().forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${formatDate(record.date)}</td>
+                    <td>${record.studentName}</td>
+                    <td>${record.class} ${record.section}</td>
+                    <td><span class="status-badge status-${record.status}">${record.status}</span></td>
+                    <td>
+                        ${record.reviewed ? 
+                            '<i class="fas fa-check-circle reviewed-check" onclick="toggleReviewStatus(\'' + record.id + '\')" title="تمت المراجعة"></i>' : 
+                            '<i class="fas fa-times reviewed-times" onclick="toggleReviewStatus(\'' + record.id + '\')" title="لم تتم المراجعة"></i>'
+                        }
+                    </td>
+                    <td>
+                        <i class="fas fa-whatsapp whatsapp-link" onclick="prepareWhatsAppMessage('${record.id}')" title="إرسال واتساب"></i>
+                        <i class="fas fa-edit edit-icon" onclick="editRecord('${record.id}')" title="تعديل"></i>
+                        <i class="fas fa-trash delete-icon" onclick="deleteRecord('${record.id}')" title="حذف"></i>
+                    </td>
+                `;
+                allRecords.appendChild(row);
+            });
+        }
+    } catch (error) {
+        console.error('❌ خطأ في عرض السجلات:', error);
+        // عرض رسالة خطأ في الجداول
+        document.getElementById('todayRecords').innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">خطأ في تحميل سجلات اليوم</td></tr>';
+        document.getElementById('allRecords').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">خطأ في تحميل جميع السجلات</td></tr>';
+    }
+}
+
+// دالة مساعدة لتنسيق التاريخ
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-SA');
+}
         
         async function toggleReviewStatus(recordId) {
             try {
@@ -921,57 +940,62 @@
         });
         
         absenceForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const phoneValue = document.getElementById('parentPhone').value;
-            if (!validatePhone(phoneValue)) {
-                document.getElementById('phoneError').style.display = 'block';
-                document.getElementById('parentPhone').focus();
-                return;
-            } else {
-                document.getElementById('phoneError').style.display = 'none';
-            }
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const submitText = document.getElementById('submitText');
-            const submitLoading = document.getElementById('submitLoading');
-            
-            submitBtn.disabled = true;
-            submitText.textContent = 'جاري الحفظ...';
-            submitLoading.style.display = 'inline-block';
-            
-            try {
-                const recordData = {
-                    date: document.getElementById('date').value,
-                    day: document.getElementById('day').value,
-                    class: document.getElementById('class').value,
-                    section: document.getElementById('section').value,
-                    studentName: document.getElementById('studentName').value,
-                    parentPhone: phoneValue,
-                    status: document.getElementById('status').value
-                };
-                
-                const result = await callGoogleScript('saveRecord', recordData);
-                
-                prepareWhatsAppMessage(result.record.id);
-                
-                absenceForm.reset();
-                initializeDate();
-                resetStudentFields();
-                
-                await updateStats();
-                await displayRecords();
-                
-                alert('تم حفظ البيانات بنجاح');
-                
-            } catch (error) {
-                alert('خطأ في حفظ البيانات: ' + error.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitText.textContent = 'حفظ البيانات';
-                submitLoading.style.display = 'none';
-            }
-        });
+    e.preventDefault();
+    
+    const phoneValue = document.getElementById('parentPhone').value;
+    if (!validatePhone(phoneValue)) {
+        document.getElementById('phoneError').style.display = 'block';
+        document.getElementById('parentPhone').focus();
+        return;
+    } else {
+        document.getElementById('phoneError').style.display = 'none';
+    }
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const submitLoading = document.getElementById('submitLoading');
+    
+    submitBtn.disabled = true;
+    submitText.textContent = 'جاري الحفظ...';
+    submitLoading.style.display = 'inline-block';
+    
+    try {
+        const recordData = {
+            date: document.getElementById('date').value,
+            day: document.getElementById('day').value,
+            class: document.getElementById('class').value,
+            section: document.getElementById('section').value,
+            studentName: document.getElementById('studentName').value,
+            parentPhone: phoneValue,
+            status: document.getElementById('status').value
+        };
+        
+        const result = await callGoogleScript('saveRecord', recordData);
+        
+        // التصحيح: استخدام result.data.record بدلاً من result.record
+        if (result && result.data && result.data.record) {
+            prepareWhatsAppMessage(result.data.record.id);
+        } else {
+            console.log('لا توجد بيانات record في الاستجابة:', result);
+        }
+        
+        absenceForm.reset();
+        initializeDate();
+        resetStudentFields();
+        
+        await updateStats();
+        await displayRecords();
+        
+        alert('تم حفظ البيانات بنجاح');
+        
+    } catch (error) {
+        alert('خطأ في حفظ البيانات: ' + error.message);
+    } finally {
+        submitBtn.disabled = false;
+        submitText.textContent = 'حفظ البيانات';
+        submitLoading.style.display = 'none';
+    }
+});
         
         document.getElementById('date').addEventListener('change', function() {
             const selectedDate = new Date(this.value);
