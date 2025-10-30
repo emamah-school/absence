@@ -176,6 +176,7 @@
         
         .form-group {
             margin-bottom: 1.2rem;
+            position: relative;
         }
         
         .form-row {
@@ -440,6 +441,11 @@
             transform: none;
             box-shadow: none;
         }
+        
+        /* إزالة تنسيقات البحث التلقائي القديمة */
+        .student-autocomplete {
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -515,7 +521,7 @@
                         </div>
                         <div class="form-group">
                             <label for="section">الشعبة</label>
-                            <select id="section" required>
+                            <select id="section" required onchange="loadStudents()">
                                 <option value="">اختر الشعبة</option>
                             </select>
                             <div class="loading" id="sectionLoading" style="display: none; margin-top: 10px;"></div>
@@ -524,14 +530,17 @@
                     
                     <div class="form-group">
                         <label for="studentName">اسم الطالبة</label>
-                        <input type="text" id="studentName" required>
+                        <select id="studentName" required onchange="updatePhoneNumber()">
+                            <option value="">اختر الطالبة</option>
+                        </select>
+                        <div class="loading" id="studentLoading" style="display: none; margin-top: 10px;"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="parentPhone">هاتف ولي الأمر</label>
                         <div class="phone-input-container">
                             <span class="phone-prefix">968</span>
-                            <input type="tel" id="parentPhone" placeholder="xxxxxxxx (8 أرقام)" required maxlength="8">
+                            <input type="tel" id="parentPhone" placeholder="سيتم تعبئته تلقائياً" readonly required maxlength="8">
                             <div class="error-message" id="phoneError">يجب أن يحتوي الرقم على 8 أرقام</div>
                         </div>
                     </div>
@@ -621,12 +630,16 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_hp07h8KIWLbOiwBhDHXdK76QisSLWt8SNxI4ZjEByOJsWRdI1xTQcE9ESxfLgbEy4g/exec';
         let records = [];
         let currentRecord = null;
+        let studentsList = [];
         
         // عناصر DOM
         const absenceForm = document.getElementById('absenceForm');
         const classInput = document.getElementById('class');
         const sectionInput = document.getElementById('section');
+        const studentNameInput = document.getElementById('studentName');
+        const parentPhoneInput = document.getElementById('parentPhone');
         const sectionLoading = document.getElementById('sectionLoading');
+        const studentLoading = document.getElementById('studentLoading');
 
         // دالة مساعدة للاتصال بـ Google Apps Script
         async function callGoogleScript(action, data = {}) {
@@ -658,24 +671,23 @@
             }
         }
 
-        // جلب الشعب بناءً على الصف المختار من Sheet2
+        // جلب الشعب بناءً على الصف المختار
         async function loadClasses() {
             const selectedClass = classInput.value;
             
             if (!selectedClass) {
                 sectionInput.innerHTML = '<option value="">اختر الشعبة</option>';
+                resetStudentFields();
                 return;
             }
             
-            // إظهار مؤشر التحميل
-            sectionLoading.style.display = 'inline-block';
             sectionInput.disabled = true;
             sectionInput.innerHTML = '<option value="">جاري تحميل الشعب...</option>';
+            sectionLoading.style.display = 'inline-block';
             
             try {
                 const classes = await callGoogleScript('getClasses', { grade: selectedClass });
                 
-                // تحديث قائمة الشعب
                 sectionInput.innerHTML = '<option value="">اختر الشعبة</option>';
                 classes.forEach(cls => {
                     const option = document.createElement('option');
@@ -688,13 +700,90 @@
                 console.error('خطأ في جلب الشعب:', error);
                 sectionInput.innerHTML = '<option value="">خطأ في تحميل الشعب</option>';
             } finally {
-                // إخفاء مؤشر التحميل
-                sectionLoading.style.display = 'none';
                 sectionInput.disabled = false;
+                sectionLoading.style.display = 'none';
+                resetStudentFields();
             }
         }
 
-        // باقي الدوال تبقى كما هي
+        // جلب الطالبات بناءً على الصف والشعبة
+        async function loadStudents() {
+            const selectedClass = classInput.value;
+            const selectedSection = sectionInput.value;
+            
+            if (!selectedClass || !selectedSection) {
+                resetStudentFields();
+                return;
+            }
+            
+            studentNameInput.disabled = true;
+            studentNameInput.innerHTML = '<option value="">جاري تحميل الطالبات...</option>';
+            studentLoading.style.display = 'inline-block';
+            
+            try {
+                studentsList = await callGoogleScript('getStudents', { 
+                    class: selectedSection 
+                });
+                
+                console.log('📋 تم جلب الطالبات:', studentsList);
+                
+                // تحديث قائمة الطالبات
+                studentNameInput.innerHTML = '<option value="">اختر الطالبة</option>';
+                
+                if (studentsList && studentsList.length > 0) {
+                    studentsList.forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.name;
+                        option.textContent = student.name;
+                        option.dataset.phone = student.phone || '';
+                        studentNameInput.appendChild(option);
+                    });
+                } else {
+                    studentNameInput.innerHTML = '<option value="">لا توجد طالبات في هذه الشعبة</option>';
+                }
+                
+            } catch (error) {
+                console.error('خطأ في جلب الطالبات:', error);
+                studentNameInput.innerHTML = '<option value="">خطأ في تحميل الطالبات</option>';
+                studentsList = [];
+            } finally {
+                studentNameInput.disabled = false;
+                studentLoading.style.display = 'none';
+                resetPhoneField();
+            }
+        }
+
+        // تحديث رقم الهاتف عند اختيار الطالبة
+        function updatePhoneNumber() {
+            const selectedStudent = studentNameInput.value;
+            const selectedOption = studentNameInput.options[studentNameInput.selectedIndex];
+            const phone = selectedOption.dataset.phone || '';
+            
+            parentPhoneInput.value = phone;
+            
+            // التحقق من صحة الرقم
+            if (phone && validatePhone(phone)) {
+                document.getElementById('phoneError').style.display = 'none';
+            } else if (phone) {
+                document.getElementById('phoneError').style.display = 'block';
+            } else {
+                document.getElementById('phoneError').style.display = 'none';
+            }
+        }
+
+        // إعادة تعيين حقول الطالبة
+        function resetStudentFields() {
+            studentNameInput.innerHTML = '<option value="">اختر الطالبة</option>';
+            resetPhoneField();
+        }
+
+        // إعادة تعيين حقل الهاتف
+        function resetPhoneField() {
+            parentPhoneInput.value = '';
+            document.getElementById('phoneError').style.display = 'none';
+        }
+
+        // باقي الدوال الأساسية
         function initializeDate() {
             const now = new Date();
             const gregorianOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -814,7 +903,6 @@
             document.getElementById('messagePreview').textContent = message;
             document.getElementById('whatsappSection').style.display = 'block';
             
-            // التمرير إلى قسم الواتساب
             document.getElementById('whatsappSection').scrollIntoView({ behavior: 'smooth' });
         }
         
@@ -826,14 +914,12 @@
             window.open(whatsappUrl, '_blank');
         }
         
-        // إعداد زر إرسال الواتساب
         document.getElementById('sendWhatsApp').addEventListener('click', function() {
             if (currentRecord) {
                 sendWhatsAppMessage(currentRecord.parentPhone, document.getElementById('messagePreview').textContent);
             }
         });
         
-        // معالجة إرسال النموذج
         absenceForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -871,6 +957,7 @@
                 
                 absenceForm.reset();
                 initializeDate();
+                resetStudentFields();
                 
                 await updateStats();
                 await displayRecords();
@@ -886,13 +973,11 @@
             }
         });
         
-        // تحديث اليوم عند تغيير التاريخ
         document.getElementById('date').addEventListener('change', function() {
             const selectedDate = new Date(this.value);
             updateDayFromDate(selectedDate);
         });
         
-        // التحقق من صحة رقم الهاتف أثناء الكتابة
         document.getElementById('parentPhone').addEventListener('input', function() {
             const phoneValue = this.value;
             this.value = phoneValue.replace(/\D/g, '');
@@ -904,7 +989,6 @@
             }
         });
         
-        // تعديل سجل
         async function editRecord(recordId) {
             const record = records.find(r => r.id === recordId);
             if (!record) return;
@@ -913,15 +997,18 @@
             document.getElementById('day').value = record.day;
             document.getElementById('class').value = record.class;
             
-            // تحميل الشعب أولاً
             await loadClasses();
             
-            // بعد تحميل الشعب، تعيين القيمة
             setTimeout(() => {
                 document.getElementById('section').value = record.section;
+                loadStudents().then(() => {
+                    setTimeout(() => {
+                        document.getElementById('studentName').value = record.studentName;
+                        updatePhoneNumber();
+                    }, 500);
+                });
             }, 500);
             
-            document.getElementById('studentName').value = record.studentName;
             document.getElementById('parentPhone').value = record.parentPhone;
             document.getElementById('status').value = record.status;
             
@@ -931,7 +1018,6 @@
             document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
         }
         
-        // حذف سجل
         async function deleteRecord(recordId) {
             if (!confirm('هل أنت متأكد من حذف هذا السجل؟')) {
                 return;
@@ -947,7 +1033,6 @@
             }
         }
         
-        // تبديل التبويبات
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', function() {
                 const tabId = this.getAttribute('data-tab');
@@ -960,7 +1045,6 @@
             });
         });
         
-        // تهيئة التطبيق عند التحميل
         document.addEventListener('DOMContentLoaded', function() {
             initializeDate();
             updateStats();
@@ -969,4 +1053,3 @@
     </script>
 </body>
 </html>
-
