@@ -997,11 +997,14 @@ body {
             justify-content: center;
         }
         
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 12px;
-            }
+     @media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: row !important; /* جعلها أفقية */
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 4px;
+    }
+
             
             .nav-links {
                 width: 100%;
@@ -2105,3 +2108,4 @@ function getStatusMessage(status) {
     </script>
 </body>
 </html>
+
