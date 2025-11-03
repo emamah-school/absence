@@ -22,6 +22,64 @@
     --esteathan: #9b5de5;      /* بنفسجي للإستئذان */
     --highlight: #ff9500;
 }
+   /* تحديث عمود الحالة لعرض النص كاملاً */
+.records-table td:nth-child(8) { /* عمود الحالة */
+    min-width: 120px; /* توسعة العمود */
+    max-width: 150px;
+ 
+    word-wrap: break-word;
+    line-height: 1.3;
+}
+
+/* رؤوس الجدول والخلايا */
+table th,
+table td {
+  text-align: center !important;      /* ← توسيط أفقي */
+  vertical-align: middle !important;  /* ← توسيط عمودي */
+  border: 1px solid black !important;
+  padding: 8px 10px !important;
+ 
+}
+
+/* تحديث خلية اسم الطالبة لكسر النص الطويل */
+.records-table td:nth-child(4) { /* عمود اسم الطالبة */
+    max-width: 170px;
+    min-width: 150px;
+    white-space: normal !important; /* السماح بكسر السطور */
+    word-wrap: break-word; /* كسر الكلمات الطويلة */
+    word-break: break-word; /* كسر الكلمات عند الحاجة */
+    line-height: 1.4;
+    padding: 8px 15px; /* زيادة الحشو قليلاً للراحة البصرية */
+}
+
+
+
+/* ✅ شبكة سوداء لجميع خلايا الجدول */
+table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  table-layout: auto !important;
+  border: 2px solid black !important; /* ← إطار خارجي أسود */
+}
+
+
+/* رؤوس الجدول */
+table thead th {
+  background-color: #1a365d !important; /* ← أزرق غامق */
+  color: #ffffff !important;            /* ← نص أبيض */
+  font-weight: 700 !important;
+  border: 1px solid #000000 !important; /* ← حدود الرأس سوداء أيضًا */
+  padding: 6px 8px !important;
+}
+
+/* تفاعل عند المرور */
+table tr:hover {
+  background-color: #FEF6DD !important;
+  transition: background-color 0.2s ease;
+}
+
+
+        
 .form-input:disabled {
     background-color: #f8f9fa;
     cursor: not-allowed;
@@ -2108,4 +2166,5 @@ function getStatusMessage(status) {
     </script>
 </body>
 </html>
+
 
