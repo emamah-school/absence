@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سجلات الغياب - نظام الغياب المدرسي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+ :root {
+    --primary: #4361ee;
+    --secondary: #3f37c9;
+    --success: #4cc9f0;
+    --warning: #f72585;
+    --danger: #e63946;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #6c757d;
+    --absence: #e63946;        /* أحمر للغياب */
+    --tasyeeb: #4361ee;        /* أزرق للتأخير */
+    --tasayob: #f77f00;        /* برتقالي غامق للتسيّب */
+    --esteathan: #9b5de5;      /* بنفسجي للإستئذان */
+    --highlight: #ff9500;
+}
+.form-input:disabled {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    background-color: white;
+}
+.status-absence {
+    background-color: rgba(230, 57, 70, 0.1);
+    color: var(--absence);
+    border: 1px solid rgba(230, 57, 70, 0.3);
+}
+
+.status-tasyeeb {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--tasyeeb);
+    border: 1px solid rgba(67, 97, 238, 0.3);
+}
+
+.status-tasayob {
+    background-color: rgba(247, 127, 0, 0.1);
+    color: var(--tasayob);
+    border: 1px solid rgba(247, 127, 0, 0.3);
+}
+
+.status-esteathan {
+    background-color: rgba(155, 93, 229, 0.1);
+    color: var(--esteathan);
+    border: 1px solid rgba(155, 93, 229, 0.3);
+}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            color: var(--dark);
+            line-height: 1.6;
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+      
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.2rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .main-content {
+            margin: 1.5rem 0;
+        }
+        
+        .records-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* حاوية البحث المتطور */
+        .search-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #eee;
+        }
+        
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .search-title {
+            font-size: 1.1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-title i {
+            font-size: 1rem;
+        }
+        
+        .search-results-count {
+            font-size: 0.85rem;
+            color: var(--gray);
+            background: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid #eee;
+        }
+        
+        .search-input-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 45px 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        .search-clear {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .search-clear:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: var(--danger);
+        }
+        
+        .search-clear.visible {
+            display: block;
+        }
+        
+        .search-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .filter-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid #eee;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 4px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+            flex: 1;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+       /* تحديث حدود جدول السجلات باللون الأسود */
+.records-table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 2px solid #000; /* حدود سوداء */
+    max-height: 500px;
+    overflow-y: auto;
+}
+      .stat-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    font-weight: 700; /* خط عريض */
+}  
+/* تحديث الخطوط للفلاتر */
+.filter-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    background-color: white;
+    cursor: pointer;
+    font-weight: 700; /* خط عريض */
+}
+     .records-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+    border: 1px solid #000; /* حدود سوداء للجدول */
+}
+  /* تحديث الخطوط لعناوين الأقسام */
+.section-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #eee;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700; /* خط عريض */
+}      
+        .records-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 10px;
+            text-align: right;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-size: 0.85rem;
+            white-space: nowrap;
+border-left: 1px solid #000; /* حدود جانبية سوداء */
+    border-right: 1px solid #000; /* حدود جانبية سوداء */
+        }
+        /* تحديث الخطوط لتكون عريضة في التطبيق */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700; /* خط عريض للتطبيق كاملاً */
+}
+body {
+    color: var(--dark);
+    line-height: 1.6;
+    background-color: #f5f7fb;
+    font-weight: 700; /* خط عريض */
+}
+        .records-table td {
+            padding: 10px 12px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+            font-size: 0.85rem;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+      /* تحديث الخطوط للحالات */
+
+        .records-table td.expandable:hover {
+            white-space: normal;
+            overflow: visible;
+            background-color: #f8f9fa;
+            z-index: 5;
+            position: relative;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        
+        .records-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .records-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        
+        .records-table tr:nth-child(even):hover {
+            background-color: #f1f3f4;
+        }
+        
+      .status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700; /* خط عريض */
+}  
+        
+        .status-absence {
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--absence);
+            border: 1px solid rgba(247, 37, 133, 0.3);
+        }
+        
+        .status-tasyeeb {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--tasyeeb);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .status-tasayob {
+            background-color: rgba(255, 145, 0, 0.1);
+            color: var(--tasayob);
+            border: 1px solid rgba(255, 145, 0, 0.3);
+        }
+        
+        .status-esteathan {
+            background-color: rgba(155, 93, 229, 0.1);
+            color: var(--esteathan);
+            border: 1px solid rgba(155, 93, 229, 0.3);
+        }
+        
+        .reviewed-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .reviewed-yes {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .reviewed-no {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: var(--gray);
+            border: 1px solid rgba(108, 117, 125, 0.3);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: flex-start;
+        }
+        
+        .btn-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-edit {
+            color: var(--primary);
+        }
+        
+        .btn-edit:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn-whatsapp {
+            color: #25D366;
+        }
+        
+        .btn-whatsapp:hover {
+            background-color: rgba(37, 211, 102, 0.1);
+        }
+        
+        .btn-review {
+            color: var(--success);
+        }
+        
+        .btn-review:hover {
+            background-color: rgba(76, 201, 240, 0.1);
+        }
+        
+        .btn-unreview {
+            color: var(--danger);
+        }
+        
+        .btn-unreview:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+        }
+        
+        .btn-delete {
+            color: var(--danger);
+        }
+        
+        .btn-delete:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            opacity: 0.5;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 1.5rem;
+            color: var(--gray);
+            border-top: 1px solid #eee;
+        }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 1.2rem;
+  border: 2px solid var(--primary); /* حدود زرقاء */
+        }
+        
+      .stat-item {
+    background: white;
+    padding: 0.7rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0; /* حدود فاتحة للعناصر الداخلية */
+
+}
+        
+        .stat-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        .highlight {
+            background-color: var(--highlight);
+            color: white;
+            padding: 1px 3px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        /* نافذة التعديل */
+        .edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .edit-modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .edit-modal.show .edit-modal-content {
+            transform: translateY(0);
+        }
+        
+        .edit-modal-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .form-input, .form-select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: border 0.3s ease;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .edit-modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        /* أنماط الإشعارات الداخلية */
+        .custom-notification {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: white;
+            color: #333;
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            font-size: 0.75rem;
+            max-width: 280px;
+            transform: translateX(400px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 3px solid;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .custom-notification.show {
+            transform: translateX(0);
+        }
+
+        .custom-notification.hide {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notification-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .notification-message {
+            flex: 1;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 2px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            font-size: 0.7rem;
+        }
+
+        .notification-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        /* أنواع الإشعارات */
+        .notification-info {
+            border-left-color: var(--primary);
+            background: linear-gradient(135deg, #f8f9ff, #ffffff);
+        }
+
+        .notification-info .notification-icon {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .notification-success {
+            border-left-color: var(--success);
+            background: linear-gradient(135deg, #f0f9ff, #ffffff);
+        }
+
+        .notification-success .notification-icon {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+        }
+
+        .notification-warning {
+            border-left-color: var(--warning);
+            background: linear-gradient(135deg, #fff0f7, #ffffff);
+        }
+
+        .notification-warning .notification-icon {
+            background: rgba(247, 37, 133, 0.1);
+            color: var(--warning);
+        }
+
+        .notification-error {
+            border-left-color: var(--danger);
+            background: linear-gradient(135deg, #ffeaea, #ffffff);
+        }
+
+        .notification-error .notification-icon {
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--danger);
+        }
+
+        /* أنماط الإشعارات المنبثقة المخصصة */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .custom-alert-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert {
+            background: white;
+            border-radius: 12px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .custom-alert-overlay.show .custom-alert {
+            transform: scale(1);
+        }
+
+        .custom-alert-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .custom-alert-header i {
+            font-size: 1.2rem;
+        }
+
+        .custom-alert-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .custom-alert-body {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .custom-alert-message {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .custom-alert-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .custom-alert-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 80px;
+        }
+
+        .custom-alert-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .custom-alert-btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        .custom-alert-btn-secondary {
+            background: #f8f9fa;
+            color: var(--dark);
+            border: 1px solid #ddd;
+        }
+
+        .custom-alert-btn-secondary:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .custom-alert-btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .custom-alert-btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        /* إشعارات التأكيد الصغيرة */
+        .custom-confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .custom-confirm-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-confirm {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            max-width: 350px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .custom-confirm-overlay.show .custom-confirm {
+            transform: translateY(0);
+        }
+
+        .custom-confirm-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.3rem;
+        }
+
+        .custom-confirm-message {
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            color: var(--dark);
+        }
+
+        .custom-confirm-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-filters {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+            
+            .stats-summary {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .stat-item {
+                padding: 0.5rem;
+            }
+            
+            .stat-number {
+                font-size: 1rem;
+            }
+            
+            .stat-label {
+                font-size: 0.7rem;
+            }
+
+            .custom-notification {
+                right: 8px;
+                left: 8px;
+                max-width: none;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .records-table td {
+                max-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- نافذة تعديل السجل -->
+    <div class="edit-modal" id="editModal">
+        <div class="edit-modal-content">
+            <h3 class="edit-modal-title">
+                <i class="fas fa-edit"></i>
+                تعديل السجل
+            </h3>
+            <form class="edit-form" id="editForm">
+                <input type="hidden" id="editRecordId">
+                <div class="form-group">
+                    <label class="form-label" for="editStudentName">اسم الطالبة</label>
+                    <input type="text" class="form-input" id="editStudentName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editParentPhone">رقم ولي الأمر</label>
+                    <input type="tel" class="form-input" id="editParentPhone" required maxlength="8">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editStatus">الحالة</label>
+                    <select class="form-select" id="editStatus" required>
+                        <option value="غياب">غياب</option>
+                        <option value="تأخير عن الحصة">تأخير عن الحصة</option>
+                        <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
+                        <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
+                    </select>
+                </div>
+                <div class="edit-modal-buttons">
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn">إلغاء</button>
+                    <button type="submit" class="btn btn-primary" id="saveEditBtn">حفظ التغييرات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-school"></i>
+                    <h1>سجلات الغياب</h1>
+                </div>
+                <div class="nav-links">
+                    <a href="index3.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        الصفحة الرئيسية
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="records-section">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>
+                    سجلات الغياب والتأخير
+                </h2>
+                
+                <div class="stats-summary">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalRecords">0</div>
+                        <div class="stat-label">إجمالي السجلات</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="todayRecordsCount">0</div>
+                        <div class="stat-label">سجلات اليوم</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="reviewedRecords">0</div>
+                        <div class="stat-label">تمت مراجعتها</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="pendingReview">0</div>
+                        <div class="stat-label">قيد المراجعة</div>
+                    </div>
+                </div>
+                
+                <!-- حاوية البحث المتطور -->
+                <div class="search-container">
+                    <div class="search-header">
+                        <h2 class="search-title">
+                            <i class="fas fa-search"></i>
+                            بحث متقدم
+                        </h2>
+                        <div class="search-results-count" id="searchResultsCount">0 نتيجة</div>
+                    </div>
+                    
+                    <div class="search-input-container">
+                        <input type="text" class="search-input" id="searchInput" placeholder="ابحث باسم الطالبة، الصف، الشعبة، أو الحالة...">
+                        <i class="fas fa-search search-icon"></i>
+                        <button class="search-clear" id="searchClear">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="search-filters">
+                        <!-- تم استبدال فلتر الصف بفلتر المراجعة -->
+                        <div class="filter-group">
+                            <label class="filter-label">حالة المراجعة</label>
+                            <select class="filter-select" id="filterReview">
+                                <option value="">جميع الحالات</option>
+                                <option value="reviewed">تمت المراجعة</option>
+                                <option value="pending">قيد المراجعة</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">الشعبة</label>
+                            <select class="filter-select" id="filterSection">
+                                <option value="">جميع الشعب</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">الحالة</label>
+                            <select class="filter-select" id="filterStatus">
+                                <option value="">جميع الحالات</option>
+                                <option value="غياب">غياب</option>
+                                <option value="تأخير عن الحصة">تأخير عن الحصة</option>
+                                <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
+                                <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
+                            </select>
+                        </div>
+                        
+                       <div class="filter-group">
+    <label class="filter-label">التاريخ</label>
+    <select class="filter-select" id="filterDate">
+        <option value="">جميع التواريخ</option>
+        <option value="week">هذا الأسبوع</option>
+        <option value="month">هذا الشهر</option>
+    </select>
+</div>
+                    </div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="today">سجلات اليوم</div>
+                    <div class="tab" data-tab="all">جميع السجلات</div>
+                </div>
+                
+                <div class="tab-content active" id="todayTab">
+                    <div class="records-table-container">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>اليوم</th>
+                                    <th>وقت التسجيل</th>
+                                    <th>اسم الطالبة</th>
+                                    <th>الصف</th>
+                                    <th>الشعبة</th>
+                                    <th>هاتف ولي الأمر</th>
+                                    <th>الحالة</th>
+                                    <th>المراجعة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="todayRecordsBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="todayEmptyState" class="empty-state" style="display: none;">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>لا توجد سجلات لهذا اليوم</h3>
+                        <p>لم يتم تسجيل أي حالات غياب أو تأخير لهذا اليوم.</p>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="allTab">
+                    <div class="records-table-container">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>اليوم</th>
+                                    <th>وقت التسجيل</th>
+                                    <th>اسم الطالبة</th>
+                                    <th>الصف</th>
+                                    <th>الشعبة</th>
+                                    <th>هاتف ولي الأمر</th>
+                                    <th>الحالة</th>
+                                    <th>المراجعة</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allRecordsBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="allEmptyState" class="empty-state" style="display: none;">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>لا توجد سجلات</h3>
+                        <p>لم يتم تسجيل أي حالات غياب أو تأخير حتى الآن.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>نظام الغياب المدرسي - إدارة المدرسة © 2025</p>
+        </div>
+    </footer>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_hp07h8KIWLbOiwBhDHXdK76QisSLWt8SNxI4ZjEByOJsWRdI1xTQcE9ESxfLgbEy4g/exec';
+        let allRecords = [];
+        let filteredRecords = [];
+        let searchTimeout = null;
+        let currentEditRecord = null;
+
+        // عناصر DOM
+        const searchInput = document.getElementById('searchInput');
+        const searchClear = document.getElementById('searchClear');
+        const filterReview = document.getElementById('filterReview');
+        const filterSection = document.getElementById('filterSection');
+        const filterStatus = document.getElementById('filterStatus');
+        const filterDate = document.getElementById('filterDate');
+        const searchResultsCount = document.getElementById('searchResultsCount');
+        const editModal = document.getElementById('editModal');
+        const editForm = document.getElementById('editForm');
+        const editRecordId = document.getElementById('editRecordId');
+        const editStudentName = document.getElementById('editStudentName');
+        const editParentPhone = document.getElementById('editParentPhone');
+        const editStatus = document.getElementById('editStatus');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+
+        // ✅ نظام الإشعارات المنبثقة المخصصة - النسخة المحسنة
+        function showCustomAlert(message, title = 'تنبيه', type = 'info') {
+            return new Promise((resolve) => {
+                // إزالة أي إشعارات سابقة
+                const existingAlert = document.getElementById('custom-alert-overlay');
+                if (existingAlert) {
+                    existingAlert.remove();
+                }
+
+                const icons = {
+                    info: 'fa-info-circle',
+                    success: 'fa-check-circle',
+                    warning: 'fa-exclamation-triangle',
+                    error: 'fa-times-circle'
+                };
+
+                const colors = {
+                    info: '#4361ee',
+                    success: '#4cc9f0', 
+                    warning: '#f72585',
+                    error: '#e63946'
+                };
+
+                const alertHTML = `
+                    <div class="custom-alert-overlay" id="custom-alert-overlay">
+                        <div class="custom-alert">
+                            <div class="custom-alert-header" style="background: linear-gradient(135deg, ${colors[type]}, ${colors[type]});">
+                                <i class="fas ${icons[type]}"></i>
+                                <h3 class="custom-alert-title">${title}</h3>
+                            </div>
+                            <div class="custom-alert-body">
+                                <div class="custom-alert-message">${message}</div>
+                                <div class="custom-alert-buttons">
+                                    <button class="custom-alert-btn custom-alert-btn-primary" id="custom-alert-ok">موافق</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', alertHTML);
+                
+                const overlay = document.getElementById('custom-alert-overlay');
+                const okBtn = document.getElementById('custom-alert-ok');
+                
+                setTimeout(() => overlay.classList.add('show'), 10);
+                
+                const closeAlert = () => {
+                    overlay.classList.remove('show');
+                    setTimeout(() => {
+                        if (overlay.parentNode) {
+                            overlay.remove();
+                        }
+                        resolve(true);
+                    }, 300);
+                };
+                
+                okBtn.addEventListener('click', closeAlert);
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) closeAlert();
+                });
+                
+                // إغلاق بالزر ESC
+                const handleEscape = (e) => {
+                    if (e.key === 'Escape') closeAlert();
+                };
+                document.addEventListener('keydown', handleEscape);
+                
+                // تركيز على زر الموافق
+                setTimeout(() => okBtn.focus(), 300);
+                
+                // تنظيف المستمع عند الإغلاق
+                overlay.addEventListener('transitionend', () => {
+                    if (!overlay.classList.contains('show')) {
+                        document.removeEventListener('keydown', handleEscape);
+                    }
+                });
+            });
+        }
+
+        // ✅ نظام تأكيد مخصص - النسخة المحسنة
+        function showCustomConfirm(message, title = 'تأكيد العملية') {
+            return new Promise((resolve) => {
+                // إزالة أي تأكيدات سابقة
+                const existingConfirm = document.getElementById('custom-confirm-overlay');
+                if (existingConfirm) {
+                    existingConfirm.remove();
+                }
+
+                const confirmHTML = `
+                    <div class="custom-confirm-overlay" id="custom-confirm-overlay">
+                        <div class="custom-confirm">
+                            <div class="custom-confirm-icon">
+                                <i class="fas fa-exclamation"></i>
+                            </div>
+                            <div class="custom-confirm-message">${message}</div>
+                            <div class="custom-confirm-buttons">
+                                <button class="custom-alert-btn custom-alert-btn-secondary" id="custom-confirm-cancel">إلغاء</button>
+                                <button class="custom-alert-btn custom-alert-btn-danger" id="custom-confirm-ok">نعم، تأكيد</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', confirmHTML);
+                
+                const overlay = document.getElementById('custom-confirm-overlay');
+                const cancelBtn = document.getElementById('custom-confirm-cancel');
+                const okBtn = document.getElementById('custom-confirm-ok');
+                
+                setTimeout(() => overlay.classList.add('show'), 10);
+                
+                const closeConfirm = (result) => {
+                    overlay.classList.remove('show');
+                    setTimeout(() => {
+                        if (overlay.parentNode) {
+                            overlay.remove();
+                        }
+                        resolve(result);
+                    }, 300);
+                };
+                
+                cancelBtn.addEventListener('click', () => closeConfirm(false));
+                okBtn.addEventListener('click', () => closeConfirm(true));
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) closeConfirm(false);
+                });
+                
+                // إغلاق بالزر ESC
+                const handleEscape = (e) => {
+                    if (e.key === 'Escape') closeConfirm(false);
+                };
+                document.addEventListener('keydown', handleEscape);
+                
+                // تركيز على زر الإلغاء افتراضياً
+                setTimeout(() => cancelBtn.focus(), 300);
+                
+                // تنظيف المستمع عند الإغلاق
+                overlay.addEventListener('transitionend', () => {
+                    if (!overlay.classList.contains('show')) {
+                        document.removeEventListener('keydown', handleEscape);
+                    }
+                });
+            });
+        }
+
+        // ✅ رسالة نجاح سريعة - النسخة المحسنة
+        function showQuickSuccess(message) {
+            // إزالة أي إشعارات سابقة
+            const existingNotifications = document.querySelectorAll('.custom-notification');
+            existingNotifications.forEach(notification => {
+                notification.remove();
+            });
+            
+            const notification = document.createElement('div');
+            notification.className = 'custom-notification notification-success';
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <div class="notification-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="notification-message">${message}</div>
+                    <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // إظهار الإشعار
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // إخفاء تلقائي بعد 3 ثواني
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.classList.add('hide');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 400);
+            }, 3000);
+        }
+
+        // ✅ البحث الفوري بدون تأخير
+       function performSearch() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const reviewFilter = filterReview.value;
+    const sectionFilter = filterSection.value;
+    const statusFilter = filterStatus.value;
+    const dateFilter = filterDate.value;
+    
+    filteredRecords = allRecords.filter(record => {
+        // تطبيق فلتر النص
+        if (searchTerm) {
+            const searchFields = [
+                record.studentName,
+                record.class,
+                record.section,
+                record.status,
+                record.date,
+                record.day
+            ];
+            
+            const matchesSearch = searchFields.some(field => 
+                field && field.toString().toLowerCase().includes(searchTerm)
+            );
+            
+            if (!matchesSearch) return false;
+        }
+        
+        // تطبيق فلتر المراجعة الجديد
+        if (reviewFilter) {
+            if (reviewFilter === 'reviewed' && !record.reviewed) return false;
+            if (reviewFilter === 'pending' && record.reviewed) return false;
+        }
+        
+        // تطبيق فلتر الشعبة
+        if (sectionFilter && record.section !== sectionFilter) return false;
+        
+        // تطبيق فلتر الحالة
+        if (statusFilter && record.status !== statusFilter) return false;
+        
+        // تطبيق فلتر التاريخ - تم التصحيح هنا
+        if (dateFilter) {
+            const recordDate = convertToISODate(record.date);
+            if (!recordDate) return false;
+            
+            const today = new Date();
+            const recordDateObj = new Date(recordDate);
+            
+            switch (dateFilter) {
+                case 'week':
+                    const startOfWeek = new Date(today);
+                    startOfWeek.setDate(today.getDate() - today.getDay());
+                    startOfWeek.setHours(0, 0, 0, 0);
+                    
+                    const endOfWeek = new Date(startOfWeek);
+                    endOfWeek.setDate(startOfWeek.getDate() + 6);
+                    endOfWeek.setHours(23, 59, 59, 999);
+                    
+                    if (recordDateObj < startOfWeek || recordDateObj > endOfWeek) return false;
+                    break;
+                    
+                case 'month':
+                    if (recordDateObj.getMonth() !== today.getMonth() || 
+                        recordDateObj.getFullYear() !== today.getFullYear()) return false;
+                    break;
+            }
+        }
+        
+        return true;
+    });
+    
+    updateDisplay();
+    
+    // تحديث عدد النتائج
+    searchResultsCount.textContent = `${filteredRecords.length} نتيجة`;
+    if (searchTerm) {
+        searchResultsCount.style.display = 'block';
+    } else {
+        searchResultsCount.style.display = 'none';
+    }
+}
+
+        // ✅ تحديث قائمة الشعب بناءً على الصف المختار
+        function updateSectionsList() {
+            const sections = new Set();
+            
+            // جمع جميع الشعب المتاحة
+            allRecords.forEach(record => {
+                sections.add(record.section);
+            });
+            
+            // تحديث قائمة الشعب
+            filterSection.innerHTML = '<option value="">جميع الشعب</option>';
+            sections.forEach(section => {
+                const option = document.createElement('option');
+                option.value = section;
+                option.textContent = section;
+                filterSection.appendChild(option);
+            });
+        }
+
+        // ✅ تمييز النص المطابق
+        function highlightText(text, searchTerm) {
+            if (!searchTerm || !text) return text || '';
+            try {
+                const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`(${escapedTerm})`, 'gi');
+                return text.toString().replace(regex, '<span class="highlight">$1</span>');
+            } catch (e) {
+                return text || '';
+            }
+        }
+
+        // ✅ تحديد فئة الحالة حسب النوع
+        function getStatusClass(status) {
+            switch(status) {
+                case 'غياب': return 'absence';
+                case 'تأخير عن الحصة': return 'tasyeeb';
+                case 'تسيَّب من الحصة': return 'tasayob';
+                case 'إستأذان خارج المدرسة': return 'esteathan';
+                default: return 'absence';
+            }
+        }
+
+        // ✅ تحديث حالة المراجعة
+        async function toggleReviewStatus(recordId) {
+            try {
+                const record = allRecords.find(r => r.id === recordId);
+                if (record) {
+                    record.reviewed = !record.reviewed;
+                    updateDisplay();
+                    showQuickSuccess('تم تحديث حالة المراجعة بنجاح');
+                    
+                    await callGoogleScript('toggleReviewStatus', { id: recordId });
+                }
+            } catch (error) {
+                showCustomAlert('خطأ في تحديث حالة المراجعة', 'خطأ', 'error');
+            }
+        }
+
+        // ✅ فتح نافذة التعديل
+       function openEditModal(recordId) {
+    const record = allRecords.find(r => r.id === recordId);
+    if (!record) return;
+    
+    currentEditRecord = record;
+    editRecordId.value = record.id;
+    editStudentName.value = record.studentName;
+    editParentPhone.value = record.parentPhone;
+    editStatus.value = record.status;
+    
+    // تفعيل حقل ولي الأمر وجعله قابلاً للتعديل
+    editParentPhone.removeAttribute('readonly');
+    editParentPhone.disabled = false;
+    
+    editModal.classList.add('show');
+    
+    // تركيز على أول حقل
+    setTimeout(() => {
+        editStudentName.focus();
+    }, 300);
+}
+
+        // ✅ إغلاق نافذة التعديل
+        function closeEditModal() {
+            editModal.classList.remove('show');
+            currentEditRecord = null;
+        }
+
+        // ✅ حفظ التعديلات - تم التصحيح
+        async function saveEditChanges(e) {
+            e.preventDefault();
+            
+            try {
+                // التحقق من صحة البيانات
+                if (!editStudentName.value.trim()) {
+                    showCustomAlert('يرجى إدخال اسم الطالبة', 'خطأ', 'error');
+                    editStudentName.focus();
+                    return;
+                }
+                
+                const phoneValue = editParentPhone.value.trim();
+                if (!phoneValue) {
+                    showCustomAlert('يرجى إدخال رقم ولي الأمر', 'خطأ', 'error');
+                    editParentPhone.focus();
+                    return;
+                }
+                
+                // التحقق من أن الرقم يحتوي على 8 أرقام فقط
+                if (!/^\d{8}$/.test(phoneValue)) {
+                    showCustomAlert('يرجى إدخال رقم هاتف صحيح (8 أرقام فقط)', 'خطأ', 'error');
+                    editParentPhone.focus();
+                    editParentPhone.select();
+                    return;
+                }
+                
+                const updatedData = {
+                    id: editRecordId.value,
+                    studentName: editStudentName.value.trim(),
+                    parentPhone: phoneValue,
+                    status: editStatus.value
+                };
+                
+                // إظهار حالة التحميل
+                const originalText = saveEditBtn.innerHTML;
+                saveEditBtn.innerHTML = '<div class="loading" style="display: inline-block; width: 16px; height: 16px; margin-left: 8px;"></div> جاري الحفظ...';
+                saveEditBtn.disabled = true;
+                
+                await callGoogleScript('updateRecord', updatedData);
+                
+                // تحديث البيانات المحلية
+                if (currentEditRecord) {
+                    currentEditRecord.studentName = updatedData.studentName;
+                    currentEditRecord.parentPhone = updatedData.parentPhone;
+                    currentEditRecord.status = updatedData.status;
+                }
+                
+                closeEditModal();
+                updateDisplay();
+                showQuickSuccess('تم تحديث السجل بنجاح');
+                
+            } catch (error) {
+                console.error('Error updating record:', error);
+                showCustomAlert('خطأ في تحديث السجل: ' + error.message, 'خطأ', 'error');
+            } finally {
+                // إعادة تعيين زر الحفظ
+                saveEditBtn.innerHTML = 'حفظ التغييرات';
+                saveEditBtn.disabled = false;
+            }
+        }
+
+        // ✅ دوال الخادم - تم التحسين
+        async function callGoogleScript(action, data = {}) {
+            const params = new URLSearchParams();
+            params.append('action', action);
+            
+            for (const key in data) {
+                if (data[key] !== null && data[key] !== undefined) {
+                    params.append(key, data[key]);
+                }
+            }
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: params
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`خطأ في الاتصال: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'حدث خطأ غير معروف');
+                }
+                
+                return result.data;
+            } catch (error) {
+                console.error(`Error in ${action}:`, error);
+                throw new Error(`فشل في ${action === 'updateRecord' ? 'تحديث' : 'حذف'} السجل: ${error.message}`);
+            }
+        }
+
+        // ✅ تحديث الإحصائيات
+        function updateStatistics() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayRecords = filteredRecords.filter(record => {
+                const recordDate = convertToISODate(record.date);
+                return recordDate === today;
+            });
+            const reviewedRecords = filteredRecords.filter(record => record.reviewed);
+            const pendingReview = filteredRecords.filter(record => !record.reviewed);
+            
+            document.getElementById('totalRecords').textContent = filteredRecords.length;
+            document.getElementById('todayRecordsCount').textContent = todayRecords.length;
+            document.getElementById('reviewedRecords').textContent = reviewedRecords.length;
+            document.getElementById('pendingReview').textContent = pendingReview.length;
+        }
+
+        // ✅ تحديث العرض
+        function updateDisplay() {
+            const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+            
+            if (activeTab === 'today') {
+                displayTodayRecords();
+            } else {
+                displayAllRecords();
+            }
+            
+            updateStatistics();
+        }
+
+        // ✅ عرض سجلات اليوم - مع الترتيب الجديد
+        function displayTodayRecords() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayRecords = filteredRecords.filter(record => {
+                const recordDate = convertToISODate(record.date);
+                return recordDate === today;
+            });
+            
+            const tbody = document.getElementById('todayRecordsBody');
+            const emptyState = document.getElementById('todayEmptyState');
+            
+            if (todayRecords.length === 0) {
+                emptyState.style.display = 'block';
+                tbody.innerHTML = '';
+            } else {
+                emptyState.style.display = 'none';
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                tbody.innerHTML = todayRecords.map(record => {
+                    const statusClass = getStatusClass(record.status);
+                    return `
+                    <tr>
+                        <td class="expandable">${highlightText(record.date, searchTerm)}</td>
+                        <td class="expandable">${highlightText(record.day, searchTerm)}</td>
+                        <td>${record.time}</td>
+                        <td class="expandable">${highlightText(record.studentName, searchTerm)}</td>
+                        <td>${highlightText(record.class, searchTerm)}</td>
+                        <td>${highlightText(record.section, searchTerm)}</td>
+                        <td class="expandable">968${record.parentPhone}</td>
+                        <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
+                        <td>
+                            <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
+                                ${record.reviewed ? 'تمت المراجعة' : 'قيد المراجعة'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-whatsapp" onclick="sendWhatsAppMessage('${record.id}')" title="إرسال واتساب">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                                <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" onclick="toggleReviewStatus('${record.id}')" title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
+                                    <i class="fas ${record.reviewed ? 'fa-times' : 'fa-check'}"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        // ✅ عرض جميع السجلات - مع الترتيب الجديد
+        function displayAllRecords() {
+            const tbody = document.getElementById('allRecordsBody');
+            const emptyState = document.getElementById('allEmptyState');
+            
+            if (filteredRecords.length === 0) {
+                emptyState.style.display = 'block';
+                tbody.innerHTML = '';
+            } else {
+                emptyState.style.display = 'none';
+                const sortedRecords = [...filteredRecords].reverse();
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                tbody.innerHTML = sortedRecords.map(record => {
+                    const statusClass = getStatusClass(record.status);
+                    return `
+                    <tr>
+                        <td class="expandable">${highlightText(record.date, searchTerm)}</td>
+                        <td class="expandable">${highlightText(record.day, searchTerm)}</td>
+                        <td>${record.time}</td>
+                        <td class="expandable">${highlightText(record.studentName, searchTerm)}</td>
+                        <td>${highlightText(record.class, searchTerm)}</td>
+                        <td>${highlightText(record.section, searchTerm)}</td>
+                        <td class="expandable">968${record.parentPhone}</td>
+                        <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
+                        <td>
+                            <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
+                                ${record.reviewed ? 'تمت المراجعة' : 'قيد المراجعة'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-whatsapp" onclick="sendWhatsAppMessage('${record.id}')" title="إرسال واتساب">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                                <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" onclick="toggleReviewStatus('${record.id}')" title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
+                                    <i class="fas ${record.reviewed ? 'fa-times' : 'fa-check'}"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        // ✅ حذف السجل مع رسالة تأكيد مخصصة - النسخة المصححة
+        async function deleteRecord(recordId, event = null) {
+            const record = allRecords.find(r => r.id === recordId);
+            if (!record) {
+                showCustomAlert('لم يتم العثور على السجل المطلوب', 'خطأ', 'error');
+                return;
+            }
+            
+            try {
+                // عرض رسالة تأكيد مخصصة
+                const confirmation = await showCustomConfirm(
+                    `هل أنت متأكد من حذف سجل الطالبة "<strong>${record.studentName}</strong>"؟<br><br><small style="color: #666;">هذا الإجراء لا يمكن التراجع عنه.</small>`,
+                    'تأكيد الحذف'
+                );
+                
+                if (!confirmation) return;
+                
+                // إظهار حالة التحميل إذا كان event متاحاً
+                let deleteBtn = null;
+                if (event && event.target) {
+                    deleteBtn = event.target.closest('.btn-delete');
+                    if (deleteBtn) {
+                        const originalHTML = deleteBtn.innerHTML;
+                        deleteBtn.innerHTML = '<div class="loading" style="display: inline-block; width: 14px; height: 14px;"></div>';
+                        deleteBtn.disabled = true;
+                    }
+                }
+                
+                // تنفيذ الحذف
+                await callGoogleScript('deleteRecord', { id: recordId });
+                
+                // تحديث البيانات المحلية
+                allRecords = allRecords.filter(r => r.id !== recordId);
+                filteredRecords = filteredRecords.filter(r => r.id !== recordId);
+                
+                updateDisplay();
+                showQuickSuccess(`تم حذف سجل الطالبة ${record.studentName} بنجاح`);
+                
+            } catch (error) {
+                console.error('Error deleting record:', error);
+                showCustomAlert('خطأ في حذف السجل: ' + error.message, 'خطأ', 'error');
+                
+                // إعادة تعيين الزر إذا كان event متاحاً
+                if (event && event.target) {
+                    const deleteBtn = event.target.closest('.btn-delete');
+                    if (deleteBtn) {
+                        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                        deleteBtn.disabled = false;
+                    }
+                }
+            }
+        }
+
+        // ✅ التهيئة - تم التحسين
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecords();
+            
+            // تبويبات
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}Tab`).classList.add('active');
+                    
+                    performSearch();
+                });
+            });
+            
+            // استماع لأحداث البحث والفلاتر
+            searchInput.addEventListener('input', handleSearchInput);
+            searchClear.addEventListener('click', clearSearch);
+            filterReview.addEventListener('change', performSearch);
+            filterSection.addEventListener('change', performSearch);
+            filterStatus.addEventListener('change', performSearch);
+            filterDate.addEventListener('change', performSearch);
+            
+            // استماع لأحداث نافذة التعديل - تم التأكد من الربط
+            if (editForm) {
+                editForm.addEventListener('submit', saveEditChanges);
+            }
+            if (cancelEditBtn) {
+                cancelEditBtn.addEventListener('click', closeEditModal);
+            }
+            
+            // إغلاق نافذة التعديل عند النقر خارجها
+            if (editModal) {
+                editModal.addEventListener('click', function(e) {
+                    if (e.target === editModal) {
+                        closeEditModal();
+                    }
+                });
+            }
+            
+            // إغلاق نافذة التعديل بالزر ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && editModal.classList.contains('show')) {
+                    closeEditModal();
+                }
+            });
+        });
+
+        // ✅ البحث الفوري أثناء الكتابة
+        function handleSearchInput() {
+            const searchTerm = searchInput.value;
+            
+            const searchIcon = document.querySelector('.search-icon');
+            if (searchTerm) {
+                searchIcon.style.color = 'var(--primary)';
+            }
+            
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+            
+            // بحث فوري بدون تأخير
+            searchTimeout = setTimeout(() => {
+                performSearch();
+                searchIcon.style.color = 'var(--gray)';
+            }, 50);
+        }
+
+        // ✅ مسح حقل البحث
+        function clearSearch() {
+            searchInput.value = '';
+            searchClear.classList.remove('visible');
+            performSearch();
+            searchInput.focus();
+        }
+
+        // ✅ تحميل السجلات - تم التصحيح هنا
+        async function loadRecords() {
+            try {
+                document.getElementById('todayRecordsBody').innerHTML = `
+                    <tr>
+                        <td colspan="10" style="text-align: center; padding: 2rem;">
+                            <div class="loading"></div>
+                            <div style="margin-top: 1rem;">جاري تحميل السجلات...</div>
+                        </td>
+                    </tr>
+                `;
+                
+                document.getElementById('allRecordsBody').innerHTML = `
+                    <tr>
+                        <td colspan="10" style="text-align: center; padding: 2rem;">
+                            <div class="loading"></div>
+                            <div style="margin-top: 1rem;">جاري تحميل السجلات...</div>
+                        </td>
+                    </tr>
+                `;
+
+                const [todayRecordsData, allRecordsData] = await Promise.all([
+                    callGoogleScript('getTodayRecords'),
+                    callGoogleScript('getRecords')
+                ]);
+                
+                allRecords = allRecordsData;
+                filteredRecords = [...allRecords];
+                
+                // تحديث قائمة الشعب
+                updateSectionsList();
+                
+                updateStatistics();
+                updateDisplay();
+                
+            } catch (error) {
+                showCustomAlert('خطأ في تحميل السجلات', 'خطأ', 'error');
+            }
+        }
+
+       function convertToISODate(dateString) {
+    if (!dateString) return '';
+    try {
+        if (dateString.includes('/')) {
+            const parts = dateString.split('/');
+            if (parts.length === 3) {
+                const day = parts[0].padStart(2, '0');
+                const month = parts[1].padStart(2, '0');
+                const year = parts[2];
+                return `${year}-${month}-${day}`;
+            }
+        }
+        return dateString;
+    } catch (e) {
+        console.error('Error converting date:', e);
+        return '';
+    }
+}
+
+       
+
+// ✅ دالة إرسال واتساب - محدثة مع الترتيب الجديد للسطور
+function sendWhatsAppMessage(recordId) {
+    try {
+        const record = allRecords.find(r => r.id === recordId);
+        if (!record) {
+            showCustomAlert('لم يتم العثور على السجل المطلوب', 'خطأ', 'error');
+            return;
+        }
+        
+        const phoneNumber = `968${record.parentPhone}`;
+        const statusMessage = getStatusMessage(record.status);
+        const message = `السلام عليكم .
+الفاضل/ ولي أمر الطالبة. ${record.studentName}..
+نفيدكم بأن إبنتكم قد ${statusMessage}
+بتاريخ ${record.date} للعلم بذلك .
+إدارة المدرسة`;
+        
+        // استخدام الرابط الرسمي لواتساب
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+        
+        // فتح نافذة جديدة لإرسال الرسالة
+        window.open(whatsappUrl, '_blank', 'width=600,height=700');
+        
+        // إشعار نجاح
+        showQuickSuccess('تم فتح تطبيق واتساب لإرسال الرسالة');
+        
+    } catch (error) {
+        console.error('Error in WhatsApp sending:', error);
+        showCustomAlert('خطأ في فتح تطبيق واتساب', 'خطأ', 'error');
+    }
+}
+
+function getStatusMessage(status) {
+    switch(status) {
+        case 'غياب': return 'تغيبت عن المدرسة.';
+        case 'تأخير عن الحصة': return 'تأخرت عن الحصة.';
+        case 'تسيَّب من الحصة': return 'تسيبت من الحصة.';
+        case 'إستأذان خارج المدرسة': return 'أستأذنت خارج المدرسة.';
+        default: return status + '.';
+    }
+}
+    </script>
+</body>
+</html>
