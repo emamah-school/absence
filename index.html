@@ -300,7 +300,7 @@
         }
         
         /* تحديث الحقول */
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
@@ -311,7 +311,13 @@
             background-color: white;
         }
         
-        input:focus, select:focus {
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
@@ -474,41 +480,43 @@
             transform: none;
             box-shadow: none;
         }
-      /* تلوين نصوص الحقول المطلوبة */
-#section, 
-#studentName, 
-#parentPhone {
-    color: #1a365d !important; /* أزرق غامق */
-    font-weight: 800 !important; /* خط عريض جداً */
-}
+        
+        /* تلوين نصوص الحقول المطلوبة */
+        #section, 
+        #studentName, 
+        #parentPhone {
+            color: #1a365d !important; /* أزرق غامق */
+            font-weight: 800 !important; /* خط عريض جداً */
+        }
 
-/* تلوين النص التوضيحي في حقل الهاتف */
-#parentPhone::placeholder {
-    color: #1a365d !important;
-    font-weight: 800 !important;
-    opacity: 1;
-}
+        /* تلوين النص التوضيحي في حقل الهاتف */
+        #parentPhone::placeholder {
+            color: #1a365d !important;
+            font-weight: 800 !important;
+            opacity: 1;
+        }
 
-/* تلوين خيارات القوائم المنسدلة */
-#section option,
-#studentName option {
-    color: #1a365d;
-    font-weight: 800;
-}
+        /* تلوين خيارات القوائم المنسدلة */
+        #section option,
+        #studentName option {
+            color: #1a365d;
+            font-weight: 800;
+        }
 
-/* التأكد من أن النص يبقى أزرق عند التحديد والتركيز */
-#section:focus, 
-#studentName:focus, 
-#parentPhone:focus {
-    color: #1a365d !important;
-}
+        /* التأكد من أن النص يبقى أزرق عند التحديد والتركيز */
+        #section:focus, 
+        #studentName:focus, 
+        #parentPhone:focus {
+            color: #1a365d !important;
+        }
 
-/* التأكد من أن النص يبقى أزرق في جميع الحالات */
-#section option:checked,
-#studentName option:checked {
-    color: #1a365d;
-    font-weight: 800;
-}  
+        /* التأكد من أن النص يبقى أزرق في جميع الحالات */
+        #section option:checked,
+        #studentName option:checked {
+            color: #1a365d;
+            font-weight: 800;
+        }  
+        
         /* نظام الإشعارات الداخلية */
         .notification-container {
             position: fixed;
@@ -702,19 +710,19 @@
                 font-size: 0.7rem;
             }
             
-       .date-display {
-    text-align: lift; /* تغيير إلى right */
-    direction: rtl; /* تغيير إلى rtl */
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 8px 15px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
+            .date-display {
+                text-align: center;
+                direction: rtl;
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: white;
+                background: rgba(255, 255, 255, 0.1);
+                padding: 8px 15px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -847,6 +855,21 @@
 
                     </div>
                     
+                    <!-- الحقول الجديدة -->
+                    <div class="form-group">
+                        <label for="period">الحصة</label>
+                        <select id="period" required>
+                            <option value="">اختر الحصة</option>
+                            <option value="الحصة الأولى">الحصة الأولى</option>
+                            <option value="الحصة الثانية">الحصة الثانية</option>
+                            <option value="الحصة الثالثة">الحصة الثالثة</option>
+                            <option value="الحصة الرابعة">الحصة الرابعة</option>
+                            <option value="الحصة الخامسة">الحصة الخامسة</option>
+                            <option value="الحصة السادسة">الحصة السادسة</option>
+                            <option value="طوال اليوم">طوال اليوم</option>
+                        </select>
+                    </div>
+                    
                     <div class="form-group">
                         <label for="parentPhone">هاتف ولي الأمر</label>
                         <div class="phone-input-container">
@@ -865,6 +888,11 @@
                             <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
                             <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
                         </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">ملاحظة</label>
+                        <textarea id="notes" rows="3" placeholder="أضف ملاحظة إضافية (اختياري)"></textarea>
                     </div>
                     
                     <button type="submit" class="btn" id="submitBtn">
@@ -939,35 +967,28 @@
         }
 
         // دالة تحديث التاريخ والوقت
-    // ✅ عرض التاريخ الميلادي - اليوم - الساعة (12 ساعة) - من اليمين
-// ✅ عرض التاريخ الميلادي - اليوم - الساعة (12 ساعة) - التاريخ أولاً من اليمين
-// ✅ عرض التاريخ الميلادي - اليوم - الساعة (12 ساعة) - من اليمين
-function updateDateTime() {
-    const now = new Date();
+        function updateDateTime() {
+            const now = new Date();
 
-    // التاريخ الميلادي الرقمي مثل: 2/11/2025
-    const day = now.getDate();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
-    const dateString = `${day}/${month}/${year}`;
+            // التاريخ الميلادي الرقمي مثل: 2/11/2025
+            const day = now.getDate();
+            const month = now.getMonth() + 1;
+            const year = now.getFullYear();
+            const dateString = `${day}/${month}/${year}`;
 
-    // اسم اليوم بالعربية
-    const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-    const dayName = days[now.getDay()];
+            // اسم اليوم بالعربية
+            const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const dayName = days[now.getDay()];
 
-    // الوقت بنظام 12 ساعة (4:37 مساءً)
-    let hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const period = hours >= 12 ? 'مساءً' : 'صباحاً';
-    hours = hours % 12 || 12; // تحويل إلى 12 ساعة
-    const timeString = `${hours}:${minutes} ${period}`;
+            // الوقت بنظام 12 ساعة (4:37 مساءً)
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const period = hours >= 12 ? 'مساءً' : 'صباحاً';
+            hours = hours % 12 || 12; // تحويل إلى 12 ساعة
+            const timeString = `${hours}:${minutes} ${period}`;
 
-    // النتيجة النهائية - عكس الترتيب للعرض من اليمين
-
-
-document.getElementById('currentDate').innerHTML = `${dayName} - ${dateString} - ${timeString}`;
-}
-
+            document.getElementById('currentDate').innerHTML = `${dayName} - ${dateString} - ${timeString}`;
+        }
 
         // نظام الإشعارات الداخلية
         function showNotification(title, message, type = 'info', duration = 5000) {
@@ -1420,8 +1441,10 @@ document.getElementById('currentDate').innerHTML = `${dayName} - ${dateString} -
                         studentName: document.getElementById('studentName').value,
                         class: document.getElementById('class').value,
                         section: document.getElementById('section').value,
+                        period: document.getElementById('period').value, // ⬅️ إضافة الحصة
                         status: document.getElementById('status').value,
-                        parentPhone: phone
+                        parentPhone: phone,
+                        notes: document.getElementById('notes').value // ⬅️ إضافة الملاحظة
                     };
                     
                     // إضافة سجل جديد
@@ -1460,5 +1483,4 @@ document.getElementById('currentDate').innerHTML = `${dayName} - ${dateString} -
         });
     </script>
 </body>
-
 </html>

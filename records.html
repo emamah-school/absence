@@ -22,13 +22,24 @@
     --esteathan: #9b5de5;      /* بنفسجي للإستئذان */
     --highlight: #ff9500;
 }
-   /* تحديث عمود الحالة لعرض النص كاملاً */
-.records-table td:nth-child(8) { /* عمود الحالة */
+   
+/* تحديث عمود الحالة لعرض النص كاملاً */
+.records-table td:nth-child(9) { /* عمود الحالة */
     min-width: 120px; /* توسعة العمود */
     max-width: 150px;
- 
     word-wrap: break-word;
     line-height: 1.3;
+}
+
+/* تحديث عمود الملاحظة */
+.records-table td:nth-child(10) { /* عمود الملاحظة */
+    max-width: 200px;
+    min-width: 150px;
+    white-space: normal !important;
+    word-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.4;
+    padding: 8px 10px;
 }
 
 /* رؤوس الجدول والخلايا */
@@ -38,7 +49,6 @@ table td {
   vertical-align: middle !important;  /* ← توسيط عمودي */
   border: 1px solid black !important;
   padding: 8px 10px !important;
- 
 }
 
 /* تحديث خلية اسم الطالبة لكسر النص الطويل */
@@ -52,8 +62,6 @@ table td {
     padding: 8px 15px; /* زيادة الحشو قليلاً للراحة البصرية */
 }
 
-
-
 /* ✅ شبكة سوداء لجميع خلايا الجدول */
 table {
   width: 100% !important;
@@ -61,7 +69,6 @@ table {
   table-layout: auto !important;
   border: 2px solid black !important; /* ← إطار خارجي أسود */
 }
-
 
 /* رؤوس الجدول */
 table thead th {
@@ -78,8 +85,6 @@ table tr:hover {
   transition: background-color 0.2s ease;
 }
 
-
-        
 .form-input:disabled {
     background-color: #f8f9fa;
     cursor: not-allowed;
@@ -92,6 +97,7 @@ table tr:hover {
     box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
     background-color: white;
 }
+
 .status-absence {
     background-color: rgba(230, 57, 70, 0.1);
     color: var(--absence);
@@ -115,24 +121,25 @@ table tr:hover {
     color: var(--esteathan);
     border: 1px solid rgba(155, 93, 229, 0.3);
 }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Tajawal', sans-serif;
+            font-weight: 700; /* خط عريض للتطبيق كاملاً */
         }
         
         body {
             color: var(--dark);
             line-height: 1.6;
             background-color: #f5f7fb;
-            color: var(--dark);
-            line-height: 1.6;
+            font-weight: 700; /* خط عريض */
         }
         
         .container {
             width: 100%;
-            max-width: 1250px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 15px;
         }
@@ -206,6 +213,7 @@ table tr:hover {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-weight: 700; /* خط عريض */
         }
         
         /* حاوية البحث المتطور */
@@ -321,11 +329,12 @@ table tr:hover {
         .filter-select {
             width: 100%;
             padding: 8px 12px;
-            border: 1px solid #ddd;
+            border: 2px solid #ddd;
             border-radius: 6px;
             font-size: 0.85rem;
             background-color: white;
             cursor: pointer;
+            font-weight: 700; /* خط عريض */
         }
         
         .filter-select:focus {
@@ -374,686 +383,651 @@ table tr:hover {
     max-height: 500px;
     overflow-y: auto;
 }
-      .stat-label {
+
+.stat-label {
     font-size: 0.75rem;
     color: var(--gray);
     font-weight: 700; /* خط عريض */
 }  
-/* تحديث الخطوط للفلاتر */
-.filter-select {
-    width: 100%;
-    padding: 8px 12px;
-    border: 2px solid #ddd;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    background-color: white;
-    cursor: pointer;
-    font-weight: 700; /* خط عريض */
-}
-     .records-table {
+
+.records-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 800px;
+    min-width: 1000px;
     border: 1px solid #000; /* حدود سوداء للجدول */
 }
-  /* تحديث الخطوط لعناوين الأقسام */
-.section-title {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #eee;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 700; /* خط عريض */
-}      
-        .records-table th {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 12px 10px;
-            text-align: right;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            font-size: 0.85rem;
-            white-space: nowrap;
-border-left: 1px solid #000; /* حدود جانبية سوداء */
-    border-right: 1px solid #000; /* حدود جانبية سوداء */
-        }
-        /* تحديث الخطوط لتكون عريضة في التطبيق */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Tajawal', sans-serif;
-    font-weight: 700; /* خط عريض للتطبيق كاملاً */
-}
-body {
-    color: var(--dark);
-    line-height: 1.6;
-    background-color: #f5f7fb;
-    font-weight: 700; /* خط عريض */
-}
-        .records-table td {
-            padding: 10px 12px;
-            text-align: right;
-            border-bottom: 1px solid #eee;
-            font-size: 0.85rem;
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            transition: all 0.3s ease;
-        }
-      /* تحديث الخطوط للحالات */
 
-        .records-table td.expandable:hover {
-            white-space: normal;
-            overflow: visible;
-            background-color: #f8f9fa;
-            z-index: 5;
-            position: relative;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-        
-        .records-table tr:hover {
-            background-color: #f8f9fa;
-        }
-        
-        .records-table tr:nth-child(even) {
-            background-color: #fafafa;
-        }
-        
-        .records-table tr:nth-child(even):hover {
-            background-color: #f1f3f4;
-        }
-        
-      .status-badge {
+.records-table th {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 12px 10px;
+    text-align: right;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    border-left: 1px solid #000; /* حدود جانبية سوداء */
+    border-right: 1px solid #000; /* حدود جانبية سوداء */
+}
+
+.records-table td {
+    padding: 10px 12px;
+    text-align: right;
+    border-bottom: 1px solid #eee;
+    font-size: 0.85rem;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.records-table td.expandable:hover {
+    white-space: normal;
+    overflow: visible;
+    background-color: #f8f9fa;
+    z-index: 5;
+    position: relative;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.records-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.records-table tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.records-table tr:nth-child(even):hover {
+    background-color: #f1f3f4;
+}
+
+.status-badge {
     display: inline-block;
     padding: 5px 10px;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 700; /* خط عريض */
 }  
-        
-        .status-absence {
-            background-color: rgba(247, 37, 133, 0.1);
-            color: var(--absence);
-            border: 1px solid rgba(247, 37, 133, 0.3);
-        }
-        
-        .status-tasyeeb {
-            background-color: rgba(76, 201, 240, 0.1);
-            color: var(--tasyeeb);
-            border: 1px solid rgba(76, 201, 240, 0.3);
-        }
-        
-        .status-tasayob {
-            background-color: rgba(255, 145, 0, 0.1);
-            color: var(--tasayob);
-            border: 1px solid rgba(255, 145, 0, 0.3);
-        }
-        
-        .status-esteathan {
-            background-color: rgba(155, 93, 229, 0.1);
-            color: var(--esteathan);
-            border: 1px solid rgba(155, 93, 229, 0.3);
-        }
-        
-        .reviewed-badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .reviewed-yes {
-            background-color: rgba(76, 201, 240, 0.1);
-            color: var(--success);
-            border: 1px solid rgba(76, 201, 240, 0.3);
-        }
-        
-        .reviewed-no {
-            background-color: rgba(108, 117, 125, 0.1);
-            color: var(--gray);
-            border: 1px solid rgba(108, 117, 125, 0.3);
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-            justify-content: flex-start;
-        }
-        
-        .btn-icon {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            padding: 4px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-edit {
-            color: var(--primary);
-        }
-        
-        .btn-edit:hover {
-            background-color: rgba(67, 97, 238, 0.1);
-        }
-        
-        .btn-whatsapp {
-            color: #25D366;
-        }
-        
-        .btn-whatsapp:hover {
-            background-color: rgba(37, 211, 102, 0.1);
-        }
-        
-        .btn-review {
-            color: var(--success);
-        }
-        
-        .btn-review:hover {
-            background-color: rgba(76, 201, 240, 0.1);
-        }
-        
-        .btn-unreview {
-            color: var(--danger);
-        }
-        
-        .btn-unreview:hover {
-            background-color: rgba(230, 57, 70, 0.1);
-        }
-        
-        .btn-delete {
-            color: var(--danger);
-        }
-        
-        .btn-delete:hover {
-            background-color: rgba(230, 57, 70, 0.1);
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 1.5rem;
-            color: var(--gray);
-        }
-        
-        .empty-state i {
-            font-size: 2.5rem;
-            margin-bottom: 0.8rem;
-            opacity: 0.5;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 1.5rem;
-            color: var(--gray);
-            border-top: 1px solid #eee;
-        }
-        
-        .stats-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 10px;
-            margin-bottom: 1.2rem;
-  border: 2px solid var(--primary); /* حدود زرقاء */
-        }
-        
-      .stat-item {
+
+.status-absence {
+    background-color: rgba(247, 37, 133, 0.1);
+    color: var(--absence);
+    border: 1px solid rgba(247, 37, 133, 0.3);
+}
+
+.status-tasyeeb {
+    background-color: rgba(76, 201, 240, 0.1);
+    color: var(--tasyeeb);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+}
+
+.status-tasayob {
+    background-color: rgba(255, 145, 0, 0.1);
+    color: var(--tasayob);
+    border: 1px solid rgba(255, 145, 0, 0.3);
+}
+
+.status-esteathan {
+    background-color: rgba(155, 93, 229, 0.1);
+    color: var(--esteathan);
+    border: 1px solid rgba(155, 93, 229, 0.3);
+}
+
+.reviewed-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.reviewed-yes {
+    background-color: rgba(76, 201, 240, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+}
+
+.reviewed-no {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: var(--gray);
+    border: 1px solid rgba(108, 117, 125, 0.3);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-start;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-edit {
+    color: var(--primary);
+}
+
+.btn-edit:hover {
+    background-color: rgba(67, 97, 238, 0.1);
+}
+
+.btn-whatsapp {
+    color: #25D366;
+}
+
+.btn-whatsapp:hover {
+    background-color: rgba(37, 211, 102, 0.1);
+}
+
+.btn-review {
+    color: var(--success);
+}
+
+.btn-review:hover {
+    background-color: rgba(76, 201, 240, 0.1);
+}
+
+.btn-unreview {
+    color: var(--danger);
+}
+
+.btn-unreview:hover {
+    background-color: rgba(230, 57, 70, 0.1);
+}
+
+.btn-delete {
+    color: var(--danger);
+}
+
+.btn-delete:hover {
+    background-color: rgba(230, 57, 70, 0.1);
+}
+
+.loading {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--gray);
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+    opacity: 0.5;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 1.5rem;
+    color: var(--gray);
+    border-top: 1px solid #eee;
+}
+
+.stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.2rem;
+    border: 2px solid var(--primary); /* حدود زرقاء */
+}
+
+.stat-item {
     background: white;
     padding: 0.7rem;
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     border: 1px solid #e0e0e0; /* حدود فاتحة للعناصر الداخلية */
-
 }
-        
-        .stat-number {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 3px;
-        }
-        
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--gray);
-        }
-        
-        .highlight {
-            background-color: var(--highlight);
-            color: white;
-            padding: 1px 3px;
-            border-radius: 3px;
-            font-weight: 600;
-        }
 
-        /* نافذة التعديل */
-        .edit-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .edit-modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .edit-modal-content {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 90%;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-        
-        .edit-modal.show .edit-modal-content {
-            transform: translateY(0);
-        }
-        
-        .edit-modal-title {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .edit-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .form-label {
-            font-weight: 500;
-            color: var(--dark);
-            font-size: 0.9rem;
-        }
-        
-        .form-input, .form-select {
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: border 0.3s ease;
-        }
-        
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .edit-modal-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 1rem;
-        }
-        
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: var(--secondary);
-        }
-        
-        .btn-secondary {
-            background: var(--gray);
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
+.stat-number {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 3px;
+}
 
-        /* أنماط الإشعارات الداخلية */
-        .custom-notification {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            background: white;
-            color: #333;
-            padding: 8px 12px;
-            border-radius: 6px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-            z-index: 10000;
-            font-size: 0.75rem;
-            max-width: 280px;
-            transform: translateX(400px);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-left: 3px solid;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+}
 
-        .custom-notification.show {
-            transform: translateX(0);
-        }
+.highlight {
+    background-color: var(--highlight);
+    color: white;
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-weight: 600;
+}
 
-        .custom-notification.hide {
-            transform: translateX(400px);
-            opacity: 0;
-        }
+/* نافذة التعديل */
+.edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
 
-        .notification-content {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.edit-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
 
-        .notification-icon {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            flex-shrink: 0;
-        }
+.edit-modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
 
-        .notification-message {
-            flex: 1;
-            font-weight: 500;
-            line-height: 1.2;
-        }
+.edit-modal.show .edit-modal-content {
+    transform: translateY(0);
+}
 
-        .notification-close {
-            background: none;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            padding: 2px;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-            font-size: 0.7rem;
-        }
+.edit-modal-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-        .notification-close:hover {
-            background: rgba(0, 0, 0, 0.1);
-            color: #333;
-        }
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
 
-        /* أنواع الإشعارات */
-        .notification-info {
-            border-left-color: var(--primary);
-            background: linear-gradient(135deg, #f8f9ff, #ffffff);
-        }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 
-        .notification-info .notification-icon {
-            background: rgba(67, 97, 238, 0.1);
-            color: var(--primary);
-        }
+.form-label {
+    font-weight: 500;
+    color: var(--dark);
+    font-size: 0.9rem;
+}
 
-        .notification-success {
-            border-left-color: var(--success);
-            background: linear-gradient(135deg, #f0f9ff, #ffffff);
-        }
+.form-input, .form-select {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: border 0.3s ease;
+}
 
-        .notification-success .notification-icon {
-            background: rgba(76, 201, 240, 0.1);
-            color: var(--success);
-        }
+.form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
 
-        .notification-warning {
-            border-left-color: var(--warning);
-            background: linear-gradient(135deg, #fff0f7, #ffffff);
-        }
+.edit-modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
 
-        .notification-warning .notification-icon {
-            background: rgba(247, 37, 133, 0.1);
-            color: var(--warning);
-        }
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
 
-        .notification-error {
-            border-left-color: var(--danger);
-            background: linear-gradient(135deg, #ffeaea, #ffffff);
-        }
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
 
-        .notification-error .notification-icon {
-            background: rgba(230, 57, 70, 0.1);
-            color: var(--danger);
-        }
+.btn-primary:hover {
+    background: var(--secondary);
+}
 
-        /* أنماط الإشعارات المنبثقة المخصصة */
-        .custom-alert-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(2px);
-        }
+.btn-secondary {
+    background: var(--gray);
+    color: white;
+}
 
-        .custom-alert-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
+.btn-secondary:hover {
+    background: #5a6268;
+}
 
-        .custom-alert {
-            background: white;
-            border-radius: 12px;
-            padding: 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            width: 90%;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            overflow: hidden;
-        }
+/* أنماط الإشعارات الداخلية */
+.custom-notification {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: white;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    font-size: 0.75rem;
+    max-width: 280px;
+    transform: translateX(400px);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-left: 3px solid;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-        .custom-alert-overlay.show .custom-alert {
-            transform: scale(1);
-        }
+.custom-notification.show {
+    transform: translateX(0);
+}
 
-        .custom-alert-header {
-            padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-        }
+.custom-notification.hide {
+    transform: translateX(400px);
+    opacity: 0;
+}
 
-        .custom-alert-header i {
-            font-size: 1.2rem;
-        }
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-        .custom-alert-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin: 0;
-        }
+.notification-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
 
-        .custom-alert-body {
-            padding: 1.5rem;
-            text-align: center;
-        }
+.notification-message {
+    flex: 1;
+    font-weight: 500;
+    line-height: 1.2;
+}
 
-        .custom-alert-message {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: var(--dark);
-            margin-bottom: 1.5rem;
-        }
+.notification-close {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    font-size: 0.7rem;
+}
 
-        .custom-alert-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
+.notification-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
 
-        .custom-alert-btn {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            min-width: 80px;
-        }
+/* أنواع الإشعارات */
+.notification-info {
+    border-left-color: var(--primary);
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+}
 
-        .custom-alert-btn-primary {
-            background: var(--primary);
-            color: white;
-        }
+.notification-info .notification-icon {
+    background: rgba(67, 97, 238, 0.1);
+    color: var(--primary);
+}
 
-        .custom-alert-btn-primary:hover {
-            background: var(--secondary);
-            transform: translateY(-1px);
-        }
+.notification-success {
+    border-left-color: var(--success);
+    background: linear-gradient(135deg, #f0f9ff, #ffffff);
+}
 
-        .custom-alert-btn-secondary {
-            background: #f8f9fa;
-            color: var(--dark);
-            border: 1px solid #ddd;
-        }
+.notification-success .notification-icon {
+    background: rgba(76, 201, 240, 0.1);
+    color: var(--success);
+}
 
-        .custom-alert-btn-secondary:hover {
-            background: #e9ecef;
-            transform: translateY(-1px);
-        }
+.notification-warning {
+    border-left-color: var(--warning);
+    background: linear-gradient(135deg, #fff0f7, #ffffff);
+}
 
-        .custom-alert-btn-danger {
-            background: var(--danger);
-            color: white;
-        }
+.notification-warning .notification-icon {
+    background: rgba(247, 37, 133, 0.1);
+    color: var(--warning);
+}
 
-        .custom-alert-btn-danger:hover {
-            background: #c82333;
-            transform: translateY(-1px);
-        }
+.notification-error {
+    border-left-color: var(--danger);
+    background: linear-gradient(135deg, #ffeaea, #ffffff);
+}
 
-        /* إشعارات التأكيد الصغيرة */
-        .custom-confirm-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
+.notification-error .notification-icon {
+    background: rgba(230, 57, 70, 0.1);
+    color: var(--danger);
+}
 
-        .custom-confirm-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
+/* أنماط الإشعارات المنبثقة المخصصة */
+.custom-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(2px);
+}
 
-        .custom-confirm {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            max-width: 350px;
-            width: 90%;
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-            text-align: center;
-        }
+.custom-alert-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
 
-        .custom-confirm-overlay.show .custom-confirm {
-            transform: translateY(0);
-        }
+.custom-alert {
+    background: white;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
 
-        .custom-confirm-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(230, 57, 70, 0.1);
-            color: var(--danger);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 1.3rem;
-        }
+.custom-alert-overlay.show .custom-alert {
+    transform: scale(1);
+}
 
-        .custom-confirm-message {
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-            color: var(--dark);
-        }
+.custom-alert-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+}
 
-        .custom-confirm-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
+.custom-alert-header i {
+    font-size: 1.2rem;
+}
+
+.custom-alert-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.custom-alert-body {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.custom-alert-message {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+}
+
+.custom-alert-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.custom-alert-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    min-width: 80px;
+}
+
+.custom-alert-btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.custom-alert-btn-primary:hover {
+    background: var(--secondary);
+    transform: translateY(-1px);
+}
+
+.custom-alert-btn-secondary {
+    background: #f8f9fa;
+    color: var(--dark);
+    border: 1px solid #ddd;
+}
+
+.custom-alert-btn-secondary:hover {
+    background: #e9ecef;
+    transform: translateY(-1px);
+}
+
+.custom-alert-btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.custom-alert-btn-danger:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* إشعارات التأكيد الصغيرة */
+.custom-confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.custom-confirm-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.custom-confirm {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    max-width: 350px;
+    width: 90%;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.custom-confirm-overlay.show .custom-confirm {
+    transform: translateY(0);
+}
+
+.custom-confirm-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(230, 57, 70, 0.1);
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.3rem;
+}
+
+.custom-confirm-message {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    color: var(--dark);
+}
+
+.custom-confirm-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
         
      @media (max-width: 768px) {
     .action-buttons {
@@ -1063,52 +1037,50 @@ body {
         gap: 4px;
     }
 
-            
-            .nav-links {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .search-filters {
-                flex-direction: column;
-            }
-            
-            .filter-group {
-                min-width: 100%;
-            }
-            
-            .stats-summary {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-            
-            .stat-item {
-                padding: 0.5rem;
-            }
-            
-            .stat-number {
-                font-size: 1rem;
-            }
-            
-            .stat-label {
-                font-size: 0.7rem;
-            }
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .search-filters {
+        flex-direction: column;
+    }
+    
+    .filter-group {
+        min-width: 100%;
+    }
+    
+    .stats-summary {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .stat-item {
+        padding: 0.5rem;
+    }
+    
+    .stat-number {
+        font-size: 1rem;
+    }
+    
+    .stat-label {
+        font-size: 0.7rem;
+    }
 
-            .custom-notification {
-                right: 8px;
-                left: 8px;
-                max-width: none;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-                gap: 4px;
-            }
-            
-            .records-table td {
-                max-width: 120px;
-            }
-        }
+    .custom-notification {
+        right: 8px;
+        left: 8px;
+        max-width: none;
+    }
+    
+    .records-table td {
+        max-width: 120px;
+    }
+    
+    .records-table-container {
+        max-height: 400px;
+    }
+}
     </style>
 </head>
 <body>
@@ -1130,6 +1102,18 @@ body {
                     <input type="tel" class="form-input" id="editParentPhone" required maxlength="8">
                 </div>
                 <div class="form-group">
+                    <label class="form-label" for="editPeriod">الحصة</label>
+                    <select class="form-select" id="editPeriod" required>
+                        <option value="الحصة الأولى">الحصة الأولى</option>
+                        <option value="الحصة الثانية">الحصة الثانية</option>
+                        <option value="الحصة الثالثة">الحصة الثالثة</option>
+                        <option value="الحصة الرابعة">الحصة الرابعة</option>
+                        <option value="الحصة الخامسة">الحصة الخامسة</option>
+                        <option value="الحصة السادسة">الحصة السادسة</option>
+                        <option value="طوال اليوم">طوال اليوم</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label class="form-label" for="editStatus">الحالة</label>
                     <select class="form-select" id="editStatus" required>
                         <option value="غياب">غياب</option>
@@ -1137,6 +1121,10 @@ body {
                         <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
                         <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editNotes">ملاحظة</label>
+                    <textarea class="form-input" id="editNotes" rows="3"></textarea>
                 </div>
                 <div class="edit-modal-buttons">
                     <button type="button" class="btn btn-secondary" id="cancelEditBtn">إلغاء</button>
@@ -1264,8 +1252,10 @@ body {
                                     <th>اسم الطالبة</th>
                                     <th>الصف</th>
                                     <th>الشعبة</th>
+                                    <th>الحصة</th>
                                     <th>هاتف ولي الأمر</th>
                                     <th>الحالة</th>
+                                    <th>ملاحظة</th>
                                     <th>المراجعة</th>
                                     <th>الإجراءات</th>
                                 </tr>
@@ -1291,8 +1281,10 @@ body {
                                     <th>اسم الطالبة</th>
                                     <th>الصف</th>
                                     <th>الشعبة</th>
+                                    <th>الحصة</th>
                                     <th>هاتف ولي الأمر</th>
                                     <th>الحالة</th>
+                                    <th>ملاحظة</th>
                                     <th>المراجعة</th>
                                     <th>الإجراءات</th>
                                 </tr>
@@ -1336,7 +1328,9 @@ body {
         const editRecordId = document.getElementById('editRecordId');
         const editStudentName = document.getElementById('editStudentName');
         const editParentPhone = document.getElementById('editParentPhone');
+        const editPeriod = document.getElementById('editPeriod');
         const editStatus = document.getElementById('editStatus');
+        const editNotes = document.getElementById('editNotes');
         const cancelEditBtn = document.getElementById('cancelEditBtn');
         const saveEditBtn = document.getElementById('saveEditBtn');
 
@@ -1544,7 +1538,9 @@ body {
                 record.section,
                 record.status,
                 record.date,
-                record.day
+                record.day,
+                record.period,
+                record.notes
             ];
             
             const matchesSearch = searchFields.some(field => 
@@ -1675,7 +1671,9 @@ body {
     editRecordId.value = record.id;
     editStudentName.value = record.studentName;
     editParentPhone.value = record.parentPhone;
+    editPeriod.value = record.period || '';
     editStatus.value = record.status;
+    editNotes.value = record.notes || '';
     
     // تفعيل حقل ولي الأمر وجعله قابلاً للتعديل
     editParentPhone.removeAttribute('readonly');
@@ -1695,101 +1693,148 @@ body {
             currentEditRecord = null;
         }
 
-        // ✅ حفظ التعديلات - تم التصحيح
-        async function saveEditChanges(e) {
-            e.preventDefault();
-            
-            try {
-                // التحقق من صحة البيانات
-                if (!editStudentName.value.trim()) {
-                    showCustomAlert('يرجى إدخال اسم الطالبة', 'خطأ', 'error');
-                    editStudentName.focus();
-                    return;
-                }
-                
-                const phoneValue = editParentPhone.value.trim();
-                if (!phoneValue) {
-                    showCustomAlert('يرجى إدخال رقم ولي الأمر', 'خطأ', 'error');
-                    editParentPhone.focus();
-                    return;
-                }
-                
-                // التحقق من أن الرقم يحتوي على 8 أرقام فقط
-                if (!/^\d{8}$/.test(phoneValue)) {
-                    showCustomAlert('يرجى إدخال رقم هاتف صحيح (8 أرقام فقط)', 'خطأ', 'error');
-                    editParentPhone.focus();
-                    editParentPhone.select();
-                    return;
-                }
-                
-                const updatedData = {
-                    id: editRecordId.value,
-                    studentName: editStudentName.value.trim(),
-                    parentPhone: phoneValue,
-                    status: editStatus.value
-                };
-                
-                // إظهار حالة التحميل
-                const originalText = saveEditBtn.innerHTML;
-                saveEditBtn.innerHTML = '<div class="loading" style="display: inline-block; width: 16px; height: 16px; margin-left: 8px;"></div> جاري الحفظ...';
-                saveEditBtn.disabled = true;
-                
-                await callGoogleScript('updateRecord', updatedData);
-                
-                // تحديث البيانات المحلية
-                if (currentEditRecord) {
-                    currentEditRecord.studentName = updatedData.studentName;
-                    currentEditRecord.parentPhone = updatedData.parentPhone;
-                    currentEditRecord.status = updatedData.status;
-                }
-                
-                closeEditModal();
-                updateDisplay();
-                showQuickSuccess('تم تحديث السجل بنجاح');
-                
-            } catch (error) {
-                console.error('Error updating record:', error);
-                showCustomAlert('خطأ في تحديث السجل: ' + error.message, 'خطأ', 'error');
-            } finally {
-                // إعادة تعيين زر الحفظ
-                saveEditBtn.innerHTML = 'حفظ التغييرات';
-                saveEditBtn.disabled = false;
-            }
+       // ✅ حفظ التعديلات - النسخة المحسنة
+async function saveEditChanges(e) {
+    e.preventDefault();
+    
+    try {
+        // التحقق من الاتصال أولاً
+        const isConnected = await checkConnection();
+        if (!isConnected) {
+            showCustomAlert('فشل في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.', 'خطأ في الاتصال', 'error');
+            return;
         }
 
-        // ✅ دوال الخادم - تم التحسين
-        async function callGoogleScript(action, data = {}) {
-            const params = new URLSearchParams();
-            params.append('action', action);
-            
-            for (const key in data) {
-                if (data[key] !== null && data[key] !== undefined) {
-                    params.append(key, data[key]);
-                }
-            }
-            
-            try {
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: params
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`خطأ في الاتصال: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                
-                if (!result.success) {
-                    throw new Error(result.error || 'حدث خطأ غير معروف');
-                }
-                
-                return result.data;
-            } catch (error) {
-                console.error(`Error in ${action}:`, error);
-                throw new Error(`فشل في ${action === 'updateRecord' ? 'تحديث' : 'حذف'} السجل: ${error.message}`);
-            }
+        // التحقق من صحة البيانات
+        if (!editStudentName.value.trim()) {
+            showCustomAlert('يرجى إدخال اسم الطالبة', 'خطأ', 'error');
+            editStudentName.focus();
+            return;
         }
+        
+        const phoneValue = editParentPhone.value.trim();
+        if (!phoneValue) {
+            showCustomAlert('يرجى إدخال رقم ولي الأمر', 'خطأ', 'error');
+            editParentPhone.focus();
+            return;
+        }
+        
+        // التحقق من أن الرقم يحتوي على 8 أرقام فقط
+        if (!/^\d{8}$/.test(phoneValue)) {
+            showCustomAlert('يرجى إدخال رقم هاتف صحيح (8 أرقام فقط)', 'خطأ', 'error');
+            editParentPhone.focus();
+            editParentPhone.select();
+            return;
+        }
+        
+        const updatedData = {
+            id: editRecordId.value,
+            studentName: editStudentName.value.trim(),
+            parentPhone: phoneValue,
+            period: editPeriod.value,
+            status: editStatus.value,
+            notes: editNotes.value.trim()
+        };
+        
+        // إظهار حالة التحميل
+        const originalText = saveEditBtn.innerHTML;
+        saveEditBtn.innerHTML = '<div class="loading" style="display: inline-block; width: 16px; height: 16px; margin-left: 8px;"></div> جاري الحفظ...';
+        saveEditBtn.disabled = true;
+        
+        // إعطاء المستخدم ملاحظة عن عملية الحفظ
+        showQuickSuccess('جاري حفظ التغييرات...');
+        
+        await callGoogleScript('updateRecord', updatedData);
+        
+        // تحديث البيانات المحلية
+        if (currentEditRecord) {
+            currentEditRecord.studentName = updatedData.studentName;
+            currentEditRecord.parentPhone = updatedData.parentPhone;
+            currentEditRecord.period = updatedData.period;
+            currentEditRecord.status = updatedData.status;
+            currentEditRecord.notes = updatedData.notes;
+        }
+        
+        closeEditModal();
+        updateDisplay();
+        showQuickSuccess('تم تحديث السجل بنجاح');
+        
+    } catch (error) {
+        console.error('Error updating record:', error);
+        
+        // عرض رسالة خطأ أكثر وضوحاً
+        let errorMessage = 'خطأ في تحديث السجل: ';
+        if (error.message.includes('انتهت مهلة الاتصال') || error.message.includes('فشل في الاتصال')) {
+            errorMessage += 'فشل في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.';
+        } else {
+            errorMessage += error.message;
+        }
+        
+        showCustomAlert(errorMessage, 'خطأ في الحفظ', 'error');
+    } finally {
+        // إعادة تعيين زر الحفظ
+        saveEditBtn.innerHTML = 'حفظ التغييرات';
+        saveEditBtn.disabled = false;
+    }
+}
+
+        // ✅ دوال الخادم - النسخة المحسنة مع إعادة المحاولة
+async function callGoogleScript(action, data = {}, retries = 3) {
+    const params = new URLSearchParams();
+    params.append('action', action);
+    
+    for (const key in data) {
+        if (data[key] !== null && data[key] !== undefined) {
+            params.append(key, data[key]);
+        }
+    }
+    
+    for (let attempt = 1; attempt <= retries; attempt++) {
+        try {
+            console.log(`📤 محاولة ${attempt}/${retries} - إرسال طلب ${action}`);
+            
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 ثانية timeout
+            
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: params,
+                signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error(`خطأ في الاتصال: ${response.status} ${response.statusText}`);
+            }
+            
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error || 'حدث خطأ غير معروف');
+            }
+            
+            console.log(`✅ نجاح في ${action} - المحاولة ${attempt}`);
+            return result.data;
+            
+        } catch (error) {
+            console.error(`❌ فشل في ${action} - المحاولة ${attempt}:`, error);
+            
+            if (attempt === retries) {
+                if (error.name === 'AbortError') {
+                    throw new Error('انتهت مهلة الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.');
+                } else if (error.message.includes('Failed to fetch')) {
+                    throw new Error('فشل في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.');
+                } else {
+                    throw new Error(`فشل في ${action === 'updateRecord' ? 'تحديث' : 'حذف'} السجل: ${error.message}`);
+                }
+            }
+            
+            // الانتظار قبل إعادة المحاولة (زيادة متدرجة)
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+    }
+}
 
         // ✅ تحديث الإحصائيات
         function updateStatistics() {
@@ -1848,8 +1893,10 @@ body {
                         <td class="expandable">${highlightText(record.studentName, searchTerm)}</td>
                         <td>${highlightText(record.class, searchTerm)}</td>
                         <td>${highlightText(record.section, searchTerm)}</td>
+                        <td>${highlightText(record.period, searchTerm)}</td>
                         <td class="expandable">968${record.parentPhone}</td>
                         <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
+                        <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
                         <td>
                             <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
                                 ${record.reviewed ? 'تمت المراجعة' : 'قيد المراجعة'}
@@ -1900,8 +1947,10 @@ body {
                         <td class="expandable">${highlightText(record.studentName, searchTerm)}</td>
                         <td>${highlightText(record.class, searchTerm)}</td>
                         <td>${highlightText(record.section, searchTerm)}</td>
+                        <td>${highlightText(record.period, searchTerm)}</td>
                         <td class="expandable">968${record.parentPhone}</td>
                         <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
+                        <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
                         <td>
                             <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
                                 ${record.reviewed ? 'تمت المراجعة' : 'قيد المراجعة'}
@@ -2066,7 +2115,7 @@ body {
             try {
                 document.getElementById('todayRecordsBody').innerHTML = `
                     <tr>
-                        <td colspan="10" style="text-align: center; padding: 2rem;">
+                        <td colspan="12" style="text-align: center; padding: 2rem;">
                             <div class="loading"></div>
                             <div style="margin-top: 1rem;">جاري تحميل السجلات...</div>
                         </td>
@@ -2075,7 +2124,7 @@ body {
                 
                 document.getElementById('allRecordsBody').innerHTML = `
                     <tr>
-                        <td colspan="10" style="text-align: center; padding: 2rem;">
+                        <td colspan="12" style="text-align: center; padding: 2rem;">
                             <div class="loading"></div>
                             <div style="margin-top: 1rem;">جاري تحميل السجلات...</div>
                         </td>
@@ -2119,8 +2168,6 @@ body {
         return '';
     }
 }
-
-       
 
 // ✅ دالة إرسال واتساب - محدثة مع الترتيب الجديد للسطور
 function sendWhatsAppMessage(recordId) {
@@ -2166,5 +2213,3 @@ function getStatusMessage(status) {
     </script>
 </body>
 </html>
-
-
