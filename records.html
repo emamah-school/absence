@@ -491,7 +491,7 @@ Font-Family: Arial
     display: inline-block;
     padding: 5px 10px;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.3rem;
     font-weight: 500;
 }
 
@@ -1187,11 +1187,11 @@ footer {
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" id="reviewedRecords">0</div>
-                        <div class="stat-label">تمت مراجعتها</div>
+                        <div class="stat-label">بـعذر</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-number" id="pendingReview">0</div>
-                        <div class="stat-label">قيد المراجعة</div>
+                        <div class="stat-label">بـدون عـذر</div>
                     </div>
                 </div>
                 
@@ -1219,8 +1219,8 @@ footer {
                             <label class="filter-label">حالة المراجعة</label>
                             <select class="filter-select" id="filterReview">
                                 <option value="">جميع الحالات</option>
-                                <option value="reviewed">تمت المراجعة</option>
-                                <option value="pending">قيد المراجعة</option>
+                                <option value="reviewed">بـعـذر</option>
+                                <option value="pending">بـدو عـذر</option>
                             </select>
                         </div>
                         
@@ -1996,7 +1996,7 @@ async function toggleReviewStatus(recordId) {
                                 </button>
                                <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
         onclick="toggleReviewStatus('${record.id}')" 
-        title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
+        title="${record.reviewed ? 'بـدو عـذر' : بـعذر'}">
     <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
 </button>
                                 <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
@@ -2052,7 +2052,7 @@ async function toggleReviewStatus(recordId) {
                                 </button>
                                 <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
         onclick="toggleReviewStatus('${record.id}')" 
-        title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
+        title="${record.reviewed ? 'بـدون عـذر' : 'بـعذر'}">
     <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
 </button>
                                 <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
@@ -2312,5 +2312,3 @@ function getStatusMessage(status) {
     </script>
 </body>
 </html>
-
-
