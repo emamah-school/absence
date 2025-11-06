@@ -142,6 +142,7 @@ table tr:hover {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 15px;
+Font-Family: Arial
         }
       
         header {
@@ -149,6 +150,7 @@ table tr:hover {
             color: white;
             padding: 1.2rem 0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+Font-Family: Arial
         }
         
         .header-content {
@@ -214,6 +216,7 @@ table tr:hover {
             align-items: center;
             gap: 8px;
             font-weight: 700; /* خط عريض */
+Font-Family: Arial
         }
         
         /* حاوية البحث المتطور */
@@ -223,6 +226,7 @@ table tr:hover {
             padding: 1.2rem;
             margin-bottom: 1.2rem;
             border: 1px solid #eee;
+Font-Family: Arial
         }
         
         .search-header {
@@ -230,6 +234,7 @@ table tr:hover {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
+Font-Family: Arial
         }
         
         .search-title {
@@ -242,6 +247,7 @@ table tr:hover {
         
         .search-title i {
             font-size: 1rem;
+Font-Family: Arial
         }
         
         .search-results-count {
@@ -335,6 +341,7 @@ table tr:hover {
             background-color: white;
             cursor: pointer;
             font-weight: 700; /* خط عريض */
+Font-Family: Arial
         }
         
         .filter-select:focus {
@@ -388,6 +395,7 @@ table tr:hover {
     font-size: 0.75rem;
     color: var(--gray);
     font-weight: 700; /* خط عريض */
+Font-Family: Arial
 }  
 
 .records-table {
@@ -395,6 +403,7 @@ table tr:hover {
     border-collapse: collapse;
     min-width: 1000px;
     border: 1px solid #000; /* حدود سوداء للجدول */
+Font-Family: Arial
 }
 
 .records-table th {
@@ -451,6 +460,7 @@ table tr:hover {
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 700; /* خط عريض */
+Font-Family: Arial
 }  
 
 .status-absence {
@@ -486,15 +496,21 @@ table tr:hover {
 }
 
 .reviewed-yes {
-    background-color: rgba(76, 201, 240, 0.1);
-    color: var(--success);
-    border: 1px solid rgba(76, 201, 240, 0.3);
+  font-size: 1.1rem;                     /* حجم الخط */
+  font-family: Arial, sans-serif;        /* نوع الخط */
+  background-color: rgba(76, 201, 240, 0.1);
+  color: #389D1D;                        /* اللون الأخضر */
+  font-weight: 700;                      /* خط عريض */
+  border: 1px solid rgba(76, 201, 240, 0.3);
 }
 
 .reviewed-no {
-    background-color: rgba(108, 117, 125, 0.1);
-    color: var(--gray);
-    border: 1px solid rgba(108, 117, 125, 0.3);
+   font-size: 1.1rem;                     /* حجم الخط */
+  font-family: Arial, sans-serif;        /* نوع الخط */
+  background-color: #F6DFDF;
+  color:#E74F4F;                        /* اللون الأحمر */
+  font-weight: 700;                      /* خط عريض */
+  border: 1px solid rgba(76, 201, 240, 0.3);
 }
 
 .action-buttons {
@@ -530,19 +546,20 @@ table tr:hover {
 }
 
 .btn-review {
-    color: var(--success);
+    color: #e63946; /* أحمر */
 }
 
 .btn-review:hover {
-    background-color: rgba(76, 201, 240, 0.1);
+    background-color: rgba(46, 139, 87, 0.1); /* أخضر غامق مع شفافية */
 }
 
 .btn-unreview {
-    color: var(--danger);
+ color: #19C555; /* أخضر غامق */
+  
 }
 
 .btn-unreview:hover {
-    background-color: rgba(230, 57, 70, 0.1);
+ background-color: rgba(230, 57, 70, 0.1); /* أحمر مع شفافية */
 }
 
 .btn-delete {
@@ -1763,22 +1780,37 @@ footer {
             }
         }
 
-        // ✅ تحديث حالة المراجعة
-        async function toggleReviewStatus(recordId) {
-            try {
-                const record = allRecords.find(r => r.id === recordId);
-                if (record) {
-                    record.reviewed = !record.reviewed;
-                    updateDisplay();
-                    showQuickSuccess('تم تحديث حالة المراجعة بنجاح');
-                    
-                    await callGoogleScript('toggleReviewStatus', { id: recordId });
-                }
-            } catch (error) {
-                showCustomAlert('خطأ في تحديث حالة المراجعة', 'خطأ', 'error');
+       // ✅ تحديث حالة المراجعة - النسخة المصححة
+async function toggleReviewStatus(recordId) {
+    try {
+        const record = allRecords.find(r => r.id === recordId);
+        if (record) {
+            // تبديل الحالة
+            record.reviewed = !record.reviewed;
+            
+            // تحديث الواجهة فوراً
+            updateDisplay();
+            
+            // إرسال التحديث للخادم
+            await callGoogleScript('toggleReviewStatus', { id: recordId });
+            
+            // عرض الرسالة المناسبة
+            if (record.reviewed) {
+                showQuickSuccess('تم تعيين السجل كمُراجَع ✓');
+            } else {
+                showQuickSuccess('تم إلغاء مراجعة السجل');
             }
         }
-
+    } catch (error) {
+        // في حالة الخطأ، نعيد الحالة إلى ما كانت عليه
+        const record = allRecords.find(r => r.id === recordId);
+        if (record) {
+            record.reviewed = !record.reviewed;
+            updateDisplay();
+        }
+        showCustomAlert('خطأ في تحديث حالة المراجعة', 'خطأ', 'error');
+    }
+}
         // ✅ فتح نافذة التعديل
        function openEditModal(recordId) {
     const record = allRecords.find(r => r.id === recordId);
@@ -1951,7 +1983,7 @@ footer {
                         <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
                         <td>
                             <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
-                                ${record.reviewed ? 'تمت المراجعة' : 'قيد المراجعة'}
+                                ${record.reviewed ? 'بـعـذر' : 'بـدون عـذر'}
                             </span>
                         </td>
                         <td>
@@ -1962,9 +1994,11 @@ footer {
                                 <button class="btn-icon btn-whatsapp" onclick="sendWhatsAppMessage('${record.id}')" title="إرسال واتساب">
                                     <i class="fab fa-whatsapp"></i>
                                 </button>
-                                <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" onclick="toggleReviewStatus('${record.id}')" title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
-                                    <i class="fas ${record.reviewed ? 'fa-times' : 'fa-check'}"></i>
-                                </button>
+                               <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
+        onclick="toggleReviewStatus('${record.id}')" 
+        title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
+    <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
+</button>
                                 <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
                                     <i class="fas fa-trash"></i>
                                 </button>
@@ -2005,7 +2039,7 @@ footer {
                         <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
                         <td>
                             <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
-                                ${record.reviewed ? 'تمت المراجعة' : 'قيد المراجعة'}
+                                ${record.reviewed ? 'بـعـذر' : 'بدون عـذر'}
                             </span>
                         </td>
                         <td>
@@ -2016,9 +2050,11 @@ footer {
                                 <button class="btn-icon btn-whatsapp" onclick="sendWhatsAppMessage('${record.id}')" title="إرسال واتساب">
                                     <i class="fab fa-whatsapp"></i>
                                 </button>
-                                <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" onclick="toggleReviewStatus('${record.id}')" title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
-                                    <i class="fas ${record.reviewed ? 'fa-times' : 'fa-check'}"></i>
-                                </button>
+                                <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
+        onclick="toggleReviewStatus('${record.id}')" 
+        title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
+    <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
+</button>
                                 <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
                                     <i class="fas fa-trash"></i>
                                 </button>
