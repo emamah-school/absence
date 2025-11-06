@@ -22,31 +22,103 @@
     --esteathan: #9b5de5;      /* بنفسجي للإستئذان */
     --highlight: #ff9500;
 }
-   .zoom-overlay {
+/* overlay */
+.zoom-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.85);
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(0,0,0,0.85);
   z-index: 9999;
-  cursor: zoom-out;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease;
+  transition: opacity 220ms ease;
+  cursor: zoom-out;
 }
+
+/* عندما تظهر */
 .zoom-overlay.show {
   opacity: 1;
   visibility: visible;
 }
+
+/* الصورة المكبرة */
 .zoom-overlay img {
   max-width: 95%;
   max-height: 95%;
-  border-radius: 10px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.6);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
   background: #fff;
   cursor: zoom-out;
+}
+
+/* زر إغلاق اختياري (لنظهره على الهواتف إن رغبت) */
+.zoom-close-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  background: #e63946;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  z-index: 10001;
+  cursor: pointer;
+  display: none; /* نتركه مخفيًا افتراضياً */
+}
+@media (max-width: 900px) {
+  .zoom-close-btn { display: block; }
+}
+ /* overlay */
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.85);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 220ms ease;
+  cursor: zoom-out;
+}
+
+/* عندما تظهر */
+.zoom-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* الصورة المكبرة */
+.zoom-overlay img {
+  max-width: 95%;
+  max-height: 95%;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  background: #fff;
+  cursor: zoom-out;
+}
+
+/* زر إغلاق اختياري (لنظهره على الهواتف إن رغبت) */
+.zoom-close-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  background: #e63946;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  z-index: 10001;
+  cursor: pointer;
+  display: none; /* نتركه مخفيًا افتراضياً */
+}
+@media (max-width: 900px) {
+  .zoom-close-btn { display: block; }
 }
 /* تحديث عمود الحالة لعرض النص كاملاً */
 .records-table td:nth-child(9) { /* عمود الحالة */
@@ -1270,33 +1342,7 @@ footer {
         max-width: 200px;
         max-height: 200px;
     }
-}
-.zoom-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  cursor: zoom-out;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-}
-.zoom-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-.zoom-overlay img,
-.zoom-overlay iframe {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 10px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.5);
-  background: #fff;
-}
+
     </style>
 </head>
 <body>
@@ -1630,95 +1676,6 @@ footer {
             }
         }
 
-        // ✅ عرض حالة الاتصال
-        function showConnectionStatus(isConnected) {
-            const existingStatus = document.getElementById('connectionStatus');
-            if (existingStatus) {
-                existingStatus.remove();
-            }
-            
-            if (!isConnected) {
-                const statusElement = document.createElement('div');
-                statusElement.id = 'connectionStatus';
-                statusElement.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 10px;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        background: #e63946;
-                        color: white;
-                        padding: 10px 20px;
-                        border-radius: 5px;
-                        z-index: 10000;
-                        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-                        font-weight: bold;
-                    ">
-                        <i class="fas fa-wifi"></i> 
-                        مشكلة في الاتصال - يرجى التحقق من الإنترنت
-                    </div>
-                `;
-                document.body.appendChild(statusElement);
-                
-                // إخفاء التبليغ بعد 5 ثواني
-                setTimeout(() => {
-                    if (statusElement.parentNode) {
-                        statusElement.remove();
-                    }
-                }, 5000);
-            }
-        }
-function showZoomPreview(url) {
-  let overlay = document.getElementById("zoomOverlay");
-  if (!overlay) {
-    overlay = document.createElement("div");
-    overlay.id = "zoomOverlay";
-    overlay.className = "zoom-overlay";
-    overlay.addEventListener("click", () => overlay.classList.remove("show"));
-    document.body.appendChild(overlay);
-  }
-
-  const lower = url.toLowerCase();
-  const isImage = /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(lower) || lower.includes('googleusercontent');
-  const isPDF = lower.includes('.pdf');
-
-  overlay.innerHTML = isImage
-    ? `<img src="${url}" alt="معاينة الصورة">`
-    : isPDF
-      ? `<iframe src="${url}" frameborder="0"></iframe>`
-      : `<div style="color:white;font-size:1.3rem;font-weight:bold">لا يمكن معاينة هذا النوع من الملفات</div>`;
-
-  overlay.classList.add("show");
-}
-
-// ✅ عند المرور على الصورة أو ملف الـ PDF
-document.addEventListener("mouseover", (e) => {
-  const thumb = e.target.closest(".attachment-thumbnail, .file-preview");
-  if (!thumb) return;
-
-  let url = "";
-
-  // إذا كانت صورة مصغّرة
-  if (thumb.classList.contains("attachment-thumbnail")) {
-    url = thumb.src;
-  }
-
-  // إذا كان ملف PDF داخل div.file-preview
-  if (!url && thumb.classList.contains("file-preview")) {
-    // نحاول استخراج الرابط من onclick أو من أقرب container
-    const container = thumb.closest(".attachment-container");
-    const img = container?.querySelector("img");
-    const onclickAttr = thumb.getAttribute("onclick") || "";
-    const match = onclickAttr.match(/openAttachment\('(.*?)'\)/);
-    url = match ? match[1] : "";
-  }
-
-  // في حال لم يجد URL، نتوقف
-  if (!url) return;
-
-  // عرض المعاينة
-  showZoomPreview(url);
-});
         // ✅ نظام الإشعارات المنبثقة المخصصة - النسخة المحسنة
         function showCustomAlert(message, title = 'تنبيه', type = 'info') {
             return new Promise((resolve) => {
@@ -1798,88 +1755,7 @@ document.addEventListener("mouseover", (e) => {
                 });
             });
         }
-<!-- ✅ تكبير الصورة بالنقر في الكمبيوتر والهاتف -->
-<style>
-.zoom-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  cursor: zoom-out;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-}
-.zoom-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-.zoom-overlay img {
-  max-width: 95%;
-  max-height: 95%;
-  border-radius: 10px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.6);
-  background: #fff;
-  cursor: zoom-out;
-}
-</style>
 
-<script>
-// ✅ إنشاء نافذة العرض المكبرة
-function showZoomOverlay(url) {
-  let overlay = document.getElementById("zoomOverlay");
-  if (!overlay) {
-    overlay = document.createElement("div");
-    overlay.id = "zoomOverlay";
-    overlay.className = "zoom-overlay";
-    document.body.appendChild(overlay);
-  }
-
-  overlay.innerHTML = `<img src="${url}" alt="معاينة الصورة">`;
-  overlay.classList.add("show");
-
-  // النقر على الصورة أو الخلفية لإغلاقها
-  overlay.onclick = () => {
-    overlay.classList.remove("show");
-  };
-}
-
-// ✅ دالة التعامل مع النقر على المرفقات (صورة أو PDF)
-function handleAttachmentClick(url) {
-  const lower = url.toLowerCase();
-  const isImage = /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(lower) || lower.includes("googleusercontent");
-  const isPDF = lower.includes(".pdf");
-
-  if (isImage) {
-    showZoomOverlay(url);
-  } else if (isPDF) {
-    window.open(url, "_blank");
-  }
-}
-
-// ✅ الاستماع للنقر على الصور أو ملفات PDF في الجدول
-document.addEventListener("click", (e) => {
-  const thumb = e.target.closest(".attachment-thumbnail, .file-preview");
-  if (!thumb) return;
-
-  let url = "";
-
-  if (thumb.classList.contains("attachment-thumbnail")) {
-    // صورة داخل <img>
-    url = thumb.src;
-  } else if (thumb.classList.contains("file-preview")) {
-    // ملف PDF داخل div.file-preview
-    const onclickAttr = thumb.getAttribute("onclick") || "";
-    const match = onclickAttr.match(/openAttachment\('(.*?)'\)/);
-    url = match ? match[1] : "";
-  }
-
-  if (url) handleAttachmentClick(url);
-});
         // ✅ نظام تأكيد مخصص - النسخة المحسنة
         function showCustomConfirm(message, title = 'تأكيد العملية') {
             return new Promise((resolve) => {
