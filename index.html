@@ -665,6 +665,75 @@
             color: white;
         }
         
+        /* أنماط حقل المرفق */
+        #attachment {
+            border: 2px dashed #ddd;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            padding: 10px;
+        }
+
+        #attachment:hover {
+            border-color: var(--primary);
+            background: #f0f4ff;
+        }
+
+        #attachment:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        #attachmentPreview {
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 8px;
+            background: #fafafa;
+            margin-top: 10px;
+        }
+
+        .attachment-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .attachment-preview-item img {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 4px;
+        }
+
+        .attachment-info {
+            flex: 1;
+        }
+
+        .attachment-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .attachment-size {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .remove-attachment {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .remove-attachment:hover {
+            background: rgba(230, 57, 70, 0.1);
+        }
+        
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -866,8 +935,6 @@
                             <option value="الحصة الرابعة">الحصة الرابعة</option>
                             <option value="الحصة الخامسة">الحصة الخامسة</option>
                             <option value="الحصة السادسة">الحصة السادسة</option>
-                            <option value="الحصة السابعه">الحصة السابعه</option>
-                              <option value="الحصة الثامنه">الحصة الثامنه</option>
                             <option value="طوال اليوم">طوال اليوم</option>
                         </select>
                     </div>
@@ -895,6 +962,14 @@
                     <div class="form-group">
                         <label for="notes">ملاحظة</label>
                         <textarea id="notes" rows="3" placeholder="أضف ملاحظة إضافية (اختياري)"></textarea>
+                    </div>
+
+                    <!-- حقل إرفاق الملف -->
+                    <div class="form-group">
+                        <label for="attachment">إرفاق ملف (اختياري)</label>
+                        <input type="file" id="attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" style="padding: 8px;">
+                        <small style="color: var(--gray); font-size: 0.8rem;">يمكنك رفع الصور أو ملفات PDF (الحد الأقصى: 5MB)</small>
+                        <div id="attachmentPreview" style="display: none;"></div>
                     </div>
                     
                     <button type="submit" class="btn" id="submitBtn">
@@ -936,6 +1011,7 @@
         let currentRecord = null;
         let studentsList = [];
         let dateConfirmationTimeout = null;
+        let currentAttachment = null;
         
         // عناصر DOM
         const absenceForm = document.getElementById('absenceForm');
@@ -951,6 +1027,8 @@
         const dateConfirmationMessage = document.getElementById('dateConfirmationMessage');
         const confirmDateBtn = document.getElementById('confirmDateBtn');
         const cancelDateBtn = document.getElementById('cancelDateBtn');
+        const attachmentInput = document.getElementById('attachment');
+        const attachmentPreview = document.getElementById('attachmentPreview');
 
         // تحديث دالة تهيئة التاريخ لإضافة الساعة
         function initializeDate() {
@@ -1322,6 +1400,78 @@
             const phoneRegex = /^\d{8}$/;
             return phoneRegex.test(phone);
         }
+
+        // معالجة الملف المرفوع
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            
+            if (file) {
+                // التحقق من حجم الملف (5MB كحد أقصى)
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('خطأ', 'حجم الملف كبير جداً. الحد الأقصى 5MB', 'error');
+                    event.target.value = '';
+                    attachmentPreview.style.display = 'none';
+                    currentAttachment = null;
+                    return;
+                }
+                
+                // التحقق من نوع الملف
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+                if (!allowedTypes.includes(file.type)) {
+                    showNotification('خطأ', 'نوع الملف غير مسموح به. المسموح: صور، PDF', 'error');
+                    event.target.value = '';
+                    attachmentPreview.style.display = 'none';
+                    currentAttachment = null;
+                    return;
+                }
+                
+                currentAttachment = file;
+                
+                // عرض المعاينة
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (file.type.includes('image')) {
+                        attachmentPreview.innerHTML = `
+                            <div class="attachment-preview-item">
+                                <img src="${e.target.result}" alt="معاينة الصورة">
+                                <div class="attachment-info">
+                                    <div class="attachment-name">${file.name}</div>
+                                    <div class="attachment-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                                </div>
+                                <button type="button" class="remove-attachment" onclick="removeAttachment()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        attachmentPreview.innerHTML = `
+                            <div class="attachment-preview-item">
+                                <i class="fas fa-file-pdf" style="font-size: 2rem; color: #e63946;"></i>
+                                <div class="attachment-info">
+                                    <div class="attachment-name">${file.name}</div>
+                                    <div class="attachment-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                                </div>
+                                <button type="button" class="remove-attachment" onclick="removeAttachment()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        `;
+                    }
+                    attachmentPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                attachmentPreview.style.display = 'none';
+                currentAttachment = null;
+            }
+        }
+
+        // إزالة المرفق
+        function removeAttachment() {
+            attachmentInput.value = '';
+            attachmentPreview.style.display = 'none';
+            currentAttachment = null;
+        }
         
         function prepareWhatsAppMessage(recordId) {
             const record = records.find(r => r.id === recordId);
@@ -1416,6 +1566,9 @@
                 showNotification('تم التغيير', 'تم تعيين التاريخ إلى اليوم', 'info');
             });
             
+            // استماع لحقل المرفق
+            attachmentInput.addEventListener('change', handleFileUpload);
+            
             // إرسال النموذج
             absenceForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -1443,11 +1596,27 @@
                         studentName: document.getElementById('studentName').value,
                         class: document.getElementById('class').value,
                         section: document.getElementById('section').value,
-                        period: document.getElementById('period').value, // ⬅️ إضافة الحصة
+                        period: document.getElementById('period').value,
                         status: document.getElementById('status').value,
                         parentPhone: phone,
-                        notes: document.getElementById('notes').value // ⬅️ إضافة الملاحظة
+                        notes: document.getElementById('notes').value
                     };
+                    
+                    // معالجة المرفق إذا وجد
+                    if (currentAttachment) {
+                        const fileReader = new FileReader();
+                        
+                        await new Promise((resolve) => {
+                            fileReader.onload = function(e) {
+                                const base64String = e.target.result.split(',')[1];
+                                formData.attachmentData = base64String;
+                                formData.attachmentName = currentAttachment.name;
+                                formData.attachmentType = currentAttachment.type;
+                                resolve();
+                            };
+                            fileReader.readAsDataURL(currentAttachment);
+                        });
+                    }
                     
                     // إضافة سجل جديد
                     const result = await callGoogleScript('saveRecord', formData);
@@ -1462,6 +1631,8 @@
                     absenceForm.reset();
                     initializeDate();
                     resetStudentFields();
+                    attachmentPreview.style.display = 'none';
+                    currentAttachment = null;
                     
                     // ✅ تحديث الإحصائيات بعد الحفظ
                     await updateStats();
@@ -1485,5 +1656,4 @@
         });
     </script>
 </body>
-
 </html>
