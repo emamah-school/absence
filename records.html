@@ -22,103 +22,41 @@
     --esteathan: #9b5de5;      /* بنفسجي للإستئذان */
     --highlight: #ff9500;
 }
-/* overlay */
+/* ✅ نافذة عرض الصورة بدون خلفية */
 .zoom-overlay {
   position: fixed;
-  inset: 0;
-  display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.85);
   z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 220ms ease;
-  cursor: zoom-out;
 }
-
-/* عندما تظهر */
 .zoom-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* الصورة المكبرة */
-.zoom-overlay img {
-  max-width: 95%;
-  max-height: 95%;
-  border-radius: 8px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-  background: #fff;
-  cursor: zoom-out;
-}
-
-/* زر إغلاق اختياري (لنظهره على الهواتف إن رغبت) */
-.zoom-close-btn {
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  background: #e63946;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-weight: 700;
-  z-index: 10001;
-  cursor: pointer;
-  display: none; /* نتركه مخفيًا افتراضياً */
-}
-@media (max-width: 900px) {
-  .zoom-close-btn { display: block; }
-}
- /* overlay */
-.zoom-overlay {
-  position: fixed;
-  inset: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0,0,0,0.85);
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 220ms ease;
-  cursor: zoom-out;
 }
-
-/* عندما تظهر */
-.zoom-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* الصورة المكبرة */
 .zoom-overlay img {
-  max-width: 95%;
-  max-height: 95%;
-  border-radius: 8px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
   background: #fff;
-  cursor: zoom-out;
 }
-
-/* زر إغلاق اختياري (لنظهره على الهواتف إن رغبت) */
-.zoom-close-btn {
-  position: fixed;
-  top: 18px;
-  left: 18px;
-  background: #e63946;
-  color: #fff;
+.close-btn {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: #e53935;
+  color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-weight: 700;
-  z-index: 10001;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-weight: bold;
   cursor: pointer;
-  display: none; /* نتركه مخفيًا افتراضياً */
-}
-@media (max-width: 900px) {
-  .zoom-close-btn { display: block; }
+  font-size: 16px;
+  line-height: 1;
 }
 /* تحديث عمود الحالة لعرض النص كاملاً */
 .records-table td:nth-child(9) { /* عمود الحالة */
@@ -154,7 +92,17 @@ table td {
   border: 1px solid black !important;
   padding: 8px 10px !important;
 }
-
+img.attachment-thumbnail {
+  width: 50px !important;
+  height: 50px !important;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+img.attachment-thumbnail:hover {
+  transform: scale(1.05);
+}
 /* تحديث خلية اسم الطالبة لكسر النص الطويل */
 .records-table td:nth-child(4) { /* عمود اسم الطالبة */
     max-width: 170px;
@@ -1655,7 +1603,80 @@ footer {
                 }
             }
         }
+// ✅ إنشاء / جلب نافذة عرض الصورة
+function getOrCreateZoomOverlay() {
+  let overlay = document.getElementById('zoomOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'zoomOverlay';
+    overlay.className = 'zoom-overlay';
+    overlay.innerHTML = `
+      <div style="position:relative;">
+        <img id="zoomImage" src="" alt="عرض الصورة">
+      </div>
+      <button class="close-btn" id="zoomCloseBtn">✕</button>
+    `;
+    document.body.appendChild(overlay);
 
+    // عند الضغط على الزر ✕ يغلق العرض
+    document.getElementById('zoomCloseBtn').addEventListener('click', () => {
+      overlay.classList.remove('show');
+    });
+  }
+  return overlay;
+}
+
+// ✅ عرض الصورة في المنتصف
+function openImageCenter(url) {
+  const overlay = getOrCreateZoomOverlay();
+  const img = overlay.querySelector('#zoomImage');
+  img.src = url;
+  overlay.classList.add('show');
+}
+
+// ✅ فتح ملف PDF في نافذة جديدة
+function openPDF(url) {
+  if (!url) return;
+  try {
+    // إذا كان الرابط من Google Drive نحوله إلى /preview
+    if (url.includes('drive.google.com')) {
+      const match = url.match(/\/d\/(.*?)(\/|$)/);
+      if (match && match[1]) {
+        url = `https://drive.google.com/file/d/${match[1]}/preview`;
+      }
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } catch (err) {
+    console.error('PDF open error:', err);
+    location.href = url;
+  }
+}
+
+// ✅ تفعيل النقر على الصور أو ملفات PDF
+document.addEventListener('click', (e) => {
+  const imgEl = e.target.closest('.attachment-thumbnail, img');
+  const pdfEl = e.target.closest('.file-preview');
+
+  // عند النقر على الصورة
+  if (imgEl) {
+    const url = imgEl.src;
+    if (url) openImageCenter(url);
+    return;
+  }
+
+  // عند النقر على ملف PDF
+  if (pdfEl) {
+    // استخراج الرابط من dataset أو onclick
+    let url = pdfEl.dataset.url || pdfEl.dataset.attachment || '';
+    if (!url) {
+      const onclickAttr = pdfEl.getAttribute('onclick') || '';
+      const match = onclickAttr.match(/openAttachment\s*\(\s*['"](.+?)['"]\s*\)/);
+      if (match) url = match[1];
+    }
+    // فتح الرابط في نافذة جديدة
+    if (url) openPDF(url);
+  }
+});
         // ✅ فحص حالة الاتصال
         async function checkConnection() {
             try {
@@ -2033,84 +2054,7 @@ footer {
             }
         }
 
-        // ✅ عرض معاينة المرفق عند مرور الماوس
-        function showAttachmentPreview(recordId, attachmentUrl, studentName) {
-            const isImage = isImageFile(attachmentUrl);
-            const previewElement = document.getElementById(`preview-${recordId}`);
-            
-            if (!previewElement) return;
-            
-            if (isImage) {
-                // معاينة الصورة
-                previewElement.innerHTML = `
-                    <div style="text-align: center;">
-                        <div class="preview-student-name">
-                            <i class="fas fa-user-graduate"></i>
-                            ${studentName}
-                        </div>
-                        <img src="${attachmentUrl}" 
-                             alt="معاينة الصورة" 
-                             class="preview-image"
-                             onerror="this.style.display='none'">
-                        <div style="margin-top: 8px; font-size: 0.8rem; color: var(--gray);">
-                            <i class="fas fa-expand"></i>
-                            انقر للتكبير
-                        </div>
-                    </div>
-                `;
-            } else {
-                // معاينة PDF أو ملف آخر
-                const isPDF = attachmentUrl.toLowerCase().includes('.pdf');
-                const fileType = isPDF ? 'PDF' : 'ملف';
-                const icon = isPDF ? 'fa-file-pdf' : 'fa-file';
-                const color = isPDF ? '#e63946' : 'var(--primary)';
-                
-                previewElement.innerHTML = `
-                    <div class="preview-pdf" style="border-color: ${color};">
-                        <i class="fas ${icon} preview-pdf-icon" style="color: ${color};"></i>
-                        <div class="preview-pdf-text" style="color: ${color};">
-                            ${fileType}
-                        </div>
-                        <div class="preview-file-name">
-                            ${getFileNameFromUrl(attachmentUrl)}
-                        </div>
-                        <div class="preview-student-name">
-                            <i class="fas fa-user-graduate"></i>
-                            ${studentName}
-                        </div>
-                        <div style="margin-top: 8px; font-size: 0.8rem; color: var(--gray);">
-                            <i class="fas fa-external-link-alt"></i>
-                            انقر لفتح الملف
-                        </div>
-                    </div>
-                `;
-            }
-            
-            previewElement.classList.add('show');
-        }
-
-        // ✅ إخفاء معاينة المرفق
-        function hideAttachmentPreview(recordId) {
-            const previewElement = document.getElementById(`preview-${recordId}`);
-            if (previewElement) {
-                previewElement.classList.remove('show');
-            }
-        }
-
-        // ✅ فتح المرفق في نافذة جديدة
-        function openAttachment(attachmentUrl) {
-            window.open(attachmentUrl, '_blank');
-        }
-
-        // ✅ استخراج اسم الملف من الرابط
-        function getFileNameFromUrl(url) {
-            try {
-                const path = new URL(url).pathname;
-                return path.split('/').pop() || 'الملف';
-            } catch (e) {
-                return 'الملف';
-            }
-        }
+        
 
        // ✅ تحديث حالة المراجعة - النسخة المصححة
 async function toggleReviewStatus(recordId) {
@@ -2313,34 +2257,7 @@ async function toggleReviewStatus(recordId) {
                         <td class="expandable">968${record.parentPhone}</td>
                         <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
                         <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
-                        <td>
-                            <div id="attachmentCell-${record.id}" style="text-align: center;">
-                                ${record.attachment ? 
-                                    `<div class="attachment-container" 
-                                          onmouseenter="showAttachmentPreview('${record.id}', '${record.attachment}', '${record.studentName}')" 
-                                          onmouseleave="hideAttachmentPreview('${record.id}')">
-                                        
-                                        ${isImageFile(record.attachment) ? 
-                                            `<img src="${record.attachment}" 
-                                                  alt="معاينة الصورة" 
-                                                  class="attachment-thumbnail"
-                                                  onclick="openAttachment('${record.attachment}')">` 
-                                            : 
-                                            `<div class="file-preview" onclick="openAttachment('${record.attachment}')">
-                                                <i class="fas ${getAttachmentIcon(record.attachment)} file-icon"></i>
-                                                <span class="file-text">PDF</span>
-                                            </div>`
-                                        }
-                                        
-                                        <!-- معاينة التكبير -->
-                                        <div id="preview-${record.id}" class="attachment-preview-tooltip"></div>
-                                        
-                                    </div>` 
-                                    : 'لا يوجد'
-                                }
-                            </div>
-                        </td>
-                        <td>
+               
                             <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
                                 ${record.reviewed ? 'بـعـذر' : 'بـدون عـذر'}
                             </span>
