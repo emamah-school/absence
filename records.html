@@ -446,9 +446,8 @@ Font-Family: Arial
 .stat-label {
     font-size: 0.75rem;
     color: var(--gray);
-    font-weight: 700; /* خط عريض */
-Font-Family: Arial
-}  
+    font-weight: 700;
+}
 
 .records-table {
     width: 100%;
@@ -568,7 +567,7 @@ border: 1px solid #e63946; /* أحمر */
 .action-buttons {
     display: flex;
     gap: 5px;
-    justify-content: flex-start;
+    justify-content: flex-end;
 }
 
 .btn-icon {
@@ -579,8 +578,36 @@ border: 1px solid #e63946; /* أحمر */
     padding: 4px;
     border-radius: 4px;
     transition: all 0.3s ease;
+    order: 1; /* الترتيب الافتراضي */
+}
+.btn-review,
+.btn-unreview {
+    order: 5; /* أعلى ترتيب - سيظهر أولاً */
 }
 
+/* زر الحذف - سيظهر أولاً على اليمين */
+.btn-delete {
+    order: 4;
+    color: var(--danger);
+}
+
+/* زر التعديل */
+.btn-edit {
+    order: 3;
+    color: var(--primary);
+}
+
+/* زر واتساب */
+.btn-whatsapp {
+    order: 5;
+    color: #25D366;
+}
+
+/* زر إلغاء/تمت المراجعة - سيظهر آخراً على اليسار */
+.btn-review,
+.btn-unreview {
+    order: 2; /* أقل ترتيب - سيظهر آخراً */
+}
 .btn-edit {
     color: var(--primary);
 }
@@ -660,18 +687,33 @@ footer {
 .stats-summary {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 1.2rem;
-    border: 2px solid var(--primary); /* حدود زرقاء */
 }
-
+.stat-item::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+}
+/* التنسيقات الأساسية المشتركة */
 .stat-item {
     background: white;
-    padding: 0.7rem;
-    border-radius: 8px;
+    padding: 0.8rem;
+    border-radius: 10px;
     text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid #e0e0e0; /* حدود فاتحة للعناصر الداخلية */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .stat-number {
@@ -693,7 +735,89 @@ footer {
     border-radius: 3px;
     font-weight: 600;
 }
+/* إجمالي السجلات - أزرق */
+.stat-item:nth-child(1) {
+    border: 2px solid #4361ee;
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+}
 
+.stat-item:nth-child(1) .stat-number {
+    color: #4361ee;
+}
+
+.stat-item:nth-child(1)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #4361ee;
+    border-radius: 8px 8px 0 0;
+}
+
+/* سجلات اليوم - أخضر */
+.stat-item:nth-child(2) {
+    border: 2px solid #4cc9f0;
+    background: linear-gradient(135deg, #f0f9ff, #ffffff);
+}
+
+.stat-item:nth-child(2) .stat-number {
+    color: #4cc9f0;
+}
+
+.stat-item:nth-child(2)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #4cc9f0;
+    border-radius: 8px 8px 0 0;
+}
+
+/* تمت مراجعتها - برتقالي */
+.stat-item:nth-child(3) {
+    border: 2px solid #f77f00;
+    background: linear-gradient(135deg, #fff4e6, #ffffff);
+}
+
+.stat-item:nth-child(3) .stat-number {
+    color: #f77f00;
+}
+
+.stat-item:nth-child(3)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #f77f00;
+    border-radius: 8px 8px 0 0;
+}
+
+/* قيد المراجعة - بنفسجي */
+.stat-item:nth-child(4) {
+    border: 2px solid #9b5de5;
+    background: linear-gradient(135deg, #f8f0ff, #ffffff);
+}
+
+.stat-item:nth-child(4) .stat-number {
+    color: #9b5de5;
+}
+
+.stat-item:nth-child(4)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #9b5de5;
+    border-radius: 8px 8px 0 0;
+}
 /* نافذة التعديل */
 .edit-modal {
     position: fixed;
@@ -1230,12 +1354,12 @@ footer {
 }
         
      @media (max-width: 768px) {
-    .action-buttons {
-        flex-direction: row !important; /* جعلها أفقية */
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        gap: 4px;
-    }
+  .action-buttons {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end; /* محاذاة لليمين */
+    flex-direction: row-reverse; /* عكس الترتيب */
+}
 
     .nav-links {
         width: 100%;
@@ -1250,22 +1374,53 @@ footer {
         min-width: 100%;
     }
     
-    .stats-summary {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
+ .stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.2rem;
+    border: 2px solid var(--primary); /* حدود زرقاء للحاوية الرئيسية */
+    border-radius: 12px; /* زوايا دائرية */
+    padding: 10px; /* مسافة داخلية */
+    background: linear-gradient(135deg, #f8f9ff, #ffffff); /* خلفية متدرجة */
+}
     
-    .stat-item {
-        padding: 0.5rem;
-    }
+   .stat-item {
+    background: white;
+    padding: 0.7rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--primary); /* حدود زرقاء لكل مربع إحصائية */
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+  .stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}  
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.stat-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
     
-    .stat-number {
-        font-size: 1rem;
-    }
-    
-    .stat-label {
-        font-size: 0.7rem;
-    }
+ .stat-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    font-weight: 700;
+}
 
     .custom-notification {
         right: 8px;
@@ -1292,7 +1447,6 @@ footer {
     }
 
     </style>
-</head>
 <body>
     <!-- نافذة تعديل السجل -->
     <div class="edit-modal" id="editModal">
@@ -1412,8 +1566,8 @@ footer {
                             <label class="filter-label">حالة المراجعة</label>
                             <select class="filter-select" id="filterReview">
                                 <option value="">جميع الحالات</option>
-                                <option value="reviewed">تمت المراجعة</option>
-                                <option value="pending">قيد المراجعة</option>
+                                <option value="reviewed">بـعـذر</option>
+                                <option value="pending">بـدون عـذر</option>
                             </select>
                         </div>
                         
@@ -1436,13 +1590,23 @@ footer {
                         </div>
                         
                        <div class="filter-group">
-    <label class="filter-label">التاريخ</label>
-    <select class="filter-select" id="filterDate">
-        <option value="">جميع التواريخ</option>
-        <option value="week">هذا الأسبوع</option>
-        <option value="month">هذا الشهر</option>
-    </select>
-</div>
+                            <label class="filter-label">التاريخ</label>
+                            <select class="filter-select" id="filterDate">
+                                <option value="">جميع التواريخ</option>
+                                <option value="week">هذا الأسبوع</option>
+                                <option value="month">هذا الشهر</option>
+                            </select>
+                        </div>
+
+                        <!-- فلتر المرفقات الجديد -->
+                        <div class="filter-group">
+                            <label class="filter-label">المرفقات</label>
+                            <select class="filter-select" id="filterAttachment">
+                                <option value="">جميع السجلات</option>
+                                <option value="with_attachment">مرفقات</option>
+                                <option value="without_attachment">غير مرفقات</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 
@@ -1534,6 +1698,7 @@ footer {
         const filterSection = document.getElementById('filterSection');
         const filterStatus = document.getElementById('filterStatus');
         const filterDate = document.getElementById('filterDate');
+        const filterAttachment = document.getElementById('filterAttachment'); // فلتر المرفقات الجديد
         const searchResultsCount = document.getElementById('searchResultsCount');
         const editModal = document.getElementById('editModal');
         const editForm = document.getElementById('editForm');
@@ -1603,6 +1768,7 @@ footer {
                 }
             }
         }
+
 // ✅ إنشاء / جلب نافذة عرض الصورة
 function getOrCreateZoomOverlay() {
   let overlay = document.getElementById('zoomOverlay');
@@ -1677,6 +1843,7 @@ document.addEventListener('click', (e) => {
     if (url) openPDF(url);
   }
 });
+
         // ✅ فحص حالة الاتصال
         async function checkConnection() {
             try {
@@ -1884,13 +2051,14 @@ document.addEventListener('click', (e) => {
             }, 3000);
         }
 
-        // ✅ البحث الفوري بدون تأخير
+        // ✅ البحث الفوري بدون تأخير - تم تحديثها لتدعم فلتر المرفقات الجديد
        function performSearch() {
     const searchTerm = searchInput.value.trim().toLowerCase();
     const reviewFilter = filterReview.value;
     const sectionFilter = filterSection.value;
     const statusFilter = filterStatus.value;
     const dateFilter = filterDate.value;
+    const attachmentFilter = filterAttachment.value; // فلتر المرفقات الجديد
     
     filteredRecords = allRecords.filter(record => {
         // تطبيق فلتر النص
@@ -1951,6 +2119,14 @@ document.addEventListener('click', (e) => {
                         recordDateObj.getFullYear() !== today.getFullYear()) return false;
                     break;
             }
+        }
+        
+        // تطبيق فلتر المرفقات الجديد
+        if (attachmentFilter) {
+            const hasAttachment = record.attachment && record.attachment.trim() !== '';
+            
+            if (attachmentFilter === 'with_attachment' && !hasAttachment) return false;
+            if (attachmentFilter === 'without_attachment' && hasAttachment) return false;
         }
         
         return true;
@@ -2054,8 +2230,6 @@ document.addEventListener('click', (e) => {
             }
         }
 
-        
-
        // ✅ تحديث حالة المراجعة - النسخة المصححة
 async function toggleReviewStatus(recordId) {
     try {
@@ -2087,6 +2261,7 @@ async function toggleReviewStatus(recordId) {
         showCustomAlert('خطأ في تحديث حالة المراجعة', 'خطأ', 'error');
     }
 }
+
         // ✅ فتح نافذة التعديل
        function openEditModal(recordId) {
     const record = allRecords.find(r => r.id === recordId);
@@ -2257,27 +2432,54 @@ async function toggleReviewStatus(recordId) {
                         <td class="expandable">968${record.parentPhone}</td>
                         <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
                         <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
-               
+                        <td>
+                            ${record.attachment ? 
+                                `<div class="attachment-container" 
+                                      onmouseenter="showAttachmentPreview('${record.id}', '${record.attachment}', '${record.studentName}')" 
+                                      onmouseleave="hideAttachmentPreview('${record.id}')">
+                                    
+                                    ${isImageFile(record.attachment) ? 
+                                        `<img src="${record.attachment}" 
+                                              alt="معاينة الصورة" 
+                                              class="attachment-thumbnail"
+                                              onclick="openAttachment('${record.attachment}')">` 
+                                        : 
+                                        `<div class="file-preview" onclick="openAttachment('${record.attachment}')">
+                                            <i class="fas ${getAttachmentIcon(record.attachment)} file-icon"></i>
+                                            <span class="file-text">PDF</span>
+                                        </div>`
+                                    }
+                                    
+                                    <!-- معاينة التكبير -->
+                                    <div id="preview-${record.id}" class="attachment-preview-tooltip"></div>
+                                    
+                                </div>` 
+                                : 'لا يوجد'
+                            }
+                        </td>
+                        <td>
                             <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
                                 ${record.reviewed ? 'بـعـذر' : 'بـدون عـذر'}
                             </span>
                         </td>
                         <td>
-                            <div class="action-buttons">
-                                <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon btn-whatsapp" onclick="sendWhatsAppMessage('${record.id}')" title="إرسال واتساب">
-                                    <i class="fab fa-whatsapp"></i>
-                                </button>
-                                <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
-                                    onclick="toggleReviewStatus('${record.id}')" 
-                                    title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
-                                    <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
-                                </button>
-                                <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+
+                         <div class="action-buttons">
+    <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
+        onclick="toggleReviewStatus('${record.id}')" 
+        title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
+        <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
+    </button>
+    <button class="btn-icon btn-whatsapp" onclick="sendWhatsAppMessage('${record.id}')" title="إرسال واتساب">
+        <i class="fab fa-whatsapp"></i>
+    </button>
+    <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
+        <i class="fas fa-edit"></i>
+    </button>
+    <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
+        <i class="fas fa-trash"></i>
+    </button>
+</div>
                             </div>
                         </td>
                     </tr>
@@ -2447,6 +2649,7 @@ async function toggleReviewStatus(recordId) {
             filterSection.addEventListener('change', performSearch);
             filterStatus.addEventListener('change', performSearch);
             filterDate.addEventListener('change', performSearch);
+            filterAttachment.addEventListener('change', performSearch); // فلتر المرفقات الجديد
             
             // استماع لأحداث نافذة التعديل - تم التأكد من الربط
             if (editForm) {
@@ -2610,6 +2813,58 @@ function getStatusMessage(status) {
         case 'تسيَّب من الحصة': return 'تسيبت من الحصة.';
         case 'إستأذان خارج المدرسة': return 'أستأذنت خارج المدرسة.';
         default: return status + '.';
+    }
+}
+
+// ✅ دالة إظهار حالة الاتصال
+function showConnectionStatus(isConnected) {
+    if (!isConnected) {
+        showCustomAlert('فقدان الاتصال بالخادم. قد لا تعمل بعض الميزات بشكل صحيح.', 'تحذير', 'warning');
+    }
+}
+
+// ✅ دالة فتح المرفق
+function openAttachment(url) {
+    if (!url) return;
+    
+    if (isImageFile(url)) {
+        openImageCenter(url);
+    } else {
+        openPDF(url);
+    }
+}
+
+// ✅ دالة إظهار معاينة المرفق
+function showAttachmentPreview(recordId, attachmentUrl, studentName) {
+    const previewElement = document.getElementById(`preview-${recordId}`);
+    if (!previewElement) return;
+    
+    if (isImageFile(attachmentUrl)) {
+        previewElement.innerHTML = `
+            <img src="${attachmentUrl}" class="preview-image" alt="معاينة الصورة">
+            <div class="preview-student-name">${studentName}</div>
+            <a href="${attachmentUrl}" target="_blank" class="attachment-link">فتح الصورة</a>
+        `;
+    } else {
+        previewElement.innerHTML = `
+            <div class="preview-pdf">
+                <i class="fas fa-file-pdf preview-pdf-icon"></i>
+                <div class="preview-pdf-text">ملف PDF</div>
+                <div class="preview-file-name">${attachmentUrl.split('/').pop() || 'ملف مرفق'}</div>
+            </div>
+            <div class="preview-student-name">${studentName}</div>
+            <a href="${attachmentUrl}" target="_blank" class="attachment-link">فتح الملف</a>
+        `;
+    }
+    
+    previewElement.classList.add('show');
+}
+
+// ✅ دالة إخفاء معاينة المرفق
+function hideAttachmentPreview(recordId) {
+    const previewElement = document.getElementById(`preview-${recordId}`);
+    if (previewElement) {
+        previewElement.classList.remove('show');
     }
 }
     </script>
