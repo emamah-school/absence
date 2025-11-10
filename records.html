@@ -22,6 +22,7 @@
     --esteathan: #9b5de5;      /* بنفسجي للإستئذان */
     --highlight: #ff9500;
 }
+
 /* ✅ نافذة عرض الصورة بدون خلفية */
 .zoom-overlay {
   position: fixed;
@@ -1484,6 +1485,7 @@ footer {
                         <option value="تأخير عن الحصة">تأخير عن الحصة</option>
                         <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
                         <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
+                          <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1586,6 +1588,7 @@ footer {
                                 <option value="تأخير عن الحصة">تأخير عن الحصة</option>
                                 <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
                                 <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
+                               <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
                             </select>
                         </div>
                         
@@ -2774,7 +2777,7 @@ async function toggleReviewStatus(recordId) {
     }
 }
 
-// ✅ دالة إرسال واتساب - محدثة مع الترتيب الجديد للسطور
+// ✅ دالة إرسال واتساب - محدثة مع الشرط الجديد
 function sendWhatsAppMessage(recordId) {
     try {
         const record = allRecords.find(r => r.id === recordId);
@@ -2784,12 +2787,21 @@ function sendWhatsAppMessage(recordId) {
         }
         
         const phoneNumber = `968${record.parentPhone}`;
-        const statusMessage = getStatusMessage(record.status);
-        const message = `السلام عليكم .
+        let message;
+        
+        // إذا كانت الحالة "إشعار ولي الأمر" - استخدم الملاحظة فقط
+        if (record.status === "إشعار ولي الأمر") {
+            message = record.notes || "لا توجد ملاحظات";
+        } 
+        // إذا كانت أي حالة أخرى - استخدم الرسالة الأصلية
+        else {
+            const statusMessage = getStatusMessage(record.status);
+            message = `السلام عليكم .
 الفاضل/ ولي أمر الطالبة. ${record.studentName}..
 نفيدكم بأن إبنتكم قد ${statusMessage}
 بتاريخ ${record.date} للعلم بذلك .
 إدارة المدرسة`;
+        }
         
         // استخدام الرابط الرسمي لواتساب
         const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
@@ -2812,6 +2824,7 @@ function getStatusMessage(status) {
         case 'تأخير عن الحصة': return 'تأخرت عن الحصة.';
         case 'تسيَّب من الحصة': return 'تسيبت من الحصة.';
         case 'إستأذان خارج المدرسة': return 'أستأذنت خارج المدرسة.';
+        case 'إشعار ولي الأمر': return 'يوجد إشعار لولي الأمر.'; // أضف هذا السطر
         default: return status + '.';
     }
 }
