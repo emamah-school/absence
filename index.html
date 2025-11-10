@@ -135,8 +135,8 @@
         
         /* تلوين الحدود حسب النمط */
         .stat-card.absence {
-            border-color: var(--warning);
-            background: linear-gradient(135deg, #fff, #fff5f5);
+   border-color: var(--warning);
+     background: linear-gradient(135deg, #fff, #fff5f5);
         }
         
         .stat-card.tasyeeb {
@@ -318,9 +318,9 @@
         }
         
         input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+         outline: none;
+            border-color: #9a3412; /* برتقالي أغمق عند التركيز */
+            box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.2);
         }
         
         /* النصوص الزرقاء الغامقة */
@@ -481,8 +481,7 @@
             box-shadow: none;
         }
         
-        /* تلوين نصوص الحقول المطلوبة */
-        #section, 
+        /#section, 
         #studentName, 
         #parentPhone {
             color: #1a365d !important; /* أزرق غامق */
@@ -513,7 +512,7 @@
         /* التأكد من أن النص يبقى أزرق في جميع الحالات */
         #section option:checked,
         #studentName option:checked {
-            color: #1a365d;
+            color: blue;
             font-weight: 800;
         }  
         
@@ -878,7 +877,7 @@
                 
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle"></i>
-                    سيتم تعبئة اسم اليوم تلقائيًا عند اختيار التاريخ
+               سيتم تعبئة اسم اليوم تلقائيًا عند اختيار التاريخ - حقل الحصة اختياري
                 </div>
                 
                 <form id="absenceForm">
@@ -927,7 +926,7 @@
                     <!-- الحقول الجديدة -->
                     <div class="form-group">
                         <label for="period">الحصة</label>
-                        <select id="period" required>
+                        <select id="period" >
                             <option value="">اختر الحصة</option>
                             <option value="الحصة الأولى">الحصة الأولى</option>
                             <option value="الحصة الثانية">الحصة الثانية</option>
@@ -956,6 +955,7 @@
                             <option value="تأخير عن الحصة">تأخير عن الحصة</option>
                             <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
                             <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
+                                <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
                         </select>
                     </div>
                     
