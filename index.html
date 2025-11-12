@@ -1,3 +1,5 @@
+[file name]: index.html
+[file content begin]
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -719,7 +721,6 @@
             background: rgba(230, 57, 70, 0.1);
         }
         
-        /* نافذة تأكيد الواتساب الجديدة */
         .whatsapp-confirmation-modal {
             position: fixed;
             top: 0;
@@ -862,6 +863,145 @@
             transform: translateY(-2px);
         }
         
+        /* الأنماط الجديدة للاختيار المتعدد */
+        .multiple-selection {
+            border: 2px solid #4361ee;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f8f9ff;
+            margin-bottom: 15px;
+        }
+        
+        .selected-students-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            background: white;
+        }
+        
+        .selected-student-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .selected-student-item:last-child {
+            border-bottom: none;
+        }
+        
+        .remove-student {
+            background: none;
+            border: none;
+            color: #e63946;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .remove-student:hover {
+            background: rgba(230, 57, 70, 0.1);
+        }
+        
+        .selection-info {
+            background: #e8f4ff;
+            border: 1px solid #4361ee;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+        
+        .bulk-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-bulk {
+            background: #4361ee;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-bulk:hover {
+            background: #3a56d4;
+        }
+        
+        .btn-bulk-clear {
+            background: #6c757d;
+        }
+        
+        .btn-bulk-clear:hover {
+            background: #5a6268;
+        }
+        
+        /* نافذة التأكيد الجماعية */
+        .bulk-confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .bulk-confirmation-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .bulk-confirmation-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .bulk-students-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .bulk-student-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .bulk-student-item:last-child {
+            border-bottom: none;
+        }
+        
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -928,6 +1068,10 @@
             .btn-whatsapp-send,
             .btn-cancel-send {
                 width: 100%;
+            }
+            
+            .bulk-actions {
+                flex-direction: column;
             }
         }
     </style>
@@ -999,6 +1143,52 @@
         </div>
     </div>
 
+    <!-- نافذة التأكيد الجماعية -->
+    <div class="bulk-confirmation-modal" id="bulkConfirmationModal">
+        <div class="bulk-confirmation-content">
+            <div class="whatsapp-header">
+                <div class="whatsapp-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h2 class="whatsapp-title">إرسال إشعار جماعي عبر واتساب</h2>
+            </div>
+            
+            <div class="whatsapp-details">
+                <div class="detail-row">
+                    <span class="detail-label">عدد الطالبات:</span>
+                    <span class="detail-value" id="bulkStudentsCount">0</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">الصف والشعبة:</span>
+                    <span class="detail-value" id="bulkClassSection">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">الحالة:</span>
+                    <span class="detail-value" id="bulkStatus">-</span>
+                </div>
+            </div>
+            
+            <div class="bulk-students-list" id="bulkStudentsList">
+                <!-- قائمة الطالبات المختارة -->
+            </div>
+            
+            <div class="whatsapp-message" id="bulkMessageContent">
+                جاري تحميل الرسالة...
+            </div>
+            
+            <div class="whatsapp-buttons">
+                <button class="btn-cancel-send" id="cancelBulkBtn">
+                    <i class="fas fa-times"></i>
+                    إلغاء الإرسال
+                </button>
+                <button class="btn-whatsapp-send" id="confirmBulkBtn">
+                    <i class="fab fa-whatsapp"></i>
+                    إرسال للجميع
+                </button>
+            </div>
+        </div>
+    </div>
+
     <header>
         <div class="container">
             <div class="header-content">
@@ -1061,7 +1251,7 @@
                 
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle"></i>
-                    سيتم تعبئة اسم اليوم تلقائيًا عند اختيار التاريخ - حقل الحصة اختياري
+                    يمكنك اختيار طالبة واحدة أو عدة طالبات - حقل الحصة اختياري
                 </div>
                 
                 <form id="absenceForm">
@@ -1098,11 +1288,34 @@
                     
                     <div class="form-group">
                         <label for="studentName">اسم الطالبة</label>
-                        <select id="studentName" required onchange="updatePhoneNumber()">
+                        <select id="studentName" onchange="addStudentToSelection()">
                             <option value="">اختر الطالبة</option>
                         </select>
                         <div id="studentLoadingText" class="loading-text" style="display:none;">جاري تحميل أسماء الطالبات...</div>
                         <div class="loading" id="studentLoading" style="display:none; margin-top:10px;"></div>
+                    </div>
+
+                    <!-- قسم الطالبات المختارين -->
+                    <div class="multiple-selection" id="multipleSelection" style="display: none;">
+                        <div class="selection-info">
+                            <i class="fas fa-info-circle"></i>
+                            تم اختيار <span id="selectedCount">0</span> طالبة. يمكنك إضافة المزيد من الطالبات
+                        </div>
+                        
+                        <div class="selected-students-list" id="selectedStudentsList">
+                            <!-- قائمة الطالبات المختارين -->
+                        </div>
+                        
+                        <div class="bulk-actions">
+                            <button type="button" class="btn-bulk btn-bulk-clear" onclick="clearSelectedStudents()">
+                                <i class="fas fa-trash"></i>
+                                مسح الكل
+                            </button>
+                            <button type="button" class="btn-bulk" onclick="showBulkConfirmation()">
+                                <i class="fas fa-paper-plane"></i>
+                                إرسال إشعار للجميع
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -1123,7 +1336,7 @@
                         <label for="parentPhone">هاتف ولي الأمر</label>
                         <div class="phone-input-container">
                             <span class="phone-prefix">968</span>
-                            <input type="tel" id="parentPhone" class="auto-fill-text" placeholder="سيتم تعبئته تلقائياً" readonly required maxlength="8">
+                            <input type="tel" id="parentPhone" class="auto-fill-text" placeholder="سيتم تعبئته تلقائياً" readonly maxlength="8">
                             <div class="error-message" id="phoneError">يجب أن يحتوي الرقم على 8 أرقام</div>
                         </div>
                     </div>
@@ -1182,6 +1395,8 @@
         let dateConfirmationTimeout = null;
         let currentAttachment = null;
         let autoRefreshInterval = null;
+        let selectedStudents = [];
+        let currentBulkData = null;
         
         // عناصر DOM
         const absenceForm = document.getElementById('absenceForm');
@@ -1503,6 +1718,7 @@
         function resetStudentFields() {
             studentNameInput.innerHTML = '<option value="" class="loading-text">اختر الطالبة</option>';
             resetPhoneField();
+            clearSelectedStudents();
         }
 
         // إعادة تعيين حقل الهاتف
@@ -1667,18 +1883,21 @@
             } else {
                 return `السلام عليكم ورحمة الله وبركاته
 
+🔔 *رسالة من إدارة المدرسة* 🔔
+
 الفاضل/ ولي أمر الطالبة ${record.studentName}
 الصف: ${record.class} - الشعبة: ${record.section}
 
 نفيدكم بأن ابنتكم قد ${statusMessage}
 بتاريخ: ${record.date}
 
+📞 *رقم المدرسة للتواصل:* 96898839479
+
 نأمل منكم التواصل مع إدارة المدرسة
 لتوضيح الأسباب ومتابعة الحالة
 
 مع خالص التحية
-إدارة المدرسة
-هاتف: ${SCHOOL_PHONE}`;
+إدارة مدرسة إمامة بنت ابي العاص`;
             }
         }
 
@@ -1726,6 +1945,229 @@
             }
         }
 
+        // الدوال الجديدة للاختيار المتعدد
+        // دالة إضافة طالبة إلى القائمة
+        function addStudentToSelection() {
+            const studentSelect = document.getElementById('studentName');
+            const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+            
+            if (!selectedOption.value) return;
+            
+            const student = {
+                id: Date.now() + Math.random(),
+                name: selectedOption.value,
+                phone: selectedOption.dataset.phone || '',
+                className: document.getElementById('class').value,
+                section: document.getElementById('section').value
+            };
+            
+            // التحقق من عدم تكرار الطالبة
+            const exists = selectedStudents.find(s => s.name === student.name);
+            if (exists) {
+                showNotification('تنبيه', 'هذه الطالبة مضافَة مسبقاً', 'warning');
+                return;
+            }
+            
+            selectedStudents.push(student);
+            updateSelectedStudentsList();
+            
+            // إعادة تعيين الاختيار
+            studentSelect.value = '';
+        }
+
+        // دالة تحديث قائمة الطالبات المختارين
+        function updateSelectedStudentsList() {
+            const container = document.getElementById('selectedStudentsList');
+            const counter = document.getElementById('selectedCount');
+            const selectionSection = document.getElementById('multipleSelection');
+            
+            counter.textContent = selectedStudents.length;
+            
+            if (selectedStudents.length > 0) {
+                selectionSection.style.display = 'block';
+                container.innerHTML = selectedStudents.map(student => `
+                    <div class="selected-student-item">
+                        <div>
+                            <strong>${student.name}</strong>
+                            <div style="font-size: 0.8rem; color: #666;">${student.phone ? '968' + student.phone : 'لا يوجد رقم'}</div>
+                        </div>
+                        <button class="remove-student" onclick="removeStudent('${student.id}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                selectionSection.style.display = 'none';
+            }
+        }
+
+        // دالة إزالة طالبة من القائمة
+        function removeStudent(studentId) {
+            selectedStudents = selectedStudents.filter(student => student.id !== studentId);
+            updateSelectedStudentsList();
+        }
+
+        // دالة مسح جميع الطالبات
+        function clearSelectedStudents() {
+            selectedStudents = [];
+            updateSelectedStudentsList();
+            showNotification('تم', 'تم مسح جميع الطالبات المختارة', 'success');
+        }
+
+        // دالة عرض نافذة التأكيد الجماعية
+        function showBulkConfirmation() {
+            if (selectedStudents.length === 0) {
+                showNotification('تنبيه', 'لم تقم باختيار أي طالبات', 'warning');
+                return;
+            }
+            
+            const status = document.getElementById('status').value;
+            if (!status) {
+                showNotification('خطأ', 'يرجى اختيار حالة الغياب', 'error');
+                return;
+            }
+            
+            // تحديث البيانات في النافذة
+            document.getElementById('bulkStudentsCount').textContent = selectedStudents.length;
+            document.getElementById('bulkClassSection').textContent = `${selectedStudents[0].className} - ${selectedStudents[0].section}`;
+            document.getElementById('bulkStatus').textContent = status;
+            
+            // تحديث قائمة الطالبات
+            const studentsList = document.getElementById('bulkStudentsList');
+            studentsList.innerHTML = selectedStudents.map(student => `
+                <div class="bulk-student-item">
+                    <span>${student.name}</span>
+                    <span>${student.phone ? '968' + student.phone : 'لا يوجد رقم'}</span>
+                </div>
+            `).join('');
+            
+            // إنشاء رسالة نموذجية
+            const sampleMessage = createBulkWhatsAppMessage(selectedStudents[0], status);
+            document.getElementById('bulkMessageContent').textContent = sampleMessage;
+            
+            // تخزين البيانات الحالية
+            currentBulkData = {
+                students: [...selectedStudents],
+                status: status,
+                date: document.getElementById('date').value,
+                day: document.getElementById('day').value,
+                period: document.getElementById('period').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            // إظهار النافذة
+            document.getElementById('bulkConfirmationModal').classList.add('show');
+        }
+
+        // دالة إنشاء رسالة واتساب جماعية
+        function createBulkWhatsAppMessage(student, status) {
+            const statusMessages = {
+                'غياب': 'تغيبت عن المدرسة',
+                'تأخير عن الحصة': 'تأخرت عن الحصة',
+                'تسيَّب من الحصة': 'تسيبت من الحصة',
+                'إستأذان خارج المدرسة': 'استأذنت خارج المدرسة',
+                'إشعار ولي الأمر': 'يوجد إشعار لولي الأمر'
+            };
+            
+            const statusMessage = statusMessages[status] || status;
+            const currentDate = document.getElementById('date').value;
+            
+            return `السلام عليكم ورحمة الله وبركاته
+
+🔔 *رسالة من إدارة المدرسة* 🔔
+
+الفاضل/ ولي أمر الطالبة ${student.name}
+الصف: ${student.className} - الشعبة: ${student.section}
+
+نفيدكم بأن ابنتكم قد ${statusMessage}
+بتاريخ: ${currentDate}
+
+📞 *رقم المدرسة للتواصل:* 96898839479
+
+نأمل منكم التواصل مع إدارة المدرسة
+لتوضيح الأسباب ومتابعة الحالة
+
+مع خالص التحية
+إدارة مدرسة إمامة بنت ابي العاص`;
+        }
+
+        // دالة الإرسال الجماعي
+        async function sendBulkMessages() {
+            if (!currentBulkData) return;
+            
+            const submitBtn = document.getElementById('confirmBulkBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<div class="loading" style="display: inline-block; width: 16px; height: 16px; margin-left: 8px;"></div> جاري الإرسال...';
+            submitBtn.disabled = true;
+            
+            try {
+                let successCount = 0;
+                let errorCount = 0;
+                
+                // إرسال لكل طالبة
+                for (const student of currentBulkData.students) {
+                    try {
+                        const formData = {
+                            date: currentBulkData.date,
+                            day: currentBulkData.day,
+                            studentName: student.name,
+                            class: student.className,
+                            section: student.section,
+                            period: currentBulkData.period,
+                            status: currentBulkData.status,
+                            parentPhone: student.phone,
+                            notes: currentBulkData.notes
+                        };
+                        
+                        await callGoogleScript('saveRecord', formData);
+                        successCount++;
+                        
+                        // إرسال واتساب إذا كان هناك رقم
+                        if (student.phone && validatePhone(student.phone)) {
+                            const message = createBulkWhatsAppMessage(student, currentBulkData.status);
+                            const whatsappUrl = `https://api.whatsapp.com/send?phone=968${student.phone}&text=${encodeURIComponent(message)}`;
+                            window.open(whatsappUrl, '_blank');
+                            
+                            // تأخير بسيط بين كل رسالة
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                        }
+                        
+                    } catch (error) {
+                        console.error(`خطأ في حفظ ${student.name}:`, error);
+                        errorCount++;
+                    }
+                }
+                
+                // إعادة تعيين النموذج
+                clearSelectedStudents();
+                document.getElementById('absenceForm').reset();
+                initializeDate();
+                
+                // إخفاء النافذة
+                hideBulkConfirmation();
+                
+                // عرض النتائج
+                showNotification('نجاح', `تم حفظ ${successCount} سجل بنجاح${errorCount > 0 ? ` وحدث ${errorCount} أخطاء` : ''}`, 'success');
+                
+                // تحديث الإحصائيات
+                await updateStats();
+                
+            } catch (error) {
+                console.error('خطأ في الإرسال الجماعي:', error);
+                showNotification('خطأ', 'حدث خطأ في الإرسال الجماعي', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        // دالة إخفاء نافذة التأكيد الجماعية
+        function hideBulkConfirmation() {
+            document.getElementById('bulkConfirmationModal').classList.remove('show');
+            currentBulkData = null;
+        }
+
         // التهيئة عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
             initializeDate();
@@ -1760,9 +2202,26 @@
             confirmWhatsAppBtn.addEventListener('click', sendWhatsAppDirectly);
             cancelWhatsAppBtn.addEventListener('click', hideWhatsAppConfirmation);
             
-            // إرسال النموذج
+            // استماع لأزرار الجماعية
+            document.getElementById('confirmBulkBtn').addEventListener('click', sendBulkMessages);
+            document.getElementById('cancelBulkBtn').addEventListener('click', hideBulkConfirmation);
+            
+            // إغلاق النوافذ بالنقر خارجها
+            document.getElementById('bulkConfirmationModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideBulkConfirmation();
+                }
+            });
+            
+            // إرسال النموذج (للطالبة الواحدة)
             absenceForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                
+                // إذا كان هناك طالبات مختارة، استخدم النظام الجماعي
+                if (selectedStudents.length > 0) {
+                    showBulkConfirmation();
+                    return;
+                }
                 
                 const submitBtn = document.getElementById('submitBtn');
                 const submitText = document.getElementById('submitText');
@@ -1848,3 +2307,4 @@
     </script>
 </body>
 </html>
+[file content end]
