@@ -1,3 +1,5 @@
+[file name]: index.html
+[file content begin]
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -9,7 +11,7 @@
     <style>
         :root {
             --primary: #4361ee;
-            --secondary: Purple ;
+            --secondary: Purple;
             --success: #4cc9f0;
             --warning: #f72585;
             --danger: #e63946;
@@ -24,14 +26,14 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Tajawal', sans-serif;
-            font-weight: 700; /* خط عريض للتطبيق كاملاً */
+            font-weight: 700;
         }
         
         body {
             background-color: #f5f7fb;
             color: var(--dark);
             line-height: 1.6;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
         }
         
         .container {
@@ -66,7 +68,7 @@
         
         .logo h1 {
             font-size: 1.5rem;
-            font-weight: 700; /* خط عريض جداً */
+            font-weight: 700;
         }
         
         .nav-links {
@@ -83,19 +85,18 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
         }
         
         .nav-link:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
         
-        /* تحديث التاريخ في الأعلى */
         .date-display {
             text-align: left;
             direction: ltr;
             font-size: 1.0rem;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
             color: white;
             background: rgba(255, 255, 255, 0.1);
             padding: 8px 15px;
@@ -110,33 +111,31 @@
             font-size: 1.2rem;
         }
         
-        /* تحديث مربعات الإحصائيات */
         .stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* زيادة الحجم */
-            gap: 15px; /* زيادة المسافة */
-            margin: 1.0rem 0; /* زيادة الهامش */
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 1.0rem 0;
         }
         
         .stat-card {
             background: white;
-            border-radius: 12px; /* زوايا أكثر استدارة */
-            padding: 0.5rem; /* زيادة الحشو */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* ظل أكثر وضوحاً */
+            border-radius: 12px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             transition: all 0.3s ease;
             position: relative;
-            border: 2px solid; /* حدود ملونة حسب النمط */
-            min-height: 100px; /* ارتفاع ثابت */
+            border: 2px solid;
+            min-height: 100px;
         }
         
-        /* تلوين الحدود حسب النمط */
         .stat-card.absence {
-   border-color: var(--warning);
-     background: linear-gradient(135deg, #fff, #fff5f5);
+            border-color: var(--warning);
+            background: linear-gradient(135deg, #fff, #fff5f5);
         }
         
         .stat-card.tasyeeb {
@@ -160,12 +159,12 @@
         }
         
         .stat-card:hover {
-            transform: translateY(-5px); /* تأثير أكبر عند التمرير */
+            transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
         
         .stat-icon {
-            font-size: 1.5rem; /* زيادة حجم الأيقونات */
+            font-size: 1.5rem;
             margin-bottom: 8px;
         }
         
@@ -189,10 +188,9 @@
             color: var(--orange);
         }
         
-        /* تلوين أرقام الإحصائيات حسب لون المربعات */
         .stat-number {
-            font-size: 1.5rem; /* زيادة حجم الأرقام */
-            font-weight: 800; /* خط أكثر سماكة */
+            font-size: 1.5rem;
+            font-weight: 800;
             margin: 5px 0;
             transition: all 0.3s ease;
         }
@@ -222,9 +220,9 @@
         }
         
         .stat-title {
-            font-size: 0.7rem; /* زيادة حجم النص قليلاً */
-            color: var(--dark); /* لون أغمق */
-            font-weight: 700; /* خط عريض */
+            font-size: 0.7rem;
+            color: var(--dark);
+            font-weight: 700;
         }
         
         .stat-update-indicator {
@@ -273,7 +271,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 800; /* خط عريض جداً */
+            font-weight: 800;
         }
         
         .form-group {
@@ -290,16 +288,14 @@
             flex: 1;
         }
         
-        /* تحديث عناوين الحقول */
         label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 800; /* خط عريض جداً */
-            color: #000; /* لون أسود غامق */
-            font-size: 1rem; /* حجم أكبر قليلاً */
+            font-weight: 800;
+            color: #000;
+            font-size: 1rem;
         }
         
-        /* تحديث الحقول */
         input, select, textarea {
             width: 100%;
             padding: 12px 15px;
@@ -307,7 +303,7 @@
             border-radius: 8px;
             font-size: 1rem;
             transition: border 0.3s ease;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
             background-color: white;
         }
         
@@ -318,20 +314,19 @@
         }
         
         input:focus, select:focus, textarea:focus {
-         outline: none;
-            border-color: #9a3412; /* برتقالي أغمق عند التركيز */
+            outline: none;
+            border-color: #9a3412;
             box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.2);
         }
         
-        /* النصوص الزرقاء الغامقة */
         .loading-text {
-            color: #1a365d !important; /* أزرق غامق */
-            font-weight: 800 !important; /* خط عريض جداً */
+            color: #1a365d !important;
+            font-weight: 800 !important;
         }
         
         .auto-fill-text {
-            color: #1a365d !important; /* أزرق غامق */
-            font-weight: 800 !important; /* خط عريض جداً */
+            color: #1a365d !important;
+            font-weight: 800 !important;
         }
         
         .btn {
@@ -342,7 +337,7 @@
             border: none;
             border-radius: 8px;
             font-size: 1rem;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
@@ -389,7 +384,7 @@
             margin-top: 2rem;
             color: var(--gray);
             border-top: 1px solid #eee;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
         }
         
         .date-day-group {
@@ -408,7 +403,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
         }
         
         .alert-info {
@@ -452,7 +447,7 @@
             font-size: 0.85rem;
             margin-top: 5px;
             display: none;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
         }
         
         .loading {
@@ -481,42 +476,37 @@
             box-shadow: none;
         }
         
-        /#section, 
+        #section, 
         #studentName, 
         #parentPhone {
-            color: #1a365d !important; /* أزرق غامق */
-            font-weight: 800 !important; /* خط عريض جداً */
+            color: #1a365d !important;
+            font-weight: 800 !important;
         }
 
-        /* تلوين النص التوضيحي في حقل الهاتف */
         #parentPhone::placeholder {
             color: #1a365d !important;
             font-weight: 800 !important;
             opacity: 1;
         }
 
-        /* تلوين خيارات القوائم المنسدلة */
         #section option,
         #studentName option {
             color: #1a365d;
             font-weight: 800;
         }
 
-        /* التأكد من أن النص يبقى أزرق عند التحديد والتركيز */
         #section:focus, 
         #studentName:focus, 
         #parentPhone:focus {
             color: #1a365d !important;
         }
 
-        /* التأكد من أن النص يبقى أزرق في جميع الحالات */
         #section option:checked,
         #studentName option:checked {
             color: blue;
             font-weight: 800;
         }  
         
-        /* نظام الإشعارات الداخلية */
         .notification-container {
             position: fixed;
             top: 20px;
@@ -590,7 +580,6 @@
             color: var(--gray);
         }
         
-        /* نافذة تأكيد التاريخ */
         .date-confirmation-modal {
             position: fixed;
             top: 0;
@@ -634,7 +623,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
         }
         
         .date-confirmation-title i {
@@ -645,7 +634,7 @@
             margin-bottom: 1.5rem;
             color: var(--gray);
             line-height: 1.5;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
         }
         
         .date-confirmation-buttons {
@@ -664,7 +653,6 @@
             color: white;
         }
         
-        /* أنماط حقل المرفق */
         #attachment {
             border: 2px dashed #ddd;
             background: #f8f9fa;
@@ -733,6 +721,149 @@
             background: rgba(230, 57, 70, 0.1);
         }
         
+        /* نافذة تأكيد الواتساب الجديدة */
+        .whatsapp-confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-confirmation-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .whatsapp-confirmation-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .whatsapp-confirmation-modal.show .whatsapp-confirmation-content {
+            transform: scale(1);
+        }
+        
+        .whatsapp-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #25D366;
+        }
+        
+        .whatsapp-icon {
+            width: 50px;
+            height: 50px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .whatsapp-title {
+            font-size: 1.3rem;
+            color: #25D366;
+            font-weight: 700;
+        }
+        
+        .whatsapp-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .detail-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .whatsapp-message {
+            background: #e8f5e8;
+            border: 1px solid #25D366;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            line-height: 1.6;
+            color: #1a365d;
+        }
+        
+        .whatsapp-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-whatsapp-send {
+            background: #25D366;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-whatsapp-send:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+        
+        .btn-cancel-send {
+            background: var(--gray);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel-send:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -761,7 +892,7 @@
             }
             
             .stats-container {
-                grid-template-columns: repeat(2, 1fr); /* عمودين في الشاشات الصغيرة */
+                grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
             }
             
@@ -791,6 +922,15 @@
                 align-items: center;
                 gap: 10px;
             }
+            
+            .whatsapp-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-whatsapp-send,
+            .btn-cancel-send {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -811,6 +951,52 @@
             <div class="date-confirmation-buttons">
                 <button class="btn btn-cancel" id="cancelDateBtn">لا</button>
                 <button class="btn btn-confirm" id="confirmDateBtn">نعم</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد إرسال الواتساب -->
+    <div class="whatsapp-confirmation-modal" id="whatsappConfirmationModal">
+        <div class="whatsapp-confirmation-content">
+            <div class="whatsapp-header">
+                <div class="whatsapp-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h2 class="whatsapp-title">إرسال إشعار عبر واتساب</h2>
+            </div>
+            
+            <div class="whatsapp-details">
+                <div class="detail-row">
+                    <span class="detail-label">اسم الطالبة:</span>
+                    <span class="detail-value" id="whatsappStudentName">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">الصف والشعبة:</span>
+                    <span class="detail-value" id="whatsappClassSection">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">الحالة:</span>
+                    <span class="detail-value" id="whatsappStatus">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">رقم ولي الأمر:</span>
+                    <span class="detail-value" id="whatsappPhone">-</span>
+                </div>
+            </div>
+            
+            <div class="whatsapp-message" id="whatsappMessageContent">
+                جاري تحميل الرسالة...
+            </div>
+            
+            <div class="whatsapp-buttons">
+                <button class="btn-cancel-send" id="cancelWhatsAppBtn">
+                    <i class="fas fa-times"></i>
+                    إلغاء الإرسال
+                </button>
+                <button class="btn-whatsapp-send" id="confirmWhatsAppBtn">
+                    <i class="fab fa-whatsapp"></i>
+                    إرسال الآن
+                </button>
             </div>
         </div>
     </div>
@@ -840,7 +1026,7 @@
                 <div class="stat-update-indicator" id="absenceIndicator"></div>
                 <i class="fas fa-user-slash stat-icon"></i>
                 <div class="stat-number" id="todayAbsence">0</div>
-                <div class="stat-title">الغياب</div>
+                <div class="stat-title">الغياب اليوم</div>
             </div>
             <div class="stat-card takheer">
                 <div class="stat-update-indicator" id="takheerIndicator"></div>
@@ -877,7 +1063,7 @@
                 
                 <div class="alert alert-info">
                     <i class="fas fa-info-circle"></i>
-               سيتم تعبئة جميع الحقول الغير قابلة للكتابة تلقائيًا
+                    سيتم تعبئة اسم اليوم تلقائيًا عند اختيار التاريخ - حقل الحصة اختياري
                 </div>
                 
                 <form id="absenceForm">
@@ -904,29 +1090,26 @@
                         </div>
                         <div class="form-group">
                             <label for="section">الشعبة</label>
-                           <select id="section" required onchange="loadStudents()">
-    <option value="">اختر الشعبة</option>
-</select>
-<div id="sectionLoadingText" class="loading-text" style="display:none;">جاري تحميل فصول الشعب...</div>
-<div class="loading" id="sectionLoading" style="display:none; margin-top:10px;"></div>
-
+                            <select id="section" required onchange="loadStudents()">
+                                <option value="">اختر الشعبة</option>
+                            </select>
+                            <div id="sectionLoadingText" class="loading-text" style="display:none;">جاري تحميل الشعب...</div>
+                            <div class="loading" id="sectionLoading" style="display:none; margin-top:10px;"></div>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="studentName">اسم الطالبة</label>
-                      <select id="studentName" required onchange="updatePhoneNumber()">
-    <option value="">اختر أسم الطالبة</option>
-</select>
-<div id="studentLoadingText" class="loading-text" style="display:none;">جاري تحميل أسماء الطالبات...</div>
-<div class="loading" id="studentLoading" style="display:none; margin-top:10px;"></div>
-
+                        <select id="studentName" required onchange="updatePhoneNumber()">
+                            <option value="">اختر الطالبة</option>
+                        </select>
+                        <div id="studentLoadingText" class="loading-text" style="display:none;">جاري تحميل أسماء الطالبات...</div>
+                        <div class="loading" id="studentLoading" style="display:none; margin-top:10px;"></div>
                     </div>
                     
-                    <!-- الحقول الجديدة -->
                     <div class="form-group">
                         <label for="period">الحصة</label>
-                        <select id="period" >
+                        <select id="period">
                             <option value="">اختر الحصة</option>
                             <option value="الحصة الأولى">الحصة الأولى</option>
                             <option value="الحصة الثانية">الحصة الثانية</option>
@@ -934,8 +1117,6 @@
                             <option value="الحصة الرابعة">الحصة الرابعة</option>
                             <option value="الحصة الخامسة">الحصة الخامسة</option>
                             <option value="الحصة السادسة">الحصة السادسة</option>
-                              <option value="الحصة السابعة">الحصة السابعة</option>
-                              <option value="الحصة الثامنه">الحصة الثامنه</option>
                             <option value="طوال اليوم">طوال اليوم</option>
                         </select>
                     </div>
@@ -954,11 +1135,10 @@
                         <select id="status" required>
                             <option value="">اختر الحالة</option>
                             <option value="غياب">غياب</option>
-                          <option value=" التأخير عن الطابور الصباحي">التأخير عن الطابور الصباحي</option> 
                             <option value="تأخير عن الحصة">تأخير عن الحصة</option>
                             <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
                             <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
-                                <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
+                            <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
                         </select>
                     </div>
                     
@@ -967,7 +1147,6 @@
                         <textarea id="notes" rows="3" placeholder="أضف ملاحظة إضافية (اختياري)"></textarea>
                     </div>
 
-                    <!-- حقل إرفاق الملف -->
                     <div class="form-group">
                         <label for="attachment">إرفاق ملف (اختياري)</label>
                         <input type="file" id="attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" style="padding: 8px;">
@@ -985,36 +1164,26 @@
                         عرض جميع السجلات
                     </a>
                 </form>
-                
-                <div id="whatsappSection" style="display: none; margin-top: 20px;">
-                    <h3 class="section-title">إرسال إشعار عبر واتساب</h3>
-                    <div class="alert alert-warning">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        تأكد من صحة رقم الهاتف قبل الإرسال
-                    </div>
-                    <div class="message-preview" id="messagePreview"></div>
-                    <button id="sendWhatsApp" class="btn btn-whatsapp">
-                        <i class="fab fa-whatsapp"></i>
-                        إرسال عبر واتساب
-                    </button>
-                </div>
             </div>
         </div>
     </div>
 
     <footer>
         <div class="container">
-            </p>صنع بفخر 🤍❤️💚 - نظام الغياب المدرسي - إدارة مدرسة إمامة بنت ابي العاص للبنات (10-12)  © 2025</p>
+            <p>نظام الغياب المدرسي - إدارة المدرسة © 2025</p>
         </div>
     </footer>
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_hp07h8KIWLbOiwBhDHXdK76QisSLWt8SNxI4ZjEByOJsWRdI1xTQcE9ESxfLgbEy4g/exec';
+        const SCHOOL_PHONE = '96898839479';
+        
         let records = [];
         let currentRecord = null;
         let studentsList = [];
         let dateConfirmationTimeout = null;
         let currentAttachment = null;
+        let autoRefreshInterval = null;
         
         // عناصر DOM
         const absenceForm = document.getElementById('absenceForm');
@@ -1032,42 +1201,42 @@
         const cancelDateBtn = document.getElementById('cancelDateBtn');
         const attachmentInput = document.getElementById('attachment');
         const attachmentPreview = document.getElementById('attachmentPreview');
+        const whatsappConfirmationModal = document.getElementById('whatsappConfirmationModal');
+        const whatsappStudentName = document.getElementById('whatsappStudentName');
+        const whatsappClassSection = document.getElementById('whatsappClassSection');
+        const whatsappStatus = document.getElementById('whatsappStatus');
+        const whatsappPhone = document.getElementById('whatsappPhone');
+        const whatsappMessageContent = document.getElementById('whatsappMessageContent');
+        const confirmWhatsAppBtn = document.getElementById('confirmWhatsAppBtn');
+        const cancelWhatsAppBtn = document.getElementById('cancelWhatsAppBtn');
 
-        // تحديث دالة تهيئة التاريخ لإضافة الساعة
+        // تحديث دالة تهيئة التاريخ
         function initializeDate() {
             const now = new Date();
-            
-            // تحديث التاريخ الميلادي والوقت
             updateDateTime();
             
-            // تحديث التاريخ في حقل الإدخال
             const today = now.toISOString().split('T')[0];
             dateInput.value = today;
             updateDayFromDate(now);
             
-            // تحديث الوقت كل ثانية
             setInterval(updateDateTime, 1000);
         }
 
         // دالة تحديث التاريخ والوقت
         function updateDateTime() {
             const now = new Date();
-
-            // التاريخ الميلادي الرقمي مثل: 2/11/2025
             const day = now.getDate();
             const month = now.getMonth() + 1;
             const year = now.getFullYear();
             const dateString = `${day}/${month}/${year}`;
 
-            // اسم اليوم بالعربية
             const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
             const dayName = days[now.getDay()];
 
-            // الوقت بنظام 12 ساعة (4:37 مساءً)
             let hours = now.getHours();
             const minutes = now.getMinutes().toString().padStart(2, '0');
             const period = hours >= 12 ? 'مساءً' : 'صباحاً';
-            hours = hours % 12 || 12; // تحويل إلى 12 ساعة
+            hours = hours % 12 || 12;
             const timeString = `${hours}:${minutes} ${period}`;
 
             document.getElementById('currentDate').innerHTML = `${dayName} - ${dateString} - ${timeString}`;
@@ -1096,18 +1265,15 @@
             
             notificationContainer.appendChild(notification);
             
-            // إظهار الإشعار
             setTimeout(() => {
                 notification.classList.add('show');
             }, 100);
             
-            // إغلاق الإشعار عند النقر على الزر
             const closeBtn = notification.querySelector('.notification-close');
             closeBtn.addEventListener('click', () => {
                 hideNotification(notification);
             });
             
-            // إغلاق الإشعار تلقائيًا بعد المدة المحددة
             if (duration > 0) {
                 setTimeout(() => {
                     hideNotification(notification);
@@ -1159,19 +1325,17 @@
             }
         }
 
-        // ✅ تحديث دالة تحديث الإحصائيات - النسخة المحسنة
+        // تحديث الإحصائيات
         async function updateStats() {
             try {
                 console.log('🔄 جاري تحديث الإحصائيات...');
                 
-                // إظهار تأثير التحديث
                 showUpdateIndicators();
                 
                 const stats = await callGoogleScript('getStats');
                 
                 console.log('📊 الإحصائيات المستلمة:', stats);
                 
-                // تحديث الأرقام مع تأثيرات مرئية
                 animateCounter('todayAbsence', stats.today.absence || 0);
                 animateCounter('todayTakheer', stats.today.takheer || 0);
                 animateCounter('todayTasyeeb', stats.today.tasyeeb || 0);
@@ -1186,17 +1350,16 @@
             }
         }
 
-        // ✅ تأثير عددي سلس
+        // تأثير عددي سلس
         function animateCounter(elementId, targetValue) {
             const element = document.getElementById(elementId);
             const currentValue = parseInt(element.textContent) || 0;
             
             if (currentValue === targetValue) return;
             
-            // إضافة تأثير التحديث
             element.classList.add('updating');
             
-            const duration = 800; // مدة الحركة بالمللي ثانية
+            const duration = 800;
             const steps = 30;
             const stepValue = (targetValue - currentValue) / steps;
             let currentStep = 0;
@@ -1214,7 +1377,7 @@
             }, duration / steps);
         }
 
-        // ✅ إظهار مؤشرات التحديث
+        // إظهار مؤشرات التحديث
         function showUpdateIndicators() {
             const indicators = [
                 'absenceIndicator',
@@ -1245,7 +1408,7 @@
             }
             
             sectionInput.disabled = true;
-            sectionInput.innerHTML = '<option value="" class="loading-text">جاري تحميل فصول الشعب...</option>';
+            sectionInput.innerHTML = '<option value="" class="loading-text">جاري تحميل الشعب...</option>';
             sectionLoading.style.display = 'inline-block';
             
             try {
@@ -1265,8 +1428,8 @@
                 
             } catch (error) {
                 console.error('خطأ في جلب الشعب:', error);
-                sectionInput.innerHTML = '<option value="" class="loading-text">خطأ في تحميل فصول الشعب</option>';
-                showNotification('خطأ', 'فشل في تحميل فصول الشعب', 'error');
+                sectionInput.innerHTML = '<option value="" class="loading-text">خطأ في تحميل الشعب</option>';
+                showNotification('خطأ', 'فشل في تحميل الشعب', 'error');
             } finally {
                 sectionInput.disabled = false;
                 sectionLoading.style.display = 'none';
@@ -1285,7 +1448,7 @@
             }
             
             studentNameInput.disabled = true;
-            studentNameInput.innerHTML = '<option value="" class="loading-text">جاري تحميل أسماء الطالبات...</option>';
+            studentNameInput.innerHTML = '<option value="" class="loading-text">جاري تحميل الطالبات...</option>';
             studentLoading.style.display = 'inline-block';
             
             try {
@@ -1295,7 +1458,6 @@
                 
                 console.log('📋 تم جلب الطالبات:', studentsList);
                 
-                // تحديث قائمة الطالبات
                 studentNameInput.innerHTML = '<option value="" class="loading-text">اختر الطالبة</option>';
                 
                 if (studentsList && studentsList.length > 0) {
@@ -1312,9 +1474,9 @@
                 
             } catch (error) {
                 console.error('خطأ في جلب الطالبات:', error);
-                studentNameInput.innerHTML = '<option value="" class="loading-text">خطأ في تحميل أسماء الطالبات</option>';
+                studentNameInput.innerHTML = '<option value="" class="loading-text">خطأ في تحميل الطالبات</option>';
                 studentsList = [];
-                showNotification('خطأ', 'فشل في تحميل أسماء الطالبات', 'error');
+                showNotification('خطأ', 'فشل في تحميل الطالبات', 'error');
             } finally {
                 studentNameInput.disabled = false;
                 studentLoading.style.display = 'none';
@@ -1330,7 +1492,6 @@
             
             parentPhoneInput.value = phone;
             
-            // التحقق من صحة الرقم
             if (phone && validatePhone(phone)) {
                 document.getElementById('phoneError').style.display = 'none';
             } else if (phone) {
@@ -1360,28 +1521,22 @@
             const selected = new Date(selectedDate);
             selected.setHours(0, 0, 0, 0);
             
-            // إلغاء أي تأخير سابق
             if (dateConfirmationTimeout) {
                 clearTimeout(dateConfirmationTimeout);
             }
             
-            // إذا كان التاريخ المحدد أقدم من اليوم
             if (selected < today) {
-                // تأخير ظهور الرسالة لمدة ثانية
                 dateConfirmationTimeout = setTimeout(() => {
                     dateConfirmationMessage.textContent = "لقد اخترت تاريخًا قديمًا، هل تريد تسجيل حالة سابقة؟";
                     showDateConfirmationModal();
                 }, 1000);
             }
-            // إذا كان التاريخ المحدد مستقبليًا
             else if (selected > today) {
-                // تأخير ظهور الرسالة لمدة ثانية
                 dateConfirmationTimeout = setTimeout(() => {
                     dateConfirmationMessage.textContent = "لقد اخترت تاريخًا مستقبليًا، هل تريد تسجيل حالة مستقبلية؟";
                     showDateConfirmationModal();
                 }, 1000);
             }
-            // إذا كان التاريخ هو اليوم، لا تفعل شيئًا
         }
 
         // عرض نافذة تأكيد التاريخ
@@ -1409,7 +1564,6 @@
             const file = event.target.files[0];
             
             if (file) {
-                // التحقق من حجم الملف (5MB كحد أقصى)
                 if (file.size > 5 * 1024 * 1024) {
                     showNotification('خطأ', 'حجم الملف كبير جداً. الحد الأقصى 5MB', 'error');
                     event.target.value = '';
@@ -1418,7 +1572,6 @@
                     return;
                 }
                 
-                // التحقق من نوع الملف
                 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
                 if (!allowedTypes.includes(file.type)) {
                     showNotification('خطأ', 'نوع الملف غير مسموح به. المسموح: صور، PDF', 'error');
@@ -1430,7 +1583,6 @@
                 
                 currentAttachment = file;
                 
-                // عرض المعاينة
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     if (file.type.includes('image')) {
@@ -1475,23 +1627,65 @@
             attachmentPreview.style.display = 'none';
             currentAttachment = null;
         }
-        
-        function prepareWhatsAppMessage(recordId) {
-            const record = records.find(r => r.id === recordId);
-            if (!record) return;
+
+        // عرض نافذة تأكيد الواتساب
+        function showWhatsAppConfirmation(recordData) {
+            whatsappStudentName.textContent = recordData.studentName;
+            whatsappClassSection.textContent = `${recordData.class} - ${recordData.section}`;
+            whatsappStatus.textContent = recordData.status;
+            whatsappPhone.textContent = `968${recordData.parentPhone}`;
             
-            currentRecord = record;
+            // إنشاء محتوى الرسالة
+            const message = createWhatsAppMessage(recordData);
+            whatsappMessageContent.textContent = message;
             
-            const message = `نفيدكم بأن ابنتكم الطالبة ${record.studentName} المقيدة بالصف ${record.class} الشعبة ${record.section} قد ${record.status} لأسباب لا نعلمها. - إدارة المدرسة`;
+            // تخزين بيانات السجل للاستخدام لاحقاً
+            currentRecord = recordData;
+            currentRecord.whatsappMessage = message;
             
-            document.getElementById('messagePreview').textContent = message;
-            document.getElementById('whatsappSection').style.display = 'block';
-            
-            // التمرير إلى قسم الواتساب
-            document.getElementById('whatsappSection').scrollIntoView({ behavior: 'smooth' });
+            whatsappConfirmationModal.classList.add('show');
         }
-        
-        function sendWhatsAppMessage() {
+
+        // إخفاء نافذة تأكيد الواتساب
+        function hideWhatsAppConfirmation() {
+            whatsappConfirmationModal.classList.remove('show');
+            currentRecord = null;
+        }
+
+        // إنشاء رسالة الواتساب
+        function createWhatsAppMessage(record) {
+            const statusMessages = {
+                'غياب': 'تغيبت عن المدرسة',
+                'تأخير عن الحصة': 'تأخرت عن الحصة',
+                'تسيَّب من الحصة': 'تسيبت من الحصة',
+                'إستأذان خارج المدرسة': 'استأذنت خارج المدرسة',
+                'إشعار ولي الأمر': 'يوجد إشعار لولي الأمر'
+            };
+            
+            const statusMessage = statusMessages[record.status] || record.status;
+            
+            if (record.status === "إشعار ولي الأمر" && record.notes) {
+                return record.notes;
+            } else {
+                return `السلام عليكم ورحمة الله وبركاته
+
+الفاضل/ ولي أمر الطالبة ${record.studentName}
+الصف: ${record.class} - الشعبة: ${record.section}
+
+نفيدكم بأن ابنتكم قد ${statusMessage}
+بتاريخ: ${record.date}
+
+نأمل منكم التواصل مع إدارة المدرسة
+لتوضيح الأسباب ومتابعة الحالة
+
+مع خالص التحية
+إدارة المدرسة
+هاتف: ${SCHOOL_PHONE}`;
+            }
+        }
+
+        // إرسال رسالة الواتساب مباشرة
+        function sendWhatsAppDirectly() {
             if (!currentRecord) return;
             
             const phone = currentRecord.parentPhone;
@@ -1500,56 +1694,49 @@
                 return;
             }
             
-            const message = document.getElementById('messagePreview').textContent;
             const formattedPhone = `968${phone}`;
-            const encodedMessage = encodeURIComponent(message);
+            const encodedMessage = encodeURIComponent(currentRecord.whatsappMessage);
+            
+            // استخدام الرابط الجديد مع رقم المدرسة كمرسل
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodedMessage}`;
             
-            window.open(whatsappUrl, '_blank');
-            showNotification('نجاح', 'تم فتح تطبيق واتساب', 'success');
+            // فتح الواتساب في نافذة جديدة
+            window.open(whatsappUrl, '_blank', 'width=600,height=700');
+            
+            showNotification('نجاح', 'تم فتح تطبيق واتساب لإرسال الرسالة', 'success');
+            hideWhatsAppConfirmation();
         }
 
-        // ✅ دالة فحص البيانات
-        async function debugData() {
+        // فحص حالة الاتصال
+        async function checkConnection() {
             try {
-                const result = await callGoogleScript('debugData');
-                console.log('🔍 نتيجة فحص البيانات:', result);
-                alert('تم فحص البيانات. راجع console للتفاصيل.');
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: new URLSearchParams({ action: 'getStats' })
+                });
+                return response.ok;
             } catch (error) {
-                console.error('❌ خطأ في فحص البيانات:', error);
-                alert('خطأ في فحص البيانات: ' + error.message);
+                console.error('❌ فشل في فحص الاتصال:', error);
+                return false;
             }
         }
 
-        // ✅ دالة تحديث الإحصائيات يدوياً
-        async function forceUpdateStats() {
-            try {
-                showNotification('تحديث', 'جاري تحديث الإحصائيات...', 'info');
-                await updateStats();
-                showNotification('نجاح', 'تم تحديث الإحصائيات بنجاح', 'success');
-            } catch (error) {
-                console.error('❌ خطأ في التحديث اليدوي:', error);
-                showNotification('خطأ', 'فشل في تحديث الإحصائيات', 'error');
+        // إظهار حالة الاتصال
+        function showConnectionStatus(isConnected) {
+            if (!isConnected) {
+                showNotification('تحذير', 'فقدان الاتصال بالخادم. قد لا تعمل بعض الميزات بشكل صحيح.', 'warning', 10000);
             }
         }
 
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('ar-SA');
-        }
-
-        // تهيئة الصفحة عند التحميل
+        // التهيئة عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function() {
             initializeDate();
-            updateStats(); // تحديث الإحصائيات أولاً
+            updateStats();
             
             // تحديث اليوم عند تغيير التاريخ
             document.getElementById('date').addEventListener('change', function() {
                 const selectedDate = new Date(this.value);
                 updateDayFromDate(selectedDate);
-                
-                // التحقق من التاريخ
                 checkDate(this.value);
             });
             
@@ -1562,7 +1749,6 @@
             // استماع لإلغاء التاريخ
             cancelDateBtn.addEventListener('click', function() {
                 hideDateConfirmationModal();
-                // إعادة تعيين التاريخ إلى اليوم
                 const today = new Date().toISOString().split('T')[0];
                 dateInput.value = today;
                 updateDayFromDate(new Date());
@@ -1572,6 +1758,10 @@
             // استماع لحقل المرفق
             attachmentInput.addEventListener('change', handleFileUpload);
             
+            // استماع لأزرار الواتساب
+            confirmWhatsAppBtn.addEventListener('click', sendWhatsAppDirectly);
+            cancelWhatsAppBtn.addEventListener('click', hideWhatsAppConfirmation);
+            
             // إرسال النموذج
             absenceForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -1580,14 +1770,12 @@
                 const submitText = document.getElementById('submitText');
                 const submitLoading = document.getElementById('submitLoading');
                 
-                // التحقق من صحة البيانات
                 const phone = parentPhoneInput.value;
                 if (phone && !validatePhone(phone)) {
                     document.getElementById('phoneError').style.display = 'block';
                     return;
                 }
                 
-                // تعطيل الزر وإظهار مؤشر التحميل
                 submitBtn.disabled = true;
                 submitText.textContent = 'جاري الحفظ...';
                 submitLoading.style.display = 'inline-block';
@@ -1605,7 +1793,6 @@
                         notes: document.getElementById('notes').value
                     };
                     
-                    // معالجة المرفق إذا وجد
                     if (currentAttachment) {
                         const fileReader = new FileReader();
                         
@@ -1621,14 +1808,11 @@
                         });
                     }
                     
-                    // إضافة سجل جديد
                     const result = await callGoogleScript('saveRecord', formData);
                     showNotification('نجاح', 'تم تسجيل الحالة بنجاح', 'success');
                     
-                    // تحضير رسالة الواتساب للسجل الجديد
-                    if (result && result.id) {
-                        prepareWhatsAppMessage(result.id);
-                    }
+                    // عرض نافذة تأكيد الواتساب بعد الحفظ
+                    showWhatsAppConfirmation(formData);
                     
                     // إعادة تعيين النموذج
                     absenceForm.reset();
@@ -1637,36 +1821,33 @@
                     attachmentPreview.style.display = 'none';
                     currentAttachment = null;
                     
-                    // ✅ تحديث الإحصائيات بعد الحفظ
                     await updateStats();
                     
                 } catch (error) {
                     console.error('❌ خطأ في حفظ البيانات:', error);
                     showNotification('خطأ', 'فشل في حفظ البيانات: ' + error.message, 'error');
                 } finally {
-                    // إعادة تمكين الزر وإخفاء مؤشر التحميل
                     submitBtn.disabled = false;
                     submitText.textContent = 'حفظ البيانات';
                     submitLoading.style.display = 'none';
                 }
             });
             
-            // إرسال رسالة الواتساب
-            document.getElementById('sendWhatsApp').addEventListener('click', sendWhatsAppMessage);
+            // تحديث الإحصائيات تلقائياً كل دقيقة
+            setInterval(updateStats, 60000);
             
-            // ✅ تحديث الإحصائيات تلقائياً كل 30 ثانية
-            setInterval(updateStats, 30000);
+            // فحص الاتصال دورياً كل دقيقة
+            setInterval(async () => {
+                const isConnected = await checkConnection();
+                showConnectionStatus(isConnected);
+            }, 60000);
+            
+            // فحص الاتصال الأولي
+            checkConnection().then(isConnected => {
+                showConnectionStatus(isConnected);
+            });
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
+[file content end]
