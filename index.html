@@ -1025,7 +1025,15 @@
             max-height: none;
             overflow-y: visible;
         }
-        
+          /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+ background: #f8f9fa;
+    max-height: none;        /* إزالة الحد الأقصى للارتفاع */
+    overflow-y: visible;     /* إزالة scroll bar */
+     .header-content {
+      flex-direction: column;
+      gap: 10px;
+            }
         .bulk-student-item {
             padding: 12px 10px;
             border-bottom: 1px solid #eee;
@@ -1042,12 +1050,7 @@
             margin-bottom: 0;
         }
         
-        /* تحسينات للهواتف */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 10px;
-            }
+      
             
             .nav-links {
                 width: 100%;
@@ -1121,11 +1124,7 @@
                 max-height: 90vh;
             }
             
-            .bulk-students-list {
-                max-height: none;
-                overflow-y: visible;
-            }
-            
+                    
             .bulk-student-item {
                 flex-direction: column;
                 align-items: flex-start;
