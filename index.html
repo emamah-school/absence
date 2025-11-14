@@ -2134,46 +2134,52 @@ function removeStudent(studentId) {
             showNotification('تم', 'تم مسح جميع الطالبات المختارة', 'success');
         }
 
-        // دالة إنشاء رسالة واتساب جماعية
-        function createBulkWhatsAppMessage(student, status) {
-            if (status === "إشعار ولي الأمر") {
-                // رسالة خاصة لحالة "إشعار ولي الأمر"
-                return `السلام عليكم
+       // دالة إنشاء رسالة واتساب جماعية
+function createBulkWhatsAppMessage(student, status) {
+    const statusMessages = {
+        'غياب': 'تغيبت عن المدرسة',
+        'تأخير عن الحصة': 'تأخرت عن الحصة',
+        'تسيَّب من الحصة': 'تسيبت من الحصة',
+        'إستأذان خارج المدرسة': 'استأذنت خارج المدرسة',
+    };
+
+    if (status === "إشعار ولي الأمر") {
+        // رسالة خاصة لحالة "إشعار ولي الأمر"
+        return `السلام عليكم
 
 الفاضل/ ولي أمر الطالبة ${student.name}
 
-"" ${document.getElementById('notes').value}
+نفيدكم بأن إبنتكم قد ${document.getElementById('notes').value}
 
- للعلم بذلك
+ل للعلم بذلك
 
 إدارة المدرسة`;
-            } else {
-                // رسالة للحالات الأخرى
-                let message = `السلام عليكم
+    } else {
+        // رسالة للحالات الأخرى
+        let message = `السلام عليكم
 
 الفاضل/ ولي أمر الطالبة ${student.name}
 
-نفيدكم بأن إبنتكم قد ${status}`;
-                
-                // إضافة الحصة إذا تم اختيارها
-                const period = document.getElementById('period').value;
-                if (period && period !== "") {
-                    message += `\n${period}`;
-                }
-                
-                // إضافة التاريخ
-                const date = document.getElementById('date').value;
-                message += `\nبتاريخ ${date}`;
-                
-                // إضافة الختام
-                message += `\nل للعلم بذلك
-
-إدارة المدرسة`;
-                
-                return message;
-            }
+نفيدكم بأن إبنتكم قد ${statusMessages[status] || status}`;
+        
+        // إضافة الحصة إذا تم اختيارها
+        const period = document.getElementById('period').value;
+        if (period && period !== "") {
+            message += `\n${period}`;
         }
+        
+        // إضافة التاريخ
+        const date = document.getElementById('date').value;
+        message += `\nبتاريخ ${date}`;
+        
+        // إضافة الختام
+        message += `\nل للعلم بذلك
 
+إدارة المدرسة`;
+        
+        return message;
+    }
+}
         // دالة عرض نافذة التأكيد الجماعية
         function showBulkConfirmation() {
             if (selectedStudents.length === 0) {
