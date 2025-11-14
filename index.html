@@ -2105,26 +2105,55 @@ function removeStudent(studentId) {
     updateSelectedStudentsInDropdown();
 }
 
-        // دالة تحديث تلوين الطالبات المختارة في القائمة المنسدلة
-        function updateSelectedStudentsInDropdown() {
-            const studentSelect = document.getElementById('studentName');
-            const options = studentSelect.options;
-            
-            // إعادة تعيين جميع الخيارات
-            for (let i = 0; i < options.length; i++) {
-                options[i].classList.remove('selected');
+       // دالة بديلة تعمل على الهواتف والكمبيوتر
+function updateSelectedStudentsDisplay() {
+    const studentSelect = document.getElementById('studentName');
+    const selectionSection = document.getElementById('multipleSelection');
+    const selectedCount = document.getElementById('selectedCount');
+    const selectedStudentsList = document.getElementById('selectedStudentsList');
+    
+    // تحديث العداد
+    selectedCount.textContent = selectedStudents.length;
+    
+    // تحديث قائمة الطالبات المختارة
+    if (selectedStudents.length > 0) {
+        selectionSection.style.display = 'block';
+        selectedStudentsList.innerHTML = selectedStudents.map(student => `
+            <div class="selected-student-item">
+                <div>
+                    <strong>${student.name}</strong>
+                    <div style="font-size: 0.8rem; color: #666;">${student.phone ? '968' + student.phone : 'لا يوجد رقم'}</div>
+                </div>
+                <button class="remove-student" onclick="removeStudent(${student.id})" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `).join('');
+        
+        // إضافة مؤشر مرئي للهواتف
+        studentSelect.style.border = '2px solid #8B0000';
+        studentSelect.style.background = 'linear-gradient(135deg, #fff, #fff5f5)';
+    } else {
+        selectionSection.style.display = 'none';
+        selectedStudentsList.innerHTML = '';
+        studentSelect.style.border = '';
+        studentSelect.style.background = '';
+    }
+    
+    // محاولة تلوين القائمة المنسدلة (للأجهزة التي تدعمها)
+    try {
+        const options = studentSelect.options;
+        for (let i = 0; i < options.length; i++) {
+            options[i].classList.remove('selected');
+            const isSelected = selectedStudents.some(student => student.name === options[i].value);
+            if (isSelected) {
+                options[i].classList.add('selected');
             }
-            
-            // تلوين الطالبات المختارة
-            selectedStudents.forEach(student => {
-                for (let i = 0; i < options.length; i++) {
-                    if (options[i].value === student.name) {
-                        options[i].classList.add('selected');
-                        break;
-                    }
-                }
-            });
         }
+    } catch (error) {
+        console.log('هذا الجهاز لا يدعم تلوين خيارات القائمة المنسدلة');
+    }
+}
 
         // دالة مسح جميع الطالبات
         function clearSelectedStudents() {
@@ -2456,3 +2485,4 @@ function removeStudent(studentId) {
     </script>
 </body>
 </html>
+
