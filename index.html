@@ -19,44 +19,7 @@
             --orange: #ff9e1a;
             --selected-red: #8B0000; /* اللون الأحمر الغامق للطالبات المختارة */
         }
-        /* تلوين الطالبات المختارة في القائمة المنسدلة - متوافق مع الهواتف */
-#studentName option.selected {
-    background-color: var(--selected-red) !important;
-    color: white !important;
-    font-weight: 800;
-}
-
-/* تحسين عرض القائمة المنسدلة على الهواتف */
-#studentName {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23187DD0'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: left 15px center;
-    background-size: 16px;
-    padding-right: 15px;
-    padding-left: 40px;
-}
-
-/* تحسينات للهواتف */
-@media (max-width: 768px) {
-    #studentName {
-        font-size: 16px; /* منع التكبير في iOS */
-        padding: 12px 15px 12px 40px;
-    }
-    
-    .selected-students-list {
-        max-height: 150px;
-    }
-    
-    .selected-student-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-        padding: 10px;
-    }
-}
+        
         * {
             margin: 0;
             padding: 0;
@@ -1449,10 +1412,10 @@
                         <label for="status">الحالة</label>
                         <select id="status" required>
                             <option value="">اختر الحالة</option>
-                            <option value="غياب">غياب</option>
-                            <option value="تأخير عن الحصة">تأخير عن الحصة</option>
-                            <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
-                            <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
+                            <option value="تغيبت">تغيبت</option>
+                            <option value="تأخرت عن الحصة">تأخرت عن الحصة</option>
+                            <option value="تسيَّبت من الحصة">تسيَّبت من الحصة</option>
+                            <option value="إستأذنت خارج المدرسة">إستأذنت خارج المدرسة</option>
                             <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
                         </select>
                     </div>
@@ -1995,9 +1958,9 @@
 
 الفاضل/ ولي أمر الطالبة ${record.studentName}
 
-" ${record.notes}
+نفيدكم بأن إبنتكم قد ${record.notes}
 
- للعلم بذلك
+ل للعلم بذلك
 
 إدارة المدرسة`;
             } else {
@@ -2141,39 +2104,36 @@ function removeStudent(studentId) {
     updateSelectedStudentsList();
     updateSelectedStudentsInDropdown();
 }
-// دالة بديلة تعمل بشكل أفضل على الهواتف
-function updateSelectedStudentsForMobile() {
-    const studentSelect = document.getElementById('studentName');
-    const selectionInfo = document.querySelector('.selection-info');
-    
-    if (selectedStudents.length > 0) {
-        // إظهار رسالة بدلاً من التلوين
-        if (selectionInfo) {
-            selectionInfo.innerHTML = `
-                <i class="fas fa-info-circle"></i>
-                تم اختيار ${selectedStudents.length} طالبة: 
-                ${selectedStudents.map(s => s.name).join('، ')}
-            `;
-        }
-        
-        // إضافة فئة للمساعدة في التمييز
-        studentSelect.classList.add('has-selected-students');
-    } else {
-        if (selectionInfo) {
-            selectionInfo.innerHTML = `
-                <i class="fas fa-info-circle"></i>
-                لم يتم اختيار أي طالبات بعد
-            `;
-        }
-        studentSelect.classList.remove('has-selected-students');
-    }
-}
 
-// CSS إضافي للبديل
-.has-selected-students {
-    border: 2px solid #8B0000 !important;
-    background-color: rgba(139, 0, 0, 0.05) !important;
-}
+        // دالة تحديث تلوين الطالبات المختارة في القائمة المنسدلة
+        function updateSelectedStudentsInDropdown() {
+            const studentSelect = document.getElementById('studentName');
+            const options = studentSelect.options;
+            
+            // إعادة تعيين جميع الخيارات
+            for (let i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            
+            // تلوين الطالبات المختارة
+            selectedStudents.forEach(student => {
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value === student.name) {
+                        options[i].classList.add('selected');
+                        break;
+                    }
+                }
+            });
+        }
+
+        // دالة مسح جميع الطالبات
+        function clearSelectedStudents() {
+            selectedStudents = [];
+            updateSelectedStudentsList();
+            updateSelectedStudentsInDropdown();
+            showNotification('تم', 'تم مسح جميع الطالبات المختارة', 'success');
+        }
+
         // دالة إنشاء رسالة واتساب جماعية
         function createBulkWhatsAppMessage(student, status) {
             if (status === "إشعار ولي الأمر") {
@@ -2496,7 +2456,3 @@ function updateSelectedStudentsForMobile() {
     </script>
 </body>
 </html>
-
-
-
-
