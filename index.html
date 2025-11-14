@@ -17,7 +17,9 @@
             --dark: #212529;
             --gray: #6c757d;
             --orange: #ff9e1a;
-            --selected-red: #8B0000; /* اللون الأحمر الغامق للطالبات المختارة */
+            --selected-red: #FF6B6B;
+            --text-blue: #187DD0;
+            --focus-blue: #2C53EF;
         }
         
         * {
@@ -314,17 +316,67 @@
         
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #9a3412;
-            box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.2);
+            border-color: var(--focus-blue);
+            box-shadow: 0 0 0 3px rgba(44, 83, 239, 0.2);
         }
         
-        .loading-text {
-            color: #1a365d !important;
+        /* ألوان النصوص في الحقول */
+        #section, 
+        #studentName, 
+        #parentPhone,
+        #class,
+        #date,
+        #day,
+        #period,
+        #status,
+        #notes {
+            color: var(--text-blue) !important;
             font-weight: 800 !important;
         }
-        
+
+        #parentPhone::placeholder {
+            color: var(--text-blue) !important;
+            font-weight: 800 !important;
+            opacity: 1;
+        }
+
+        #section option,
+        #studentName option,
+        #class option,
+        #period option,
+        #status option {
+            color: var(--text-blue);
+            font-weight: 800;
+        }
+
+        #section:focus, 
+        #studentName:focus, 
+        #parentPhone:focus,
+        #class:focus,
+        #date:focus,
+        #day:focus,
+        #period:focus,
+        #status:focus,
+        #notes:focus {
+            color: var(--text-blue) !important;
+        }
+
+        #section option:checked,
+        #studentName option:checked,
+        #class option:checked,
+        #period option:checked,
+        #status option:checked {
+            color: var(--text-blue);
+            font-weight: 800;
+        }
+
+        .loading-text {
+            color: var(--text-blue) !important;
+            font-weight: 800 !important;
+        }
+
         .auto-fill-text {
-            color: #1a365d !important;
+            color: var(--text-blue) !important;
             font-weight: 800 !important;
         }
         
@@ -474,44 +526,6 @@
             transform: none;
             box-shadow: none;
         }
-        
-        #section, 
-        #studentName, 
-        #parentPhone {
-            color: #1a365d !important;
-            font-weight: 800 !important;
-        }
-
-        #parentPhone::placeholder {
-            color: #1a365d !important;
-            font-weight: 800 !important;
-            opacity: 1;
-        }
-
-        #section option,
-        #studentName option {
-            color: #1a365d;
-            font-weight: 800;
-        }
-
-        #section:focus, 
-        #studentName:focus, 
-        #parentPhone:focus {
-            color: #1a365d !important;
-        }
-
-        /* تلوين الطالبات المختارة في القائمة المنسدلة باللون الأحمر */
-        #studentName option.selected {
-            background-color: var(--selected-red) !important;
-            color: white !important;
-            font-weight: 800;
-        }
-
-        #section option:checked,
-        #studentName option:checked {
-            color: blue;
-            font-weight: 800;
-        }  
         
         .notification-container {
             position: fixed;
@@ -869,7 +883,7 @@
             transform: translateY(-2px);
         }
         
-        /* الأنماط الجديدة للاختيار المتعدد */
+        /* الأنماط الجديدة للاختيار المتعدد - محسنة للهواتف */
         .multiple-selection {
             border: 2px solid #4361ee;
             border-radius: 8px;
@@ -955,6 +969,18 @@
             background: #5a6268;
         }
         
+        /* تنسيق خيارات القائمة المنسدلة للطالبات المختارات */
+        #studentName option.selected-red {
+            background-color: var(--selected-red) !important;
+            color: white !important;
+            font-weight: 800 !important;
+        }
+
+        #studentName option:checked.selected-red {
+            background-color: var(--selected-red) !important;
+            color: white !important;
+        }
+
         /* نافذة التأكيد الجماعية - تم تحسينها للهواتف */
         .bulk-confirmation-modal {
             position: fixed;
@@ -991,25 +1017,29 @@
         }
         
         .bulk-students-list {
-            max-height: 200px;
-            overflow-y: auto;
             margin: 15px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 10px;
             background: #f8f9fa;
+            max-height: none;
+            overflow-y: visible;
         }
         
         .bulk-student-item {
-            padding: 10px;
+            padding: 12px 10px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: white;
+            margin-bottom: 5px;
+            border-radius: 6px;
         }
         
         .bulk-student-item:last-child {
             border-bottom: none;
+            margin-bottom: 0;
         }
         
         /* تحسينات للهواتف */
@@ -1092,13 +1122,15 @@
             }
             
             .bulk-students-list {
-                max-height: 150px;
+                max-height: none;
+                overflow-y: visible;
             }
             
             .bulk-student-item {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 5px;
+                padding: 10px;
             }
             
             .whatsapp-header {
@@ -1120,16 +1152,31 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 5px;
+                padding: 10px;
+            }
+            
+            /* تحسينات القوائم المنسدلة للهواتف */
+            #studentName {
+                font-size: 16px; /* منع التكبير في iOS */
+            }
+            
+            .selection-info {
+                padding: 12px;
+                font-size: 0.85rem;
+            }
+
+            /* تحسين تنسيق الطالبات المختارات على الهواتف */
+            #studentName option.selected-red {
+                background: linear-gradient(135deg, var(--selected-red), #FF5252) !important;
+                color: white !important;
+                border-left: 3px solid #8B0000;
+                padding: 12px;
             }
         }
         
         @media (max-width: 480px) {
             .bulk-confirmation-content {
                 padding: 0.8rem;
-            }
-            
-            .bulk-students-list {
-                max-height: 120px;
             }
             
             .selected-students-list {
@@ -1412,10 +1459,10 @@
                         <label for="status">الحالة</label>
                         <select id="status" required>
                             <option value="">اختر الحالة</option>
-                            <option value="تغيبت">تغيبت</option>
-                            <option value="تأخرت عن الحصة">تأخرت عن الحصة</option>
-                            <option value="تسيَّبت من الحصة">تسيَّبت من الحصة</option>
-                            <option value="إستأذنت خارج المدرسة">إستأذنت خارج المدرسة</option>
+                            <option value="غياب">غياب</option>
+                            <option value="تأخير عن الحصة">تأخير عن الحصة</option>
+                            <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
+                            <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
                             <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
                         </select>
                     </div>
@@ -1466,6 +1513,14 @@
         let selectedStudents = [];
         let currentBulkData = null;
         
+        // ذاكرة تخزين مؤقت لتحسين الأداء
+        const cache = {
+            classes: {},
+            students: {},
+            stats: null,
+            lastUpdated: null
+        };
+
         // عناصر DOM
         const absenceForm = document.getElementById('absenceForm');
         const classInput = document.getElementById('class');
@@ -1573,8 +1628,17 @@
             }, 300);
         }
 
-        // دالة مساعدة للاتصال بـ Google Apps Script
+        // دالة مساعدة للاتصال بـ Google Apps Script - محسنة للأداء
         async function callGoogleScript(action, data = {}) {
+            const cacheKey = `${action}_${JSON.stringify(data)}`;
+            const now = Date.now();
+            
+            // التحقق من الذاكرة المؤقتة (صالحة لمدة 30 ثانية)
+            if (cache[cacheKey] && (now - cache[cacheKey].timestamp < 30000)) {
+                console.log(`📋 استخدام البيانات المخزنة مؤقتاً لـ ${action}`);
+                return cache[cacheKey].data;
+            }
+            
             const params = new URLSearchParams();
             params.append('action', action);
             
@@ -1587,10 +1651,16 @@
             try {
                 console.log(`📤 إرسال طلب ${action}:`, Object.fromEntries(params));
                 
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    body: params
+                    body: params,
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
                 
                 const result = await response.json();
                 console.log(`📥 استجابة ${action}:`, result);
@@ -1599,14 +1669,23 @@
                     throw new Error(result.error || 'حدث خطأ غير معروف');
                 }
                 
+                // تخزين في الذاكرة المؤقتة
+                cache[cacheKey] = {
+                    data: result.data,
+                    timestamp: now
+                };
+                
                 return result.data;
             } catch (error) {
                 console.error('❌ خطأ في الاتصال:', error);
+                if (error.name === 'AbortError') {
+                    throw new Error('انتهت مهلة الاتصال بالخادم');
+                }
                 throw error;
             }
         }
 
-        // تحديث الإحصائيات
+        // تحديث الإحصائيات - محسنة للأداء
         async function updateStats() {
             try {
                 console.log('🔄 جاري تحديث الإحصائيات...');
@@ -1678,13 +1757,20 @@
             });
         }
 
-        // جلب الشعب بناءً على الصف المختار
+        // جلب الشعب بناءً على الصف المختار - محسنة للأداء
         async function loadClasses() {
             const selectedClass = classInput.value;
             
             if (!selectedClass) {
                 sectionInput.innerHTML = '<option value="" class="loading-text">اختر الشعبة</option>';
                 resetStudentFields();
+                return;
+            }
+            
+            // التحقق من الذاكرة المؤقتة أولاً
+            const cacheKey = `classes_${selectedClass}`;
+            if (cache.classes[cacheKey]) {
+                populateSections(cache.classes[cacheKey]);
                 return;
             }
             
@@ -1695,17 +1781,10 @@
             try {
                 const classes = await callGoogleScript('getClasses', { grade: selectedClass });
                 
-                sectionInput.innerHTML = '<option value="" class="loading-text">اختر الشعبة</option>';
-                if (classes && classes.length > 0) {
-                    classes.forEach(cls => {
-                        const option = document.createElement('option');
-                        option.value = cls;
-                        option.textContent = cls;
-                        sectionInput.appendChild(option);
-                    });
-                } else {
-                    sectionInput.innerHTML = '<option value="" class="loading-text">لا توجد شعب لهذا الصف</option>';
-                }
+                // تخزين في الذاكرة المؤقتة
+                cache.classes[cacheKey] = classes;
+                
+                populateSections(classes);
                 
             } catch (error) {
                 console.error('خطأ في جلب الشعب:', error);
@@ -1718,13 +1797,35 @@
             }
         }
 
-        // جلب الطالبات بناءً على الصف والشعبة
+        // دالة مساعدة لملء الشعب
+        function populateSections(classes) {
+            sectionInput.innerHTML = '<option value="" class="loading-text">اختر الشعبة</option>';
+            if (classes && classes.length > 0) {
+                classes.forEach(cls => {
+                    const option = document.createElement('option');
+                    option.value = cls;
+                    option.textContent = cls;
+                    sectionInput.appendChild(option);
+                });
+            } else {
+                sectionInput.innerHTML = '<option value="" class="loading-text">لا توجد شعب لهذا الصف</option>';
+            }
+        }
+
+        // جلب الطالبات بناءً على الصف والشعبة - محسنة للأداء
         async function loadStudents() {
             const selectedClass = classInput.value;
             const selectedSection = sectionInput.value;
             
             if (!selectedClass || !selectedSection) {
                 resetStudentFields();
+                return;
+            }
+            
+            // التحقق من الذاكرة المؤقتة أولاً
+            const cacheKey = `students_${selectedSection}`;
+            if (cache.students[cacheKey]) {
+                populateStudents(cache.students[cacheKey]);
                 return;
             }
             
@@ -1739,19 +1840,10 @@
                 
                 console.log('📋 تم جلب الطالبات:', studentsList);
                 
-                studentNameInput.innerHTML = '<option value="" class="loading-text">اختر الطالبة</option>';
+                // تخزين في الذاكرة المؤقتة
+                cache.students[cacheKey] = studentsList;
                 
-                if (studentsList && studentsList.length > 0) {
-                    studentsList.forEach(student => {
-                        const option = document.createElement('option');
-                        option.value = student.name;
-                        option.textContent = student.name;
-                        option.dataset.phone = student.phone || '';
-                        studentNameInput.appendChild(option);
-                    });
-                } else {
-                    studentNameInput.innerHTML = '<option value="" class="loading-text">لا توجد طالبات في هذه الشعبة</option>';
-                }
+                populateStudents(studentsList);
                 
             } catch (error) {
                 console.error('خطأ في جلب الطالبات:', error);
@@ -1762,6 +1854,23 @@
                 studentNameInput.disabled = false;
                 studentLoading.style.display = 'none';
                 resetPhoneField();
+            }
+        }
+
+        // دالة مساعدة لملء الطالبات
+        function populateStudents(students) {
+            studentNameInput.innerHTML = '<option value="" class="loading-text">اختر الطالبة</option>';
+            
+            if (students && students.length > 0) {
+                students.forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.name;
+                    option.textContent = student.name;
+                    option.dataset.phone = student.phone || '';
+                    studentNameInput.appendChild(option);
+                });
+            } else {
+                studentNameInput.innerHTML = '<option value="" class="loading-text">لا توجد طالبات في هذه الشعبة</option>';
             }
         }
 
@@ -1952,6 +2061,13 @@
 
         // إنشاء رسالة الواتساب - تم التعديل حسب المتطلبات الجديدة
         function createWhatsAppMessage(record) {
+            const statusMessages = {
+                'غياب': 'تغيبت عن المدرسة',
+                'تأخير عن الحصة': 'تأخرت عن الحصة',
+                'تسيَّب من الحصة': 'تسيبت من الحصة',
+                'إستأذان خارج المدرسة': 'استأذنت خارج المدرسة',
+            };
+
             if (record.status === "إشعار ولي الأمر") {
                 // رسالة خاصة لحالة "إشعار ولي الأمر"
                 return `السلام عليكم
@@ -1969,7 +2085,7 @@
 
 الفاضل/ ولي أمر الطالبة ${record.studentName}
 
-نفيدكم بأن إبنتكم قد ${record.status}`;
+نفيدكم بأن إبنتكم قد ${statusMessages[record.status] || record.status}`;
                 
                 // إضافة الحصة إذا تم اختيارها
                 if (record.period && record.period !== "") {
@@ -2032,148 +2148,139 @@
             }
         }
 
-       // دالة إضافة طالبة إلى القائمة - النسخة المصححة
-function addStudentToSelection() {
-    const studentSelect = document.getElementById('studentName');
-    const selectedOption = studentSelect.options[studentSelect.selectedIndex];
-    
-    if (!selectedOption.value || selectedOption.value === '') return;
-    
-    const student = {
-        id: Date.now() + Math.random(), // إنشاء معرف فريد
-        name: selectedOption.value,
-        phone: selectedOption.dataset.phone || '',
-        className: document.getElementById('class').value,
-        section: document.getElementById('section').value
-    };
-    
-    // التحقق من عدم تكرار الطالبة
-    const exists = selectedStudents.find(s => s.name === student.name);
-    if (exists) {
-        showNotification('تنبيه', 'هذه الطالبة مضافَة مسبقاً', 'warning');
-        return;
-    }
-    
-    selectedStudents.push(student);
-    updateSelectedStudentsList();
-    
-    // تحديث تلوين الطالبات المختارة في القائمة المنسدلة
-    updateSelectedStudentsInDropdown();
-    
-    // إعادة تعيين الاختيار
-    studentSelect.value = '';
-}
+        // دالة إضافة طالبة إلى القائمة - محسنة للهواتف
+        function addStudentToSelection() {
+            const studentSelect = document.getElementById('studentName');
+            const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+            
+            if (!selectedOption.value || selectedOption.value === '') return;
+            
+            const student = {
+                id: Date.now() + Math.random(), // إنشاء معرف فريد
+                name: selectedOption.value,
+                phone: selectedOption.dataset.phone || '',
+                className: document.getElementById('class').value,
+                section: document.getElementById('section').value
+            };
+            
+            // التحقق من عدم تكرار الطالبة
+            const exists = selectedStudents.find(s => s.name === student.name);
+            if (exists) {
+                showNotification('تنبيه', 'هذه الطالبة مضافَة مسبقاً', 'warning');
+                return;
+            }
+            
+            selectedStudents.push(student);
+            updateSelectedStudentsDisplay();
+            
+            // إعادة تعيين الاختيار
+            studentSelect.value = '';
+        }
 
-        // دالة تحديث قائمة الطالبات المختارين - النسخة المصححة
-function updateSelectedStudentsList() {
-    const container = document.getElementById('selectedStudentsList');
-    const counter = document.getElementById('selectedCount');
-    const selectionSection = document.getElementById('multipleSelection');
-    
-    counter.textContent = selectedStudents.length;
-    
-    if (selectedStudents.length > 0) {
-        selectionSection.style.display = 'block';
-        container.innerHTML = selectedStudents.map(student => `
-            <div class="selected-student-item">
-                <div>
-                    <strong>${student.name}</strong>
-                    <div style="font-size: 0.8rem; color: #666;">${student.phone ? '968' + student.phone : 'لا يوجد رقم'}</div>
-                </div>
-                <button class="remove-student" onclick="removeStudent(${student.id})" type="button">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `).join('');
-    } else {
-        selectionSection.style.display = 'none';
-        container.innerHTML = '';
-    }
-}
-
-      // دالة إزالة طالبة من القائمة - النسخة المصححة
-function removeStudent(studentId) {
-    // استخدام parseInt لتحويل المعرف إلى رقم إذا كان نصاً
-    const id = typeof studentId === 'string' ? parseInt(studentId) : studentId;
-    
-    selectedStudents = selectedStudents.filter(student => {
-        // المقارنة باستخدام == بدلاً من === للتعامل مع الأنواع المختلفة
-        return student.id != id;
-    });
-    
-    updateSelectedStudentsList();
-    updateSelectedStudentsInDropdown();
-}
-
-       // دالة بديلة تعمل على الهواتف والكمبيوتر
-function updateSelectedStudentsDisplay() {
-    const studentSelect = document.getElementById('studentName');
-    const selectionSection = document.getElementById('multipleSelection');
-    const selectedCount = document.getElementById('selectedCount');
-    const selectedStudentsList = document.getElementById('selectedStudentsList');
-    
-    // تحديث العداد
-    selectedCount.textContent = selectedStudents.length;
-    
-    // تحديث قائمة الطالبات المختارة
-    if (selectedStudents.length > 0) {
-        selectionSection.style.display = 'block';
-        selectedStudentsList.innerHTML = selectedStudents.map(student => `
-            <div class="selected-student-item">
-                <div>
-                    <strong>${student.name}</strong>
-                    <div style="font-size: 0.8rem; color: #666;">${student.phone ? '968' + student.phone : 'لا يوجد رقم'}</div>
-                </div>
-                <button class="remove-student" onclick="removeStudent(${student.id})" type="button">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `).join('');
-        
-        // إضافة مؤشر مرئي للهواتف
-        studentSelect.style.border = '2px solid #8B0000';
-        studentSelect.style.background = 'linear-gradient(135deg, #fff, #fff5f5)';
-    } else {
-        selectionSection.style.display = 'none';
-        selectedStudentsList.innerHTML = '';
-        studentSelect.style.border = '';
-        studentSelect.style.background = '';
-    }
-    
-    // محاولة تلوين القائمة المنسدلة (للأجهزة التي تدعمها)
-    try {
-        const options = studentSelect.options;
-        for (let i = 0; i < options.length; i++) {
-            options[i].classList.remove('selected');
-            const isSelected = selectedStudents.some(student => student.name === options[i].value);
-            if (isSelected) {
-                options[i].classList.add('selected');
+        // دالة تحديث قائمة الطالبات المختارين - محسنة للهواتف 100% مع التلوين الأحمر الفاتح
+        function updateSelectedStudentsDisplay() {
+            const container = document.getElementById('selectedStudentsList');
+            const counter = document.getElementById('selectedCount');
+            const selectionSection = document.getElementById('multipleSelection');
+            const studentSelect = document.getElementById('studentName');
+            
+            counter.textContent = selectedStudents.length;
+            
+            if (selectedStudents.length > 0) {
+                selectionSection.style.display = 'block';
+                container.innerHTML = selectedStudents.map(student => `
+                    <div class="selected-student-item">
+                        <div>
+                            <strong style="color: var(--selected-red); font-weight: 800;">${student.name}</strong>
+                            <div style="font-size: 0.8rem; color: #666;">${student.phone ? '968' + student.phone : 'لا يوجد رقم'}</div>
+                        </div>
+                        <button class="remove-student" onclick="removeStudent(${student.id})" type="button">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+                
+                // إضافة مؤشر مرئي للهواتف
+                studentSelect.style.border = '2px solid var(--selected-red)';
+                studentSelect.style.background = 'linear-gradient(135deg, #fff, #fff5f5)';
+            } else {
+                selectionSection.style.display = 'none';
+                container.innerHTML = '';
+                studentSelect.style.border = '';
+                studentSelect.style.background = '';
+            }
+            
+            // تلوين القائمة المنسدلة للطالبات المختارات - محسنة للتأكد من العمل على جميع الأجهزة
+            try {
+                const options = studentSelect.options;
+                for (let i = 0; i < options.length; i++) {
+                    // إزالة التنسيق السابق
+                    options[i].classList.remove('selected-red');
+                    options[i].style.backgroundColor = '';
+                    options[i].style.color = '';
+                    options[i].style.fontWeight = '';
+                    
+                    // التحقق إذا كانت الطالبة مختارة
+                    const isSelected = selectedStudents.some(student => student.name === options[i].value);
+                    if (isSelected && options[i].value !== '') {
+                        // تطبيق التنسيق الأحمر الفاتح
+                        options[i].classList.add('selected-red');
+                        options[i].style.backgroundColor = '#FF6B6B';
+                        options[i].style.color = 'white';
+                        options[i].style.fontWeight = '800';
+                        
+                        // إضافة رمز تأشير للطالبات المختارات
+                        if (!options[i].textContent.includes('✓')) {
+                            options[i].textContent = '✓ ' + options[i].textContent;
+                        }
+                    } else if (options[i].value !== '' && options[i].textContent.includes('✓')) {
+                        // إزالة رمز التأشير إذا لم تكن الطالبة مختارة
+                        options[i].textContent = options[i].textContent.replace('✓ ', '');
+                    }
+                }
+            } catch (error) {
+                console.log('بعض الأجهزة قد لا تدعم تلوين خيارات القائمة المنسدلة بشكل كامل');
             }
         }
-    } catch (error) {
-        console.log('هذا الجهاز لا يدعم تلوين خيارات القائمة المنسدلة');
-    }
-}
+
+        // دالة إزالة طالبة من القائمة
+        function removeStudent(studentId) {
+            // استخدام parseInt لتحويل المعرف إلى رقم إذا كان نصاً
+            const id = typeof studentId === 'string' ? parseInt(studentId) : studentId;
+            
+            selectedStudents = selectedStudents.filter(student => {
+                // المقارنة باستخدام == بدلاً من === للتعامل مع الأنواع المختلفة
+                return student.id != id;
+            });
+            
+            updateSelectedStudentsDisplay();
+        }
 
         // دالة مسح جميع الطالبات
         function clearSelectedStudents() {
             selectedStudents = [];
-            updateSelectedStudentsList();
-            updateSelectedStudentsInDropdown();
+            updateSelectedStudentsDisplay();
             showNotification('تم', 'تم مسح جميع الطالبات المختارة', 'success');
         }
 
         // دالة إنشاء رسالة واتساب جماعية
         function createBulkWhatsAppMessage(student, status) {
+            const statusMessages = {
+                'غياب': 'تغيبت عن المدرسة',
+                'تأخير عن الحصة': 'تأخرت عن الحصة',
+                'تسيَّب من الحصة': 'تسيبت من الحصة',
+                'إستأذان خارج المدرسة': 'استأذنت خارج المدرسة',
+            };
+
             if (status === "إشعار ولي الأمر") {
                 // رسالة خاصة لحالة "إشعار ولي الأمر"
                 return `السلام عليكم
 
 الفاضل/ ولي أمر الطالبة ${student.name}
 
-" ${document.getElementById('notes').value}
+نفيدكم بأن إبنتكم قد ${document.getElementById('notes').value}
 
- للعلم بذلك
+ل للعلم بذلك
 
 إدارة المدرسة`;
             } else {
@@ -2182,7 +2289,7 @@ function updateSelectedStudentsDisplay() {
 
 الفاضل/ ولي أمر الطالبة ${student.name}
 
-نفيدكم بأن إبنتكم قد ${status}`;
+نفيدكم بأن إبنتكم قد ${statusMessages[status] || status}`;
                 
                 // إضافة الحصة إذا تم اختيارها
                 const period = document.getElementById('period').value;
@@ -2226,7 +2333,7 @@ function updateSelectedStudentsDisplay() {
             document.getElementById('bulkClassSection').textContent = `${selectedStudents[0].className} - ${selectedStudents[0].section}`;
             document.getElementById('bulkStatus').textContent = status;
             
-            // تحديث قائمة الطالبات
+            // تحديث قائمة الطالبات بدون scroll bar
             const studentsList = document.getElementById('bulkStudentsList');
             studentsList.innerHTML = selectedStudents.map(student => `
                 <div class="bulk-student-item">
@@ -2485,4 +2592,3 @@ function updateSelectedStudentsDisplay() {
     </script>
 </body>
 </html>
-
