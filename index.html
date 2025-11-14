@@ -1,3 +1,5 @@
+[file name]: index.html
+[file content begin]
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -1943,67 +1945,75 @@
             }
         }
 
-        // الدوال الجديدة للاختيار المتعدد
-        // دالة إضافة طالبة إلى القائمة
-        function addStudentToSelection() {
-            const studentSelect = document.getElementById('studentName');
-            const selectedOption = studentSelect.options[studentSelect.selectedIndex];
-            
-            if (!selectedOption.value) return;
-            
-            const student = {
-                id: Date.now() + Math.random(),
-                name: selectedOption.value,
-                phone: selectedOption.dataset.phone || '',
-                className: document.getElementById('class').value,
-                section: document.getElementById('section').value
-            };
-            
-            // التحقق من عدم تكرار الطالبة
-            const exists = selectedStudents.find(s => s.name === student.name);
-            if (exists) {
-                showNotification('تنبيه', 'هذه الطالبة مضافَة مسبقاً', 'warning');
-                return;
-            }
-            
-            selectedStudents.push(student);
-            updateSelectedStudentsList();
-            
-            // إعادة تعيين الاختيار
-            studentSelect.value = '';
-        }
+       // دالة إضافة طالبة إلى القائمة - النسخة المصححة
+function addStudentToSelection() {
+    const studentSelect = document.getElementById('studentName');
+    const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+    
+    if (!selectedOption.value || selectedOption.value === '') return;
+    
+    const student = {
+        id: Date.now() + Math.random(), // إنشاء معرف فريد
+        name: selectedOption.value,
+        phone: selectedOption.dataset.phone || '',
+        className: document.getElementById('class').value,
+        section: document.getElementById('section').value
+    };
+    
+    // التحقق من عدم تكرار الطالبة
+    const exists = selectedStudents.find(s => s.name === student.name);
+    if (exists) {
+        showNotification('تنبيه', 'هذه الطالبة مضافَة مسبقاً', 'warning');
+        return;
+    }
+    
+    selectedStudents.push(student);
+    updateSelectedStudentsList();
+    
+    // إعادة تعيين الاختيار
+    studentSelect.value = '';
+}
 
-        // دالة تحديث قائمة الطالبات المختارين
-        function updateSelectedStudentsList() {
-            const container = document.getElementById('selectedStudentsList');
-            const counter = document.getElementById('selectedCount');
-            const selectionSection = document.getElementById('multipleSelection');
-            
-            counter.textContent = selectedStudents.length;
-            
-            if (selectedStudents.length > 0) {
-                selectionSection.style.display = 'block';
-                container.innerHTML = selectedStudents.map(student => `
-                    <div class="selected-student-item">
-                        <div>
-                            <strong>${student.name}</strong>
-                            <div style="font-size: 0.8rem; color: #666;">${student.phone ? '968' + student.phone : 'لا يوجد رقم'}</div>
-                        </div>
-                        <button class="remove-student" onclick="removeStudent('${student.id}')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `).join('');
-            } else {
-                selectionSection.style.display = 'none';
-            }
-        }
+        // دالة تحديث قائمة الطالبات المختارين - النسخة المصححة
+function updateSelectedStudentsList() {
+    const container = document.getElementById('selectedStudentsList');
+    const counter = document.getElementById('selectedCount');
+    const selectionSection = document.getElementById('multipleSelection');
+    
+    counter.textContent = selectedStudents.length;
+    
+    if (selectedStudents.length > 0) {
+        selectionSection.style.display = 'block';
+        container.innerHTML = selectedStudents.map(student => `
+            <div class="selected-student-item">
+                <div>
+                    <strong>${student.name}</strong>
+                    <div style="font-size: 0.8rem; color: #666;">${student.phone ? '968' + student.phone : 'لا يوجد رقم'}</div>
+                </div>
+                <button class="remove-student" onclick="removeStudent(${student.id})" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `).join('');
+    } else {
+        selectionSection.style.display = 'none';
+        container.innerHTML = '';
+    }
+}
 
-        // دالة إزالة طالبة من القائمة
-        function removeStudent(studentId) {
-            selectedStudents = selectedStudents.filter(student => student.id !== studentId);
-            updateSelectedStudentsList();
-        }
+      // دالة إزالة طالبة من القائمة - النسخة المصححة
+function removeStudent(studentId) {
+    // استخدام parseInt لتحويل المعرف إلى رقم إذا كان نصاً
+    const id = typeof studentId === 'string' ? parseInt(studentId) : studentId;
+    
+    selectedStudents = selectedStudents.filter(student => {
+        // المقارنة باستخدام == بدلاً من === للتعامل مع الأنواع المختلفة
+        return student.id != id;
+    });
+    
+    updateSelectedStudentsList();
+}
+
 
         // دالة مسح جميع الطالبات
         function clearSelectedStudents() {
@@ -2306,4 +2316,3 @@
 </body>
 </html>
 [file content end]
-
