@@ -2141,35 +2141,36 @@ function removeStudent(studentId) {
     updateSelectedStudentsList();
     updateSelectedStudentsInDropdown();
 }
-
-        // دالة تحديث تلوين الطالبات المختارة في القائمة المنسدلة
-        function updateSelectedStudentsInDropdown() {
-            const studentSelect = document.getElementById('studentName');
-            const options = studentSelect.options;
-            
-            // إعادة تعيين جميع الخيارات
-            for (let i = 0; i < options.length; i++) {
-                options[i].classList.remove('selected');
+// دالة تحديث تلوين الطالبات المختارة في القائمة المنسدلة - محسنة للهواتف
+function updateSelectedStudentsInDropdown() {
+    const studentSelect = document.getElementById('studentName');
+    const options = studentSelect.options;
+    
+    // إعادة تعيين جميع الخيارات
+    for (let i = 0; i < options.length; i++) {
+        options[i].classList.remove('selected');
+        options[i].style.backgroundColor = '';
+        options[i].style.color = '';
+    }
+    
+    // تلوين الطالبات المختارة
+    selectedStudents.forEach(student => {
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === student.name) {
+                options[i].classList.add('selected');
+                // إضافة التنسيق مباشرة للتأكد من العمل على الهواتف
+                options[i].style.backgroundColor = '#8B0000';
+                options[i].style.color = 'white';
+                options[i].style.fontWeight = '800';
+                break;
             }
-            
-            // تلوين الطالبات المختارة
-            selectedStudents.forEach(student => {
-                for (let i = 0; i < options.length; i++) {
-                    if (options[i].value === student.name) {
-                        options[i].classList.add('selected');
-                        break;
-                    }
-                }
-            });
         }
-
-        // دالة مسح جميع الطالبات
-        function clearSelectedStudents() {
-            selectedStudents = [];
-            updateSelectedStudentsList();
-            updateSelectedStudentsInDropdown();
-            showNotification('تم', 'تم مسح جميع الطالبات المختارة', 'success');
-        }
+    });
+    
+    // إعادة تحميل القائمة المنسدلة للتأكد من ظهور التغييرات
+    studentSelect.blur();
+    studentSelect.focus();
+}
 
         // دالة إنشاء رسالة واتساب جماعية
         function createBulkWhatsAppMessage(student, status) {
@@ -2493,5 +2494,6 @@ function removeStudent(studentId) {
     </script>
 </body>
 </html>
+
 
 
