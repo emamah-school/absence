@@ -7,187 +7,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
- :root {
-    --primary: #4361ee;
-    --secondary: #3f37c9;
-    --success: #4cc9f0;
-    --warning: #f72585;
-    --danger: #e63946;
-    --light: #f8f9fa;
-    --dark: #212529;
-    --gray: #6c757d;
-    --absence: #e63946;        /* أحمر للغياب */
-    --tasyeeb: #4361ee;        /* أزرق للتأخير */
-    --tasayob: #f77f00;        /* برتقالي غامق للتسيّب */
-    --esteathan: #9b5de5;      /* بنفسجي للإستئذان */
-    --highlight: #ff9500;
-}
-
-/* ✅ نافذة عرض الصورة بدون خلفية */
-.zoom-overlay {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.zoom-overlay.show {
-  display: flex;
-}
-.zoom-overlay img {
-  max-width: 90vw;
-  max-height: 85vh;
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  background: #fff;
-}
-.close-btn {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  background: #e53935;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-}
-/* تحديث عمود الحالة لعرض النص كاملاً */
-.records-table td:nth-child(9) { /* عمود الحالة */
-    min-width: 120px; /* توسعة العمود */
-    max-width: 150px;
-    word-wrap: break-word;
-    line-height: 1.3;
-}
-
-/* تحديث عمود الملاحظة */
-.records-table td:nth-child(10) { /* عمود الملاحظة */
-    max-width: 200px;
-    min-width: 150px;
-    white-space: normal !important;
-    word-wrap: break-word;
-    word-break: break-word;
-    line-height: 1.4;
-    padding: 8px 10px;
-}
-
-/* تحديث عمود المرفق */
-.records-table td:nth-child(11) { /* عمود المرفق */
-    min-width: 100px;
-    max-width: 120px;
-    text-align: center;
-}
-
-/* رؤوس الجدول والخلايا */
-table th,
-table td {
-  text-align: center !important;      /* ← توسيط أفقي */
-  vertical-align: middle !important;  /* ← توسيط عمودي */
-  border: 1px solid black !important;
-  padding: 8px 10px !important;
-}
-img.attachment-thumbnail {
-  width: 50px !important;
-  height: 50px !important;
-  object-fit: cover;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-img.attachment-thumbnail:hover {
-  transform: scale(1.05);
-}
-/* تحديث خلية اسم الطالبة لكسر النص الطويل */
-.records-table td:nth-child(4) { /* عمود اسم الطالبة */
-    max-width: 170px;
-    min-width: 150px;
-    white-space: normal !important; /* السماح بكسر السطور */
-    word-wrap: break-word; /* كسر الكلمات الطويلة */
-    word-break: break-word; /* كسر الكلمات عند الحاجة */
-    line-height: 1.4;
-    padding: 8px 15px; /* زيادة الحشو قليلاً للراحة البصرية */
-}
-
-/* ✅ شبكة سوداء لجميع خلايا الجدول */
-table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-  table-layout: auto !important;
-  border: 2px solid black !important; /* ← إطار خارجي أسود */
-}
-
-/* رؤوس الجدول */
-table thead th {
-  background-color: #1a365d !important; /* ← أزرق غامق */
-  color: #ffffff !important;            /* ← نص أبيض */
-  font-weight: 700 !important;
-  border: 1px solid #000000 !important; /* ← حدود الرأس سوداء أيضًا */
-  padding: 6px 8px !important;
-}
-
-/* تفاعل عند المرور */
-table tr:hover {
-  background-color: #FEF6DD !important;
-  transition: background-color 0.2s ease;
-}
-
-.form-input:disabled {
-    background-color: #f8f9fa;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-    background-color: white;
-}
-
-.status-absence {
-    background-color: rgba(230, 57, 70, 0.1);
-    color: var(--absence);
-    border: 1px solid rgba(230, 57, 70, 0.3);
-}
-
-.status-tasyeeb {
-    background-color: rgba(67, 97, 238, 0.1);
-    color: var(--tasyeeb);
-    border: 1px solid rgba(67, 97, 238, 0.3);
-}
-
-.status-tasayob {
-    background-color: rgba(247, 127, 0, 0.1);
-    color: var(--tasayob);
-    border: 1px solid rgba(247, 127, 0, 0.3);
-}
-
-.status-esteathan {
-    background-color: rgba(155, 93, 229, 0.1);
-    color: var(--esteathan);
-    border: 1px solid rgba(155, 93, 229, 0.3);
-}
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --danger: #e63946;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --absence: #e63946;
+            --tasyeeb: #4361ee;
+            --tasayob: #f77f00;
+            --esteathan: #9b5de5;
+            --highlight: #ff9500;
+        }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Tajawal', sans-serif;
-            font-weight: 700; /* خط عريض للتطبيق كاملاً */
+            font-weight: 700;
         }
         
         body {
             color: var(--dark);
             line-height: 1.6;
             background-color: #f5f7fb;
-            font-weight: 700; /* خط عريض */
+            font-weight: 700;
         }
         
         .container {
@@ -195,7 +43,6 @@ table tr:hover {
             max-width: 1500px;
             margin: 0 auto;
             padding: 0 15px;
-Font-Family: Arial
         }
       
         header {
@@ -203,7 +50,6 @@ Font-Family: Arial
             color: white;
             padding: 1.2rem 0;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-Font-Family: Arial
         }
         
         .header-content {
@@ -268,18 +114,15 @@ Font-Family: Arial
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: 700; /* خط عريض */
-Font-Family: Arial
+            font-weight: 700;
         }
         
-        /* حاوية البحث المتطور */
         .search-container {
             background: #f8f9fa;
             border-radius: 10px;
             padding: 1.2rem;
             margin-bottom: 1.2rem;
             border: 1px solid #eee;
-Font-Family: Arial
         }
         
         .search-header {
@@ -287,7 +130,6 @@ Font-Family: Arial
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
-Font-Family: Arial
         }
         
         .search-title {
@@ -300,7 +142,6 @@ Font-Family: Arial
         
         .search-title i {
             font-size: 1rem;
-Font-Family: Arial
         }
         
         .search-results-count {
@@ -393,8 +234,7 @@ Font-Family: Arial
             font-size: 0.85rem;
             background-color: white;
             cursor: pointer;
-            font-weight: 700; /* خط عريض */
-Font-Family: Arial
+            font-weight: 700;
         }
         
         .filter-select:focus {
@@ -435,1020 +275,941 @@ Font-Family: Arial
             display: block;
         }
         
-       /* تحديث حدود جدول السجلات باللون الأسود */
-.records-table-container {
-    overflow-x: auto;
-    border-radius: 8px;
-    border: 2px solid #000; /* حدود سوداء */
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-.stat-label {
-    font-size: 0.75rem;
-    color: var(--gray);
-    font-weight: 700;
-}
-
-.records-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 1000px;
-    border: 1px solid #000; /* حدود سوداء للجدول */
-Font-Family: Arial
-}
-
-.records-table th {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    padding: 12px 10px;
-    text-align: right;
-    font-weight: 600;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    font-size: 0.85rem;
-    white-space: nowrap;
-    border-left: 1px solid #000; /* حدود جانبية سوداء */
-    border-right: 1px solid #000; /* حدود جانبية سوداء */
-}
-
-.records-table td {
-    padding: 10px 12px;
-    text-align: right;
-    border-bottom: 1px solid #eee;
-    font-size: 0.85rem;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: all 0.3s ease;
-}
-
-.records-table td.expandable:hover {
-    white-space: normal;
-    overflow: visible;
-    background-color: #f8f9fa;
-    z-index: 5;
-    position: relative;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
-
-.records-table tr:hover {
-    background-color: #f8f9fa;
-}
-
-.records-table tr:nth-child(even) {
-    background-color: #fafafa;
-}
-
-.records-table tr:nth-child(even):hover {
-    background-color: #f1f3f4;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 700; /* خط عريض */
-Font-Family: Arial
-}  
-
-.status-absence {
-    background-color: rgba(247, 37, 133, 0.1);
-    color: var(--absence);
-    border: 1px solid rgba(247, 37, 133, 0.3);
-}
-
-.status-tasyeeb {
-    background-color: rgba(76, 201, 240, 0.1);
-    color: var(--tasyeeb);
-    border: 1px solid rgba(76, 201, 240, 0.3);
-}
-
-.status-tasayob {
-    background-color: rgba(255, 145, 0, 0.1);
-    color: var(--tasayob);
-    border: 1px solid rgba(255, 145, 0, 0.3);
-}
-
-.status-esteathan {
-    background-color: rgba(155, 93, 229, 0.1);
-    color: var(--esteathan);
-    border: 1px solid rgba(155, 93, 229, 0.3);
-}
-
-.reviewed-badge {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.3rem;
-    font-weight: 500;
-}
-
-.reviewed-yes {
-  font-size: 1.1rem;                     /* حجم الخط  بعذر بدون عذر*/
-  font-family: Arial, sans-serif;        /* نوع الخط */
- 
-  color: #389D1D;                        /* اللون الأخضر */
-  font-weight: 700;                      /* خط عريض */
- border: 1px solid #18D55A; /* أخضر */
-}
-
-.reviewed-no {
-   font-size: 1.1rem;                     /* حجم الخط */
-  font-family: Arial, sans-serif;        /* نوع الخط */
-
-  color:#E74F4F;                        /* اللون الأحمر */
-  font-weight: 700;                      /* خط عريض */
-border: 1px solid #e63946; /* أحمر */
-}
-
-.action-buttons {
-    display: flex;
-    gap: 5px;
-    justify-content: flex-end;
-}
-
-.btn-icon {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 0.9rem;
-    padding: 4px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    order: 1; /* الترتيب الافتراضي */
-}
-.btn-review,
-.btn-unreview {
-    order: 5; /* أعلى ترتيب - سيظهر أولاً */
-}
-
-/* زر الحذف - سيظهر أولاً على اليمين */
-.btn-delete {
-    order: 4;
-    color: var(--danger);
-}
-
-/* زر التعديل */
-.btn-edit {
-    order: 3;
-    color: var(--primary);
-}
-
-/* زر واتساب */
-.btn-whatsapp {
-    order: 5;
-    color: #25D366;
-}
-
-/* زر إلغاء/تمت المراجعة - سيظهر آخراً على اليسار */
-.btn-review,
-.btn-unreview {
-    order: 2; /* أقل ترتيب - سيظهر آخراً */
-}
-.btn-edit {
-    color: var(--primary);
-}
-
-.btn-edit:hover {
-    background-color: rgba(67, 97, 238, 0.1);
-}
-
-.btn-whatsapp {
-    color: #25D366;
-}
-
-.btn-whatsapp:hover {
-    background-color: rgba(37, 211, 102, 0.1);
-}
-
-.btn-review {
-    color: #e63946; /* أحمر */
-}
-
-.btn-review:hover {
-    background-color: rgba(46, 139, 87, 0.1); /* أخضر غامق مع شفافية */
-}
-
-.btn-unreview {
- color: #19C555; /* أخضر غامق */
-  
-}
-
-.btn-unreview:hover {
- background-color: rgba(230, 57, 70, 0.1); /* أحمر مع شفافية */
-}
-
-.btn-delete {
-    color: var(--danger);
-}
-
-.btn-delete:hover {
-    background-color: rgba(230, 57, 70, 0.1);
-}
-
-.loading {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid var(--primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.empty-state {
-    text-align: center;
-    padding: 1.5rem;
-    color: var(--gray);
-}
-
-.empty-state i {
-    font-size: 2.5rem;
-    margin-bottom: 0.8rem;
-    opacity: 0.5;
-}
-
-footer {
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 1.5rem;
-    color: var(--gray);
-    border-top: 1px solid #eee;
-}
-
-.stats-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 1.2rem;
-}
-.stat-item::after {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border: 2px solid transparent;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
-    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: destination-out;
-    mask-composite: exclude;
-}
-/* التنسيقات الأساسية المشتركة */
-.stat-item {
-    background: white;
-    padding: 0.8rem;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    transition: all 0.3s ease;
-    overflow: hidden;
-}
-
-.stat-number {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 3px;
-}
-
-.stat-label {
-    font-size: 0.75rem;
-    color: var(--gray);
-}
-
-.highlight {
-    background-color: var(--highlight);
-    color: white;
-    padding: 1px 3px;
-    border-radius: 3px;
-    font-weight: 600;
-}
-/* إجمالي السجلات - أزرق */
-.stat-item:nth-child(1) {
-    border: 2px solid #4361ee;
-    background: linear-gradient(135deg, #f8f9ff, #ffffff);
-}
-
-.stat-item:nth-child(1) .stat-number {
-    color: #4361ee;
-}
-
-.stat-item:nth-child(1)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: #4361ee;
-    border-radius: 8px 8px 0 0;
-}
-
-/* سجلات اليوم - أخضر */
-.stat-item:nth-child(2) {
-    border: 2px solid #4cc9f0;
-    background: linear-gradient(135deg, #f0f9ff, #ffffff);
-}
-
-.stat-item:nth-child(2) .stat-number {
-    color: #4cc9f0;
-}
-
-.stat-item:nth-child(2)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: #4cc9f0;
-    border-radius: 8px 8px 0 0;
-}
-
-/* تمت مراجعتها - برتقالي */
-.stat-item:nth-child(3) {
-    border: 2px solid #f77f00;
-    background: linear-gradient(135deg, #fff4e6, #ffffff);
-}
-
-.stat-item:nth-child(3) .stat-number {
-    color: #f77f00;
-}
-
-.stat-item:nth-child(3)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: #f77f00;
-    border-radius: 8px 8px 0 0;
-}
-
-/* قيد المراجعة - بنفسجي */
-.stat-item:nth-child(4) {
-    border: 2px solid #9b5de5;
-    background: linear-gradient(135deg, #f8f0ff, #ffffff);
-}
-
-.stat-item:nth-child(4) .stat-number {
-    color: #9b5de5;
-}
-
-.stat-item:nth-child(4)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: #9b5de5;
-    border-radius: 8px 8px 0 0;
-}
-/* نافذة التعديل */
-.edit-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.edit-modal.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.edit-modal-content {
-    background: white;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
-    width: 90%;
-    transform: translateY(20px);
-    transition: transform 0.3s ease;
-}
-
-.edit-modal.show .edit-modal-content {
-    transform: translateY(0);
-}
-
-.edit-modal-title {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.edit-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.form-label {
-    font-weight: 500;
-    color: var(--dark);
-    font-size: 0.9rem;
-}
-
-.form-input, .form-select {
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    transition: border 0.3s ease;
-}
-
-.form-input:focus, .form-select:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-.edit-modal-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 1rem;
-}
-
-.btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: var(--secondary);
-}
-
-.btn-secondary {
-    background: var(--gray);
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: #5a6268;
-}
-
-/* أنماط الإشعارات الداخلية */
-.custom-notification {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    background: white;
-    color: #333;
-    padding: 8px 12px;
-    border-radius: 6px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10000;
-    font-size: 0.75rem;
-    max-width: 280px;
-    transform: translateX(400px);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border-left: 3px solid;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.custom-notification.show {
-    transform: translateX(0);
-}
-
-.custom-notification.hide {
-    transform: translateX(400px);
-    opacity: 0;
-}
-
-.notification-content {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.notification-icon {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    flex-shrink: 0;
-}
-
-.notification-message {
-    flex: 1;
-    font-weight: 500;
-    line-height: 1.2;
-}
-
-.notification-close {
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    padding: 2px;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    font-size: 0.7rem;
-}
-
-.notification-close:hover {
-    background: rgba(0, 0, 0, 0.1);
-    color: #333;
-}
-
-/* أنواع الإشعارات */
-.notification-info {
-    border-left-color: var(--primary);
-    background: linear-gradient(135deg, #f8f9ff, #ffffff);
-}
-
-.notification-info .notification-icon {
-    background: rgba(67, 97, 238, 0.1);
-    color: var(--primary);
-}
-
-.notification-success {
-    border-left-color: var(--success);
-    background: linear-gradient(135deg, #f0f9ff, #ffffff);
-}
-
-.notification-success .notification-icon {
-    background: rgba(76, 201, 240, 0.1);
-    color: var(--success);
-}
-
-.notification-warning {
-    border-left-color: var(--warning);
-    background: linear-gradient(135deg, #fff0f7, #ffffff);
-}
-
-.notification-warning .notification-icon {
-    background: rgba(247, 37, 133, 0.1);
-    color: var(--warning);
-}
-
-.notification-error {
-    border-left-color: var(--danger);
-    background: linear-gradient(135deg, #ffeaea, #ffffff);
-}
-
-.notification-error .notification-icon {
-    background: rgba(230, 57, 70, 0.1);
-    color: var(--danger);
-}
-
-/* أنماط الإشعارات المنبثقة المخصصة */
-.custom-alert-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(2px);
-}
-
-.custom-alert-overlay.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.custom-alert {
-    background: white;
-    border-radius: 12px;
-    padding: 0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 90%;
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-    overflow: hidden;
-}
-
-.custom-alert-overlay.show .custom-alert {
-    transform: scale(1);
-}
-
-.custom-alert-header {
-    padding: 1.2rem 1.5rem;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-}
-
-.custom-alert-header i {
-    font-size: 1.2rem;
-}
-
-.custom-alert-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-.custom-alert-body {
-    padding: 1.5rem;
-    text-align: center;
-}
-
-.custom-alert-message {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: var(--dark);
-    margin-bottom: 1.5rem;
-}
-
-.custom-alert-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
-.custom-alert-btn {
-    padding: 8px 20px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    min-width: 80px;
-}
-
-.custom-alert-btn-primary {
-    background: var(--primary);
-    color: white;
-}
-
-.custom-alert-btn-primary:hover {
-    background: var(--secondary);
-    transform: translateY(-1px);
-}
-
-.custom-alert-btn-secondary {
-    background: #f8f9fa;
-    color: var(--dark);
-    border: 1px solid #ddd;
-}
-
-.custom-alert-btn-secondary:hover {
-    background: #e9ecef;
-    transform: translateY(-1px);
-}
-
-.custom-alert-btn-danger {
-    background: var(--danger);
-    color: white;
-}
-
-.custom-alert-btn-danger:hover {
-    background: #c82333;
-    transform: translateY(-1px);
-}
-
-/* إشعارات التأكيد الصغيرة */
-.custom-confirm-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.custom-confirm-overlay.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.custom-confirm {
-    background: white;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    max-width: 350px;
-    width: 90%;
-    transform: translateY(-20px);
-    transition: transform 0.3s ease;
-    text-align: center;
-}
-
-.custom-confirm-overlay.show .custom-confirm {
-    transform: translateY(0);
-}
-
-.custom-confirm-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(230, 57, 70, 0.1);
-    color: var(--danger);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1rem;
-    font-size: 1.3rem;
-}
-
-.custom-confirm-message {
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-    color: var(--dark);
-}
-
-.custom-confirm-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-}
-
-/* أنماط المرفقات الجديدة */
-.attachment-container {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.attachment-thumbnail {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-    border: 2px solid #e0e0e0;
-    transition: all 0.3s ease;
-}
-
-.attachment-thumbnail:hover {
-    border-color: var(--primary);
-    transform: scale(1.05);
-}
-
-.file-preview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    transition: all 0.3s ease;
-    min-width: 60px;
-}
-
-.file-preview:hover {
-    border-color: var(--primary);
-    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-    transform: scale(1.05);
-}
-
-.file-icon {
-    font-size: 1.8rem;
-    color: #e63946;
-    margin-bottom: 5px;
-}
-
-.file-text {
-    font-size: 0.7rem;
-    font-weight: bold;
-    color: var(--dark);
-}
-
-.attachment-preview-tooltip {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    background: white;
-    border: 2px solid var(--primary);
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    min-width: 200px;
-    max-width: 300px;
-    text-align: center;
-}
-
-.attachment-preview-tooltip.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(-5px);
-}
-
-.preview-image {
-    max-width: 250px;
-    max-height: 250px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-.preview-pdf {
-    padding: 20px;
-    background: linear-gradient(135deg, #ffeaea, #ffcccc);
-    border-radius: 8px;
-    border: 2px dashed #e63946;
-}
-
-.preview-pdf-icon {
-    font-size: 3rem;
-    color: #e63946;
-    margin-bottom: 10px;
-}
-
-.preview-pdf-text {
-    font-weight: bold;
-    color: #d32f2f;
-    margin-bottom: 5px;
-}
-
-.preview-file-name {
-    font-size: 0.8rem;
-    color: var(--dark);
-    word-break: break-word;
-}
-
-.preview-student-name {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--primary);
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid #eee;
-}
-
-.attachment-link {
-    font-size: 0.7rem;
-    color: var(--gray);
-    text-decoration: none;
-    transition: color 0.2s ease;
-    display: block;
-    margin-top: 5px;
-}
-
-.attachment-link:hover {
-    color: var(--primary);
-    text-decoration: underline;
-}
+        .records-table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 2px solid #000;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+            border: 1px solid #000;
+        }
+
+        .records-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 12px 10px;
+            text-align: center;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            border: 1px solid #000;
+        }
+
+        .records-table td {
+            padding: 10px 12px;
+            text-align: center;
+            border: 1px solid #000;
+            font-size: 0.85rem;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+
+        .records-table td.expandable:hover {
+            white-space: normal;
+            overflow: visible;
+            background-color: #f8f9fa;
+            z-index: 5;
+            position: relative;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .records-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .records-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        .records-table tr:nth-child(even):hover {
+            background-color: #f1f3f4;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }  
         
-     @media (max-width: 768px) {
-  .action-buttons {
-    display: flex;
-    gap: 5px;
-    justify-content: flex-end; /* محاذاة لليمين */
-    flex-direction: row-reverse; /* عكس الترتيب */
-}
-
-    .nav-links {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .search-filters {
-        flex-direction: column;
-    }
-    
-    .filter-group {
-        min-width: 100%;
-    }
-    
- .stats-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
-    margin-bottom: 1.2rem;
-    border: 2px solid var(--primary); /* حدود زرقاء للحاوية الرئيسية */
-    border-radius: 12px; /* زوايا دائرية */
-    padding: 10px; /* مسافة داخلية */
-    background: linear-gradient(135deg, #f8f9ff, #ffffff); /* خلفية متدرجة */
-}
-    
-   .stat-item {
-    background: white;
-    padding: 0.7rem;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    border: 2px solid var(--primary); /* حدود زرقاء لكل مربع إحصائية */
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-  .stat-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-}  
-.stat-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.stat-number {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-}
-    
- .stat-label {
-    font-size: 0.75rem;
-    color: var(--gray);
-    font-weight: 700;
-}
-
-    .custom-notification {
-        right: 8px;
-        left: 8px;
-        max-width: none;
-    }
-    
-    .records-table td {
-        max-width: 120px;
-    }
-    
-    .records-table-container {
-        max-height: 400px;
-    }
-
-    .attachment-preview-tooltip {
-        min-width: 180px;
-        max-width: 250px;
-    }
-
-    .preview-image {
-        max-width: 200px;
-        max-height: 200px;
-    }
-
+        .status-absence {
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--absence);
+            border: 1px solid rgba(247, 37, 133, 0.3);
+        }
+        
+        .status-tasyeeb {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--tasyeeb);
+            border: 1px solid rgba(76, 201, 240, 0.3);
+        }
+        
+        .status-tasayob {
+            background-color: rgba(255, 145, 0, 0.1);
+            color: var(--tasayob);
+            border: 1px solid rgba(255, 145, 0, 0.3);
+        }
+        
+        .status-esteathan {
+            background-color: rgba(155, 93, 229, 0.1);
+            color: var(--esteathan);
+            border: 1px solid rgba(155, 93, 229, 0.3);
+        }
+        
+        .reviewed-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .reviewed-yes {
+            color: #389D1D;
+            font-weight: 700;
+            border: 1px solid #18D55A;
+        }
+        
+        .reviewed-no {
+            color: #E74F4F;
+            font-weight: 700;
+            border: 1px solid #e63946;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: flex-end;
+        }
+        
+        .btn-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-review,
+        .btn-unreview {
+            order: 5;
+        }
+        
+        .btn-delete {
+            order: 4;
+            color: var(--danger);
+        }
+        
+        .btn-edit {
+            order: 3;
+            color: var(--primary);
+        }
+        
+        .btn-whatsapp {
+            order: 5;
+            color: #25D366;
+        }
+        
+        .btn-review,
+        .btn-unreview {
+            order: 2;
+        }
+        
+        .btn-edit:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .btn-whatsapp:hover {
+            background-color: rgba(37, 211, 102, 0.1);
+        }
+        
+        .btn-review {
+            color: #e63946;
+        }
+        
+        .btn-review:hover {
+            background-color: rgba(46, 139, 87, 0.1);
+        }
+        
+        .btn-unreview {
+            color: #19C555;
+        }
+        
+        .btn-unreview:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+        }
+        
+        .btn-delete:hover {
+            background-color: rgba(230, 57, 70, 0.1);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            opacity: 0.5;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 1.5rem;
+            color: var(--gray);
+            border-top: 1px solid #eee;
+        }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 1.2rem;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .stat-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        
+        .highlight {
+            background-color: var(--highlight);
+            color: white;
+            padding: 1px 3px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .stat-item:nth-child(1) {
+            border: 2px solid #4361ee;
+            background: linear-gradient(135deg, #f8f9ff, #ffffff);
+        }
+        
+        .stat-item:nth-child(1) .stat-number {
+            color: #4361ee;
+        }
+        
+        .stat-item:nth-child(1)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #4361ee;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .stat-item:nth-child(2) {
+            border: 2px solid #4cc9f0;
+            background: linear-gradient(135deg, #f0f9ff, #ffffff);
+        }
+        
+        .stat-item:nth-child(2) .stat-number {
+            color: #4cc9f0;
+        }
+        
+        .stat-item:nth-child(2)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #4cc9f0;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .stat-item:nth-child(3) {
+            border: 2px solid #f77f00;
+            background: linear-gradient(135deg, #fff4e6, #ffffff);
+        }
+        
+        .stat-item:nth-child(3) .stat-number {
+            color: #f77f00;
+        }
+        
+        .stat-item:nth-child(3)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #f77f00;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .stat-item:nth-child(4) {
+            border: 2px solid #9b5de5;
+            background: linear-gradient(135deg, #f8f0ff, #ffffff);
+        }
+        
+        .stat-item:nth-child(4) .stat-number {
+            color: #9b5de5;
+        }
+        
+        .stat-item:nth-child(4)::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #9b5de5;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+        
+        .notification {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-right: 4px solid var(--primary);
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-right-color: var(--success);
+        }
+        
+        .notification.error {
+            border-right-color: var(--danger);
+        }
+        
+        .notification.warning {
+            border-right-color: var(--warning);
+        }
+        
+        .notification-icon {
+            font-size: 1.5rem;
+        }
+        
+        .notification.success .notification-icon {
+            color: var(--success);
+        }
+        
+        .notification.error .notification-icon {
+            color: var(--danger);
+        }
+        
+        .notification.warning .notification-icon {
+            color: var(--warning);
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        /* نافذة التعديل */
+        .edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .edit-modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .edit-modal.show .edit-modal-content {
+            transform: translateY(0);
+        }
+        
+        .edit-modal-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .form-input, .form-select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: border 0.3s ease;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .edit-modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        /* نافذة تأكيد الحذف البسيطة */
+        .delete-confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-confirm-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .delete-confirm {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+        
+        .delete-confirm-overlay.show .delete-confirm {
+            transform: scale(1);
+        }
+        
+        .delete-confirm-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .delete-confirm-title {
+            font-size: 1.2rem;
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+        
+        .delete-confirm-message {
+            font-size: 0.9rem;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .delete-confirm-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .btn-delete-confirm {
+            background: var(--danger);
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-delete-confirm:hover {
+            background: #c82333;
+        }
+        
+        .btn-delete-cancel {
+            background: var(--gray);
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-delete-cancel:hover {
+            background: #5a6268;
+        }
+        
+        /* الأنماط الجديدة للواتساب */
+        .message-sent-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            background-color: rgba(37, 211, 102, 0.1);
+            color: #25D366;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+        }
+        
+        .message-not-sent-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            background-color: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+            border: 1px solid rgba(108, 117, 125, 0.3);
+        }
+        
+        .whatsapp-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #ddd;
+            background: white;
+        }
+        
+        .filter-badge.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .filter-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* نافذة تأكيد إرسال الواتساب */
+        .whatsapp-confirmation-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-confirmation-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .whatsapp-confirmation-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .whatsapp-confirmation-modal.show .whatsapp-confirmation-content {
+            transform: scale(1);
+        }
+        
+        .whatsapp-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #25D366;
+        }
+        
+        .whatsapp-icon {
+            width: 50px;
+            height: 50px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .whatsapp-title {
+            font-size: 1.3rem;
+            color: #25D366;
+            font-weight: 700;
+        }
+        
+        .whatsapp-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .detail-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .whatsapp-message {
+            background: #e8f5e8;
+            border: 1px solid #25D366;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            line-height: 1.6;
+            color: #1a365d;
+        }
+        
+        .whatsapp-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-whatsapp-send {
+            background: #25D366;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-whatsapp-send:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+        
+        .btn-cancel-send {
+            background: var(--gray);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel-send:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                display: flex;
+                gap: 5px;
+                justify-content: flex-end;
+                flex-direction: row-reverse;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-filters {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                min-width: 100%;
+            }
+            
+            .stats-summary {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 10px;
+                margin-bottom: 1.2rem;
+                border: 2px solid var(--primary);
+                border-radius: 12px;
+                padding: 10px;
+                background: linear-gradient(135deg, #f8f9ff, #ffffff);
+            }
+            
+            .stat-item {
+                background: white;
+                padding: 0.7rem;
+                border-radius: 8px;
+                text-align: center;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+                border: 2px solid var(--primary);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .stat-item::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+            }  
+            
+            .stat-item:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            }
+            
+            .stat-number {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin-bottom: 5px;
+            }
+            
+            .stat-label {
+                font-size: 0.75rem;
+                color: var(--gray);
+                font-weight: 700;
+            }
+            
+            .notification-container {
+                right: 8px;
+                left: 8px;
+                max-width: none;
+            }
+            
+            .records-table td {
+                max-width: 120px;
+            }
+            
+            .records-table-container {
+                max-height: 400px;
+            }
+            
+            .delete-confirm-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-delete-confirm,
+            .btn-delete-cancel {
+                width: 100%;
+            }
+            
+            .whatsapp-filter {
+                justify-content: center;
+            }
+            
+            .filter-badge {
+                font-size: 0.7rem;
+                padding: 4px 8px;
+            }
+            
+            .whatsapp-buttons {
+                flex-direction: column;
+            }
+            
+            .btn-whatsapp-send,
+            .btn-cancel-send {
+                width: 100%;
+            }
+        }
     </style>
+</head>
 <body>
+    <!-- نظام الإشعارات -->
+    <div class="notification-container" id="notificationContainer"></div>
+
     <!-- نافذة تعديل السجل -->
     <div class="edit-modal" id="editModal">
         <div class="edit-modal-content">
@@ -1475,8 +1236,8 @@ footer {
                         <option value="الحصة الرابعة">الحصة الرابعة</option>
                         <option value="الحصة الخامسة">الحصة الخامسة</option>
                         <option value="الحصة السادسة">الحصة السادسة</option>
-                         <option value="الحصة السابعة">الحصة السابعة</option>
-                         <option value="الحصة الثامنه">الحصة الثامنه</option> 
+                        <option value="الحصة السابعة">الحصة السابعة</option>
+                        <option value="الحصة الثامنه">الحصة الثامنه</option> 
                         <option value="طوال اليوم">طوال اليوم</option>
                     </select>
                 </div>
@@ -1487,7 +1248,7 @@ footer {
                         <option value="تأخير عن الحصة">تأخير عن الحصة</option>
                         <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
                         <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
-                          <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
+                        <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1499,6 +1260,74 @@ footer {
                     <button type="submit" class="btn btn-primary" id="saveEditBtn">حفظ التغييرات</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد الحذف البسيطة -->
+    <div class="delete-confirm-overlay" id="deleteConfirmOverlay">
+        <div class="delete-confirm">
+            <div class="delete-confirm-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="delete-confirm-title">تأكيد الحذف</h2>
+            <div class="delete-confirm-message" id="deleteConfirmMessage">
+                هل أنت متأكد من رغبتك في حذف هذا السجل؟
+            </div>
+            
+            <div class="delete-confirm-buttons">
+                <button class="btn-delete-cancel" id="cancelDeleteBtn">
+                    إلغاء
+                </button>
+                <button class="btn-delete-confirm" id="confirmDeleteBtn">
+                    نعم، احذف السجل
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد إرسال الواتساب -->
+    <div class="whatsapp-confirmation-modal" id="whatsappConfirmationModal">
+        <div class="whatsapp-confirmation-content">
+            <div class="whatsapp-header">
+                <div class="whatsapp-icon">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h2 class="whatsapp-title">تأكيد إرسال الرسالة</h2>
+            </div>
+            
+            <div class="whatsapp-details">
+                <div class="detail-row">
+                    <span class="detail-label">اسم الطالبة:</span>
+                    <span class="detail-value" id="whatsappStudentName">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">الصف والشعبة:</span>
+                    <span class="detail-value" id="whatsappClassSection">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">الحالة:</span>
+                    <span class="detail-value" id="whatsappStatus">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">رقم ولي الأمر:</span>
+                    <span class="detail-value" id="whatsappPhone">-</span>
+                </div>
+            </div>
+            
+            <div class="whatsapp-message" id="whatsappMessageContent">
+                جاري تحميل الرسالة...
+            </div>
+            
+            <div class="whatsapp-buttons">
+                <button class="btn-cancel-send" id="cancelWhatsAppBtn">
+                    <i class="fas fa-times"></i>
+                    إلغاء الإرسال
+                </button>
+                <button class="btn-whatsapp-send" id="confirmWhatsAppBtn">
+                    <i class="fab fa-whatsapp"></i>
+                    إرسال الآن
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1541,8 +1370,8 @@ footer {
                         <div class="stat-label">تمت مراجعتها</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-number" id="pendingReview">0</div>
-                        <div class="stat-label">قيد المراجعة</div>
+                        <div class="stat-number" id="whatsappSentCount">0</div>
+                        <div class="stat-label">تم إرسال واتساب</div>
                     </div>
                 </div>
                 
@@ -1565,7 +1394,6 @@ footer {
                     </div>
                     
                     <div class="search-filters">
-                        <!-- تم استبدال فلتر الصف بفلتر المراجعة -->
                         <div class="filter-group">
                             <label class="filter-label">حالة المراجعة</label>
                             <select class="filter-select" id="filterReview">
@@ -1587,11 +1415,10 @@ footer {
                             <select class="filter-select" id="filterStatus">
                                 <option value="">جميع الحالات</option>
                                 <option value="غياب">غياب</option>
-                              <option value=" التأخير عن الطابور الصباحي">التأخير عن الطابور الصباحي</option> 
                                 <option value="تأخير عن الحصة">تأخير عن الحصة</option>
                                 <option value="تسيَّب من الحصة">تسيَّب من الحصة</option>
                                 <option value="إستأذان خارج المدرسة">إستأذان خارج المدرسة</option>
-                               <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
+                                <option value="إشعار ولي الأمر">إشعار ولي الأمر</option>
                             </select>
                         </div>
                         
@@ -1604,13 +1431,12 @@ footer {
                             </select>
                         </div>
 
-                        <!-- فلتر المرفقات الجديد -->
                         <div class="filter-group">
-                            <label class="filter-label">المرفقات</label>
-                            <select class="filter-select" id="filterAttachment">
-                                <option value="">جميع السجلات</option>
-                                <option value="with_attachment">مرفقات</option>
-                                <option value="without_attachment">غير مرفقات</option>
+                            <label class="filter-label">حالة المراسلة</label>
+                            <select class="filter-select" id="filterWhatsapp">
+                                <option value="">جميع الحالات</option>
+                                <option value="sent">تم الإرسال</option>
+                                <option value="not_sent">لم يتم الإرسال</option>
                             </select>
                         </div>
                     </div>
@@ -1619,6 +1445,7 @@ footer {
                 <div class="tabs">
                     <div class="tab active" data-tab="today">سجلات اليوم</div>
                     <div class="tab" data-tab="all">جميع السجلات</div>
+                    <div class="tab" data-tab="whatsapp">المراسلات المرسلة</div>
                 </div>
                 
                 <div class="tab-content active" id="todayTab">
@@ -1636,8 +1463,8 @@ footer {
                                     <th>هاتف ولي الأمر</th>
                                     <th>الحالة</th>
                                     <th>ملاحظة</th>
-                                    <th>المرفق</th>
                                     <th>المراجعة</th>
+                                    <th>حالة المراسلة</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -1666,8 +1493,8 @@ footer {
                                     <th>هاتف ولي الأمر</th>
                                     <th>الحالة</th>
                                     <th>ملاحظة</th>
-                                    <th>المرفق</th>
                                     <th>المراجعة</th>
+                                    <th>حالة المراسلة</th>
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
@@ -1678,6 +1505,44 @@ footer {
                         <i class="fas fa-clipboard-list"></i>
                         <h3>لا توجد سجلات</h3>
                         <p>لم يتم تسجيل أي حالات غياب أو تأخير حتى الآن.</p>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="whatsappTab">
+                    <div class="whatsapp-filter" id="whatsappFilter">
+                        <div class="filter-badge active" data-filter="all">الكل</div>
+                        <div class="filter-badge" data-filter="غياب">غياب</div>
+                        <div class="filter-badge" data-filter="تأخير عن الحصة">تأخير</div>
+                        <div class="filter-badge" data-filter="تسيَّب من الحصة">تسيّب</div>
+                        <div class="filter-badge" data-filter="إستأذان خارج المدرسة">إستئذان</div>
+                        <div class="filter-badge" data-filter="إشعار ولي الأمر">إشعار</div>
+                    </div>
+                    
+                    <div class="records-table-container">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>اليوم</th>
+                                    <th>اسم الطالبة</th>
+                                    <th>الصف</th>
+                                    <th>الشعبة</th>
+                                    <th>الحصة</th>
+                                    <th>هاتف ولي الأمر</th>
+                                    <th>الحالة</th>
+                                    <th>ملاحظة</th>
+                                    <th>حالة المراسلة</th>
+                                    <th>وقت الإرسال</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="whatsappRecordsBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="whatsappEmptyState" class="empty-state" style="display: none;">
+                        <i class="fab fa-whatsapp"></i>
+                        <h3>لا توجد مراسلات مرسلة</h3>
+                        <p>لم يتم إرسال أي رسائل واتساب حتى الآن.</p>
                     </div>
                 </div>
             </div>
@@ -1692,10 +1557,16 @@ footer {
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_hp07h8KIWLbOiwBhDHXdK76QisSLWt8SNxI4ZjEByOJsWRdI1xTQcE9ESxfLgbEy4g/exec';
+        const SCHOOL_PHONE = '96898839479';
+        
         let allRecords = [];
         let filteredRecords = [];
         let searchTimeout = null;
+        let autoRefreshInterval = null;
         let currentEditRecord = null;
+        let currentDeleteRecord = null;
+        let currentWhatsappFilter = 'all';
+        let currentWhatsappRecord = null;
 
         // عناصر DOM
         const searchInput = document.getElementById('searchInput');
@@ -1704,8 +1575,9 @@ footer {
         const filterSection = document.getElementById('filterSection');
         const filterStatus = document.getElementById('filterStatus');
         const filterDate = document.getElementById('filterDate');
-        const filterAttachment = document.getElementById('filterAttachment'); // فلتر المرفقات الجديد
+        const filterWhatsapp = document.getElementById('filterWhatsapp');
         const searchResultsCount = document.getElementById('searchResultsCount');
+        const notificationContainer = document.getElementById('notificationContainer');
         const editModal = document.getElementById('editModal');
         const editForm = document.getElementById('editForm');
         const editRecordId = document.getElementById('editRecordId');
@@ -1716,9 +1588,71 @@ footer {
         const editNotes = document.getElementById('editNotes');
         const cancelEditBtn = document.getElementById('cancelEditBtn');
         const saveEditBtn = document.getElementById('saveEditBtn');
+        const deleteConfirmOverlay = document.getElementById('deleteConfirmOverlay');
+        const deleteConfirmMessage = document.getElementById('deleteConfirmMessage');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const whatsappConfirmationModal = document.getElementById('whatsappConfirmationModal');
+        const whatsappStudentName = document.getElementById('whatsappStudentName');
+        const whatsappClassSection = document.getElementById('whatsappClassSection');
+        const whatsappStatus = document.getElementById('whatsappStatus');
+        const whatsappPhone = document.getElementById('whatsappPhone');
+        const whatsappMessageContent = document.getElementById('whatsappMessageContent');
+        const confirmWhatsAppBtn = document.getElementById('confirmWhatsAppBtn');
+        const cancelWhatsAppBtn = document.getElementById('cancelWhatsAppBtn');
 
-        // ✅ دوال الخادم - النسخة المحسنة مع إعادة المحاولة
-        async function callGoogleScript(action, data = {}, retries = 3) {
+        // نظام الإشعارات الداخلية
+        function showNotification(title, message, type = 'info', duration = 5000) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            let icon = 'info-circle';
+            if (type === 'success') icon = 'check-circle';
+            if (type === 'error') icon = 'exclamation-circle';
+            if (type === 'warning') icon = 'exclamation-triangle';
+            
+            notification.innerHTML = `
+                <i class="fas fa-${icon} notification-icon"></i>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <button class="notification-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            notificationContainer.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            const closeBtn = notification.querySelector('.notification-close');
+            closeBtn.addEventListener('click', () => {
+                hideNotification(notification);
+            });
+            
+            if (duration > 0) {
+                setTimeout(() => {
+                    hideNotification(notification);
+                }, duration);
+            }
+            
+            return notification;
+        }
+        
+        function hideNotification(notification) {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }
+
+        // دالة مساعدة للاتصال بـ Google Apps Script
+        async function callGoogleScript(action, data = {}) {
             const params = new URLSearchParams();
             params.append('action', action);
             
@@ -1728,141 +1662,32 @@ footer {
                 }
             }
             
-            for (let attempt = 1; attempt <= retries; attempt++) {
-                try {
-                    console.log(`📤 محاولة ${attempt}/${retries} - إرسال طلب ${action}`);
-                    
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 ثانية timeout
-                    
-                    const response = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: params,
-                        signal: controller.signal
-                    });
-                    
-                    clearTimeout(timeoutId);
-                    
-                    if (!response.ok) {
-                        throw new Error(`خطأ في الاتصال: ${response.status} ${response.statusText}`);
-                    }
-                    
-                    const result = await response.json();
-                    
-                    if (!result.success) {
-                        throw new Error(result.error || 'حدث خطأ غير معروف');
-                    }
-                    
-                    console.log(`✅ نجاح في ${action} - المحاولة ${attempt}`);
-                    return result.data;
-                    
-                } catch (error) {
-                    console.error(`❌ فشل في ${action} - المحاولة ${attempt}:`, error);
-                    
-                    if (attempt === retries) {
-                        if (error.name === 'AbortError') {
-                            throw new Error('انتهت مهلة الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.');
-                        } else if (error.message.includes('Failed to fetch')) {
-                            throw new Error('فشل في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.');
-                        } else {
-                            throw new Error(`فشل في ${action === 'updateRecord' ? 'تحديث' : 'حذف'} السجل: ${error.message}`);
-                        }
-                    }
-                    
-                    // الانتظار قبل إعادة المحاولة (زيادة متدرجة)
-                    await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: params
+                });
+                
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'حدث خطأ غير معروف');
                 }
+                
+                return result.data;
+            } catch (error) {
+                console.error('❌ خطأ في الاتصال:', error);
+                throw error;
             }
         }
 
-// ✅ إنشاء / جلب نافذة عرض الصورة
-function getOrCreateZoomOverlay() {
-  let overlay = document.getElementById('zoomOverlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'zoomOverlay';
-    overlay.className = 'zoom-overlay';
-    overlay.innerHTML = `
-      <div style="position:relative;">
-        <img id="zoomImage" src="" alt="عرض الصورة">
-      </div>
-      <button class="close-btn" id="zoomCloseBtn">✕</button>
-    `;
-    document.body.appendChild(overlay);
-
-    // عند الضغط على الزر ✕ يغلق العرض
-    document.getElementById('zoomCloseBtn').addEventListener('click', () => {
-      overlay.classList.remove('show');
-    });
-  }
-  return overlay;
-}
-
-// ✅ عرض الصورة في المنتصف
-function openImageCenter(url) {
-  const overlay = getOrCreateZoomOverlay();
-  const img = overlay.querySelector('#zoomImage');
-  img.src = url;
-  overlay.classList.add('show');
-}
-
-// ✅ فتح ملف PDF في نافذة جديدة
-function openPDF(url) {
-  if (!url) return;
-  try {
-    // إذا كان الرابط من Google Drive نحوله إلى /preview
-    if (url.includes('drive.google.com')) {
-      const match = url.match(/\/d\/(.*?)(\/|$)/);
-      if (match && match[1]) {
-        url = `https://drive.google.com/file/d/${match[1]}/preview`;
-      }
-    }
-    window.open(url, '_blank', 'noopener,noreferrer');
-  } catch (err) {
-    console.error('PDF open error:', err);
-    location.href = url;
-  }
-}
-
-// ✅ تفعيل النقر على الصور أو ملفات PDF
-document.addEventListener('click', (e) => {
-  const imgEl = e.target.closest('.attachment-thumbnail, img');
-  const pdfEl = e.target.closest('.file-preview');
-
-  // عند النقر على الصورة
-  if (imgEl) {
-    const url = imgEl.src;
-    if (url) openImageCenter(url);
-    return;
-  }
-
-  // عند النقر على ملف PDF
-  if (pdfEl) {
-    // استخراج الرابط من dataset أو onclick
-    let url = pdfEl.dataset.url || pdfEl.dataset.attachment || '';
-    if (!url) {
-      const onclickAttr = pdfEl.getAttribute('onclick') || '';
-      const match = onclickAttr.match(/openAttachment\s*\(\s*['"](.+?)['"]\s*\)/);
-      if (match) url = match[1];
-    }
-    // فتح الرابط في نافذة جديدة
-    if (url) openPDF(url);
-  }
-});
-
-        // ✅ فحص حالة الاتصال
+        // فحص حالة الاتصال
         async function checkConnection() {
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 ثواني كحد أقصى
-                
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    body: new URLSearchParams({ action: 'getStats' }),
-                    signal: controller.signal
+                    body: new URLSearchParams({ action: 'getStats' })
                 });
-                
-                clearTimeout(timeoutId);
                 return response.ok;
             } catch (error) {
                 console.error('❌ فشل في فحص الاتصال:', error);
@@ -1870,295 +1695,104 @@ document.addEventListener('click', (e) => {
             }
         }
 
-        // ✅ نظام الإشعارات المنبثقة المخصصة - النسخة المحسنة
-        function showCustomAlert(message, title = 'تنبيه', type = 'info') {
-            return new Promise((resolve) => {
-                // إزالة أي إشعارات سابقة
-                const existingAlert = document.getElementById('custom-alert-overlay');
-                if (existingAlert) {
-                    existingAlert.remove();
-                }
-
-                const icons = {
-                    info: 'fa-info-circle',
-                    success: 'fa-check-circle',
-                    warning: 'fa-exclamation-triangle',
-                    error: 'fa-times-circle'
-                };
-
-                const colors = {
-                    info: '#4361ee',
-                    success: '#4cc9f0', 
-                    warning: '#f72585',
-                    error: '#e63946'
-                };
-
-                const alertHTML = `
-                    <div class="custom-alert-overlay" id="custom-alert-overlay">
-                        <div class="custom-alert">
-                            <div class="custom-alert-header" style="background: linear-gradient(135deg, ${colors[type]}, ${colors[type]});">
-                                <i class="fas ${icons[type]}"></i>
-                                <h3 class="custom-alert-title">${title}</h3>
-                            </div>
-                            <div class="custom-alert-body">
-                                <div class="custom-alert-message">${message}</div>
-                                <div class="custom-alert-buttons">
-                                    <button class="custom-alert-btn custom-alert-btn-primary" id="custom-alert-ok">موافق</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                document.body.insertAdjacentHTML('beforeend', alertHTML);
-                
-                const overlay = document.getElementById('custom-alert-overlay');
-                const okBtn = document.getElementById('custom-alert-ok');
-                
-                setTimeout(() => overlay.classList.add('show'), 10);
-                
-                const closeAlert = () => {
-                    overlay.classList.remove('show');
-                    setTimeout(() => {
-                        if (overlay.parentNode) {
-                            overlay.remove();
-                        }
-                        resolve(true);
-                    }, 300);
-                };
-                
-                okBtn.addEventListener('click', closeAlert);
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) closeAlert();
-                });
-                
-                // إغلاق بالزر ESC
-                const handleEscape = (e) => {
-                    if (e.key === 'Escape') closeAlert();
-                };
-                document.addEventListener('keydown', handleEscape);
-                
-                // تركيز على زر الموافق
-                setTimeout(() => okBtn.focus(), 300);
-                
-                // تنظيف المستمع عند الإغلاق
-                overlay.addEventListener('transitionend', () => {
-                    if (!overlay.classList.contains('show')) {
-                        document.removeEventListener('keydown', handleEscape);
-                    }
-                });
-            });
-        }
-
-        // ✅ نظام تأكيد مخصص - النسخة المحسنة
-        function showCustomConfirm(message, title = 'تأكيد العملية') {
-            return new Promise((resolve) => {
-                // إزالة أي تأكيدات سابقة
-                const existingConfirm = document.getElementById('custom-confirm-overlay');
-                if (existingConfirm) {
-                    existingConfirm.remove();
-                }
-
-                const confirmHTML = `
-                    <div class="custom-confirm-overlay" id="custom-confirm-overlay">
-                        <div class="custom-confirm">
-                            <div class="custom-confirm-icon">
-                                <i class="fas fa-exclamation"></i>
-                            </div>
-                            <div class="custom-confirm-message">${message}</div>
-                            <div class="custom-confirm-buttons">
-                                <button class="custom-alert-btn custom-alert-btn-secondary" id="custom-confirm-cancel">إلغاء</button>
-                                <button class="custom-alert-btn custom-alert-btn-danger" id="custom-confirm-ok">نعم، تأكيد</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                document.body.insertAdjacentHTML('beforeend', confirmHTML);
-                
-                const overlay = document.getElementById('custom-confirm-overlay');
-                const cancelBtn = document.getElementById('custom-confirm-cancel');
-                const okBtn = document.getElementById('custom-confirm-ok');
-                
-                setTimeout(() => overlay.classList.add('show'), 10);
-                
-                const closeConfirm = (result) => {
-                    overlay.classList.remove('show');
-                    setTimeout(() => {
-                        if (overlay.parentNode) {
-                            overlay.remove();
-                        }
-                        resolve(result);
-                    }, 300);
-                };
-                
-                cancelBtn.addEventListener('click', () => closeConfirm(false));
-                okBtn.addEventListener('click', () => closeConfirm(true));
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) closeConfirm(false);
-                });
-                
-                // إغلاق بالزر ESC
-                const handleEscape = (e) => {
-                    if (e.key === 'Escape') closeConfirm(false);
-                };
-                document.addEventListener('keydown', handleEscape);
-                
-                // تركيز على زر الإلغاء افتراضياً
-                setTimeout(() => cancelBtn.focus(), 300);
-                
-                // تنظيف المستمع عند الإغلاق
-                overlay.addEventListener('transitionend', () => {
-                    if (!overlay.classList.contains('show')) {
-                        document.removeEventListener('keydown', handleEscape);
-                    }
-                });
-            });
-        }
-
-        // ✅ رسالة نجاح سريعة - النسخة المحسنة
-        function showQuickSuccess(message) {
-            // إزالة أي إشعارات سابقة
-            const existingNotifications = document.querySelectorAll('.custom-notification');
-            existingNotifications.forEach(notification => {
-                notification.remove();
-            });
-            
-            const notification = document.createElement('div');
-            notification.className = 'custom-notification notification-success';
-            notification.innerHTML = `
-                <div class="notification-content">
-                    <div class="notification-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="notification-message">${message}</div>
-                    <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // إظهار الإشعار
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 10);
-            
-            // إخفاء تلقائي بعد 3 ثواني
-            setTimeout(() => {
-                notification.classList.remove('show');
-                notification.classList.add('hide');
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, 400);
-            }, 3000);
-        }
-
-        // ✅ البحث الفوري بدون تأخير - تم تحديثها لتدعم فلتر المرفقات الجديد
-       function performSearch() {
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    const reviewFilter = filterReview.value;
-    const sectionFilter = filterSection.value;
-    const statusFilter = filterStatus.value;
-    const dateFilter = filterDate.value;
-    const attachmentFilter = filterAttachment.value; // فلتر المرفقات الجديد
-    
-    filteredRecords = allRecords.filter(record => {
-        // تطبيق فلتر النص
-        if (searchTerm) {
-            const searchFields = [
-                record.studentName,
-                record.class,
-                record.section,
-                record.status,
-                record.date,
-                record.day,
-                record.period,
-                record.notes
-            ];
-            
-            const matchesSearch = searchFields.some(field => 
-                field && field.toString().toLowerCase().includes(searchTerm)
-            );
-            
-            if (!matchesSearch) return false;
-        }
-        
-        // تطبيق فلتر المراجعة الجديد
-        if (reviewFilter) {
-            if (reviewFilter === 'reviewed' && !record.reviewed) return false;
-            if (reviewFilter === 'pending' && record.reviewed) return false;
-        }
-        
-        // تطبيق فلتر الشعبة
-        if (sectionFilter && record.section !== sectionFilter) return false;
-        
-        // تطبيق فلتر الحالة
-        if (statusFilter && record.status !== statusFilter) return false;
-        
-        // تطبيق فلتر التاريخ - تم التصحيح هنا
-        if (dateFilter) {
-            const recordDate = convertToISODate(record.date);
-            if (!recordDate) return false;
-            
-            const today = new Date();
-            const recordDateObj = new Date(recordDate);
-            
-            switch (dateFilter) {
-                case 'week':
-                    const startOfWeek = new Date(today);
-                    startOfWeek.setDate(today.getDate() - today.getDay());
-                    startOfWeek.setHours(0, 0, 0, 0);
-                    
-                    const endOfWeek = new Date(startOfWeek);
-                    endOfWeek.setDate(startOfWeek.getDate() + 6);
-                    endOfWeek.setHours(23, 59, 59, 999);
-                    
-                    if (recordDateObj < startOfWeek || recordDateObj > endOfWeek) return false;
-                    break;
-                    
-                case 'month':
-                    if (recordDateObj.getMonth() !== today.getMonth() || 
-                        recordDateObj.getFullYear() !== today.getFullYear()) return false;
-                    break;
+        // إظهار حالة الاتصال
+        function showConnectionStatus(isConnected) {
+            if (!isConnected) {
+                showNotification('تحذير', 'فقدان الاتصال بالخادم. قد لا تعمل بعض الميزات بشكل صحيح.', 'warning', 10000);
             }
         }
-        
-        // تطبيق فلتر المرفقات الجديد
-        if (attachmentFilter) {
-            const hasAttachment = record.attachment && record.attachment.trim() !== '';
-            
-            if (attachmentFilter === 'with_attachment' && !hasAttachment) return false;
-            if (attachmentFilter === 'without_attachment' && hasAttachment) return false;
-        }
-        
-        return true;
-    });
-    
-    updateDisplay();
-    
-    // تحديث عدد النتائج
-    searchResultsCount.textContent = `${filteredRecords.length} نتيجة`;
-    if (searchTerm) {
-        searchResultsCount.style.display = 'block';
-    } else {
-        searchResultsCount.style.display = 'none';
-    }
-}
 
-        // ✅ تحديث قائمة الشعب بناءً على الصف المختار
+        // البحث الفوري
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const reviewFilter = filterReview.value;
+            const sectionFilter = filterSection.value;
+            const statusFilter = filterStatus.value;
+            const dateFilter = filterDate.value;
+            const whatsappFilter = filterWhatsapp.value;
+            
+            filteredRecords = allRecords.filter(record => {
+                if (searchTerm) {
+                    const searchFields = [
+                        record.studentName,
+                        record.class,
+                        record.section,
+                        record.status,
+                        record.date,
+                        record.day,
+                        record.period,
+                        record.notes
+                    ];
+                    
+                    const matchesSearch = searchFields.some(field => 
+                        field && field.toString().toLowerCase().includes(searchTerm)
+                    );
+                    
+                    if (!matchesSearch) return false;
+                }
+                
+                if (reviewFilter) {
+                    if (reviewFilter === 'reviewed' && !record.reviewed) return false;
+                    if (reviewFilter === 'pending' && record.reviewed) return false;
+                }
+                
+                if (sectionFilter && record.section !== sectionFilter) return false;
+                
+                if (statusFilter && record.status !== statusFilter) return false;
+                
+                if (dateFilter) {
+                    const recordDate = convertToISODate(record.date);
+                    if (!recordDate) return false;
+                    
+                    const today = new Date();
+                    const recordDateObj = new Date(recordDate);
+                    
+                    switch (dateFilter) {
+                        case 'week':
+                            const startOfWeek = new Date(today);
+                            startOfWeek.setDate(today.getDate() - today.getDay());
+                            startOfWeek.setHours(0, 0, 0, 0);
+                            
+                            const endOfWeek = new Date(startOfWeek);
+                            endOfWeek.setDate(startOfWeek.getDate() + 6);
+                            endOfWeek.setHours(23, 59, 59, 999);
+                            
+                            if (recordDateObj < startOfWeek || recordDateObj > endOfWeek) return false;
+                            break;
+                            
+                        case 'month':
+                            if (recordDateObj.getMonth() !== today.getMonth() || 
+                                recordDateObj.getFullYear() !== today.getFullYear()) return false;
+                            break;
+                    }
+                }
+                
+                if (whatsappFilter) {
+                    if (whatsappFilter === 'sent' && !record.whatsappSent) return false;
+                    if (whatsappFilter === 'not_sent' && record.whatsappSent) return false;
+                }
+                
+                return true;
+            });
+            
+            updateDisplay();
+            
+            searchResultsCount.textContent = `${filteredRecords.length} نتيجة`;
+            if (searchTerm) {
+                searchResultsCount.style.display = 'block';
+            } else {
+                searchResultsCount.style.display = 'none';
+            }
+        }
+
+        // تحديث قائمة الشعب
         function updateSectionsList() {
             const sections = new Set();
             
-            // جمع جميع الشعب المتاحة
             allRecords.forEach(record => {
                 sections.add(record.section);
             });
             
-            // تحديث قائمة الشعب
             filterSection.innerHTML = '<option value="">جميع الشعب</option>';
             sections.forEach(section => {
                 const option = document.createElement('option');
@@ -2168,7 +1802,7 @@ document.addEventListener('click', (e) => {
             });
         }
 
-        // ✅ تمييز النص المطابق
+        // تمييز النص المطابق
         function highlightText(text, searchTerm) {
             if (!searchTerm || !text) return text || '';
             try {
@@ -2180,7 +1814,7 @@ document.addEventListener('click', (e) => {
             }
         }
 
-        // ✅ تحديد فئة الحالة حسب النوع
+        // تحديد فئة الحالة
         function getStatusClass(status) {
             switch(status) {
                 case 'غياب': return 'absence';
@@ -2191,136 +1825,222 @@ document.addEventListener('click', (e) => {
             }
         }
 
-        // ✅ دالة للتحقق إذا كان الملف صورة
-        function isImageFile(attachmentUrl) {
-            if (!attachmentUrl) return false;
-            
-            const urlLower = attachmentUrl.toLowerCase();
-            
-            // إذا كان رابط الصور المباشر من Google
-            if (urlLower.includes('lh3.googleusercontent.com')) {
-                return true;
+        // تبديل حالة المراجعة
+        async function toggleReviewStatus(recordId) {
+            try {
+                const record = allRecords.find(r => r.id === recordId);
+                if (record) {
+                    record.reviewed = !record.reviewed;
+                    
+                    updateDisplay();
+                    
+                    await callGoogleScript('toggleReviewStatus', { id: recordId });
+                    
+                    if (record.reviewed) {
+                        showNotification('نجاح', 'تم تعيين السجل كمُراجَع ✓', 'success');
+                    } else {
+                        showNotification('نجاح', 'تم إلغاء مراجعة السجل', 'success');
+                    }
+                }
+            } catch (error) {
+                const record = allRecords.find(r => r.id === recordId);
+                if (record) {
+                    record.reviewed = !record.reviewed;
+                    updateDisplay();
+                }
+                showNotification('خطأ', 'خطأ في تحديث حالة المراجعة', 'error');
             }
-            
-            // التحقق من امتدادات الصور
-            return (urlLower.includes('.jpg') || 
-                    urlLower.includes('.jpeg') || 
-                    urlLower.includes('.png') || 
-                    urlLower.includes('.gif') ||
-                    urlLower.includes('.bmp') || 
-                    urlLower.includes('.webp'));
         }
 
-        // ✅ دالة لتحديد أيقونة المرفق
-        function getAttachmentIcon(attachmentUrl) {
-            if (!attachmentUrl) return 'fa-file';
-            
-            const urlLower = attachmentUrl.toLowerCase();
-            
-            // إذا كان رابط الصور المباشر من Google
-            if (urlLower.includes('lh3.googleusercontent.com')) {
-                return 'fa-image';
+        // إظهار نافذة تأكيد إرسال الواتساب
+        function showWhatsAppConfirmation(recordId) {
+            const record = allRecords.find(r => r.id === recordId);
+            if (!record) {
+                showNotification('خطأ', 'لم يتم العثور على السجل المطلوب', 'error');
+                return;
             }
             
-            // التحقق من امتداد الملف
-            if (urlLower.includes('.jpg') || urlLower.includes('.jpeg') || 
-                urlLower.includes('.png') || urlLower.includes('.gif') ||
-                urlLower.includes('.bmp') || urlLower.includes('.webp')) {
-                return 'fa-image';
-            } else if (urlLower.includes('.pdf')) {
-                return 'fa-file-pdf';
-            } else if (urlLower.includes('.doc') || urlLower.includes('.docx')) {
-                return 'fa-file-word';
+            currentWhatsappRecord = record;
+            
+            // تحديث بيانات النافذة
+            whatsappStudentName.textContent = record.studentName;
+            whatsappClassSection.textContent = `${record.class} - ${record.section}`;
+            whatsappStatus.textContent = record.status;
+            whatsappPhone.textContent = `968${record.parentPhone}`;
+            
+            // إنشاء محتوى الرسالة
+            const message = createWhatsAppMessage(record);
+            whatsappMessageContent.textContent = message;
+            
+            // إظهار النافذة
+            whatsappConfirmationModal.classList.add('show');
+        }
+
+        // إخفاء نافذة تأكيد إرسال الواتساب
+        function hideWhatsAppConfirmation() {
+            whatsappConfirmationModal.classList.remove('show');
+            currentWhatsappRecord = null;
+        }
+
+        // إنشاء رسالة الواتساب
+        function createWhatsAppMessage(record) {
+            if (record.status === "إشعار ولي الأمر") {
+                return record.notes || "لا توجد ملاحظات";
             } else {
-                return 'fa-file';
+                const statusMessage = getStatusMessage(record.status);
+                return `السلام عليكم ورحمة الله وبركاته
+
+🔔 *رسالة من إدارة المدرسة* 🔔
+
+الفاضل/ ولي أمر الطالبة ${record.studentName}
+الصف: ${record.class} - الشعبة: ${record.section}
+
+نفيدكم بأن ابنتكم قد ${statusMessage}
+بتاريخ: ${record.date}
+
+📞 *رقم المدرسة للتواصل:* 96898839479
+
+نأمل منكم التواصل مع إدارة المدرسة
+لتوضيح الأسباب ومتابعة الحالة
+
+مع خالص التحية
+إدارة مدرسة إمامة بنت ابي العاص`;
             }
         }
 
-       // ✅ تحديث حالة المراجعة - النسخة المصححة
-async function toggleReviewStatus(recordId) {
+        function getStatusMessage(status) {
+            switch(status) {
+                case 'غياب': return 'تغيبت عن المدرسة.';
+                case 'تأخير عن الحصة': return 'تأخرت عن الحصة.';
+                case 'تسيَّب من الحصة': return 'تسيبت من الحصة.';
+                case 'إستأذان خارج المدرسة': return 'استأذنت خارج المدرسة.';
+                case 'إشعار ولي الأمر': return 'يوجد إشعار لولي الأمر.';
+                default: return status + '.';
+            }
+        }
+
+       // إرسال رسالة واتساب (النقرة الثانية - الإرسال الفعلي)
+async function sendWhatsAppMessage(recordId) {
     try {
         const record = allRecords.find(r => r.id === recordId);
-        if (record) {
-            // تبديل الحالة
-            record.reviewed = !record.reviewed;
-            
-            // تحديث الواجهة فوراً
-            updateDisplay();
-            
-            // إرسال التحديث للخادم
-            await callGoogleScript('toggleReviewStatus', { id: recordId });
-            
-            // عرض الرسالة المناسبة
-            if (record.reviewed) {
-                showQuickSuccess('تم تعيين السجل كمُراجَع ✓');
-            } else {
-                showQuickSuccess('تم إلغاء مراجعة السجل');
-            }
+        if (!record) {
+            showNotification('خطأ', 'لم يتم العثور على السجل المطلوب', 'error');
+            return;
         }
+        
+        // التحقق من وجود رقم الهاتف
+        if (!record.parentPhone || record.parentPhone.trim() === '') {
+            showNotification('خطأ', 'لا يوجد رقم هاتف مسجل لهذه الطالبة', 'error');
+            return;
+        }
+        
+        // تنظيف رقم الهاتف
+        const cleanPhone = record.parentPhone.toString().replace(/\D/g, '');
+        
+        // التحقق من صحة رقم الهاتف
+        if (cleanPhone.length !== 8) {
+            showNotification('خطأ', 'رقم الهاتف غير صالح. يجب أن يكون 8 أرقام', 'error');
+            return;
+        }
+        
+        const phoneNumber = `968${cleanPhone}`;
+        const message = createWhatsAppMessage(record);
+        
+        // استخدام الرابط الجديد api.whatsapp.com
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+        
+        console.log('🔗 رابط الواتساب:', whatsappUrl);
+        
+        // فتح واتساب في نافذة جديدة
+        const whatsappWindow = window.open(whatsappUrl, '_blank');
+        
+        if (!whatsappWindow) {
+            showNotification('تحذير', 'تم حظر النافذة المنبثقة. يرجى السماح بالنوافذ المنبثقة لهذا الموقع', 'warning');
+            
+            // محاولة فتح الرابط في نفس النافذة كحل بديل
+            setTimeout(() => {
+                window.location.href = whatsappUrl;
+            }, 1000);
+            return;
+        }
+        
+        // تحديث حالة الإرسال في قاعدة البيانات
+        const now = new Date();
+        const sentTime = now.toLocaleTimeString('ar-EG');
+        
+        await callGoogleScript('updateWhatsappStatus', { 
+            id: recordId,
+            whatsappSent: true,
+            whatsappSentTime: sentTime
+        });
+        
+        // تحديث البيانات المحلية
+        record.whatsappSent = true;
+        record.whatsappSentTime = sentTime;
+        
+        showNotification('نجاح', 'تم فتح تطبيق واتساب بنجاح', 'success');
+        
+        // تحديث الإحصائيات والعرض
+        updateStatistics();
+        updateDisplay();
+        
     } catch (error) {
-        // في حالة الخطأ، نعيد الحالة إلى ما كانت عليه
-        const record = allRecords.find(r => r.id === recordId);
-        if (record) {
-            record.reviewed = !record.reviewed;
-            updateDisplay();
-        }
-        showCustomAlert('خطأ في تحديث حالة المراجعة', 'خطأ', 'error');
+        console.error('Error in WhatsApp sending:', error);
+        showNotification('خطأ', 'خطأ في فتح تطبيق واتساب', 'error');
     }
 }
 
-        // ✅ فتح نافذة التعديل
-       function openEditModal(recordId) {
-    const record = allRecords.find(r => r.id === recordId);
-    if (!record) return;
-    
-    currentEditRecord = record;
-    editRecordId.value = record.id;
-    editStudentName.value = record.studentName;
-    editParentPhone.value = record.parentPhone;
-    editPeriod.value = record.period || '';
-    editStatus.value = record.status;
-    editNotes.value = record.notes || '';
-    
-    // تفعيل حقل ولي الأمر وجعله قابلاً للتعديل
-    editParentPhone.removeAttribute('readonly');
-    editParentPhone.disabled = false;
-    
-    editModal.classList.add('show');
-    
-    // تركيز على أول حقل
-    setTimeout(() => {
-        editStudentName.focus();
-    }, 300);
-}
+        // إعادة إرسال رسالة واتساب
+        function resendWhatsAppMessage(recordId) {
+            showWhatsAppConfirmation(recordId);
+        }
 
-        // ✅ إغلاق نافذة التعديل
+        // فتح نافذة التعديل
+        function openEditModal(recordId) {
+            const record = allRecords.find(r => r.id === recordId);
+            if (!record) return;
+            
+            currentEditRecord = record;
+            editRecordId.value = record.id;
+            editStudentName.value = record.studentName;
+            editParentPhone.value = record.parentPhone;
+            editPeriod.value = record.period || '';
+            editStatus.value = record.status;
+            editNotes.value = record.notes || '';
+            
+            editModal.classList.add('show');
+            
+            setTimeout(() => {
+                editStudentName.focus();
+            }, 300);
+        }
+
+        // إغلاق نافذة التعديل
         function closeEditModal() {
             editModal.classList.remove('show');
             currentEditRecord = null;
         }
 
-        // ✅ حفظ التعديلات - النسخة المحسنة
+        // حفظ التعديلات
         async function saveEditChanges(e) {
             e.preventDefault();
             
             try {
-                // التحقق من صحة البيانات
                 if (!editStudentName.value.trim()) {
-                    showCustomAlert('يرجى إدخال اسم الطالبة', 'خطأ', 'error');
+                    showNotification('خطأ', 'يرجى إدخال اسم الطالبة', 'error');
                     editStudentName.focus();
                     return;
                 }
                 
                 const phoneValue = editParentPhone.value.trim();
                 if (!phoneValue) {
-                    showCustomAlert('يرجى إدخال رقم ولي الأمر', 'خطأ', 'error');
+                    showNotification('خطأ', 'يرجى إدخال رقم ولي الأمر', 'error');
                     editParentPhone.focus();
                     return;
                 }
                 
-                // التحقق من أن الرقم يحتوي على 8 أرقام فقط
                 if (!/^\d{8}$/.test(phoneValue)) {
-                    showCustomAlert('يرجى إدخال رقم هاتف صحيح (8 أرقام فقط)', 'خطأ', 'error');
+                    showNotification('خطأ', 'يرجى إدخال رقم هاتف صحيح (8 أرقام فقط)', 'error');
                     editParentPhone.focus();
                     editParentPhone.select();
                     return;
@@ -2335,17 +2055,12 @@ async function toggleReviewStatus(recordId) {
                     notes: editNotes.value.trim()
                 };
                 
-                // إظهار حالة التحميل
                 const originalText = saveEditBtn.innerHTML;
                 saveEditBtn.innerHTML = '<div class="loading" style="display: inline-block; width: 16px; height: 16px; margin-left: 8px;"></div> جاري الحفظ...';
                 saveEditBtn.disabled = true;
                 
-                // إعطاء المستخدم ملاحظة عن عملية الحفظ
-                showQuickSuccess('جاري حفظ التغييرات...');
-                
                 await callGoogleScript('updateRecord', updatedData);
                 
-                // تحديث البيانات المحلية
                 if (currentEditRecord) {
                     currentEditRecord.studentName = updatedData.studentName;
                     currentEditRecord.parentPhone = updatedData.parentPhone;
@@ -2356,12 +2071,11 @@ async function toggleReviewStatus(recordId) {
                 
                 closeEditModal();
                 updateDisplay();
-                showQuickSuccess('تم تحديث السجل بنجاح');
+                showNotification('نجاح', 'تم تحديث السجل بنجاح', 'success');
                 
             } catch (error) {
                 console.error('Error updating record:', error);
                 
-                // عرض رسالة خطأ أكثر وضوحاً
                 let errorMessage = 'خطأ في تحديث السجل: ';
                 if (error.message.includes('انتهت مهلة الاتصال') || error.message.includes('فشل في الاتصال')) {
                     errorMessage += 'فشل في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.';
@@ -2369,15 +2083,94 @@ async function toggleReviewStatus(recordId) {
                     errorMessage += error.message;
                 }
                 
-                showCustomAlert(errorMessage, 'خطأ في الحفظ', 'error');
+                showNotification('خطأ', errorMessage, 'error');
             } finally {
-                // إعادة تعيين زر الحفظ
                 saveEditBtn.innerHTML = 'حفظ التغييرات';
                 saveEditBtn.disabled = false;
             }
         }
 
-        // ✅ تحديث الإحصائيات
+        // عرض نافذة تأكيد الحذف البسيطة
+        function showDeleteConfirmation(recordId) {
+            const record = allRecords.find(r => r.id === recordId);
+            if (!record) {
+                showNotification('خطأ', 'لم يتم العثور على السجل المطلوب', 'error');
+                return;
+            }
+            
+            currentDeleteRecord = record;
+            
+            // تحديث محتوى نافذة التأكيد
+            deleteConfirmMessage.textContent = `هل أنت متأكد من رغبتك في حذف سجل الطالبة "${record.studentName}"؟`;
+            
+            // إظهار نافذة التأكيد
+            deleteConfirmOverlay.classList.add('show');
+        }
+
+        // إخفاء نافذة تأكيد الحذف
+        function hideDeleteConfirmation() {
+            deleteConfirmOverlay.classList.remove('show');
+            currentDeleteRecord = null;
+        }
+
+        // تنفيذ الحذف بعد التأكيد
+        async function executeDelete() {
+            if (!currentDeleteRecord) return;
+            
+            const recordId = currentDeleteRecord.id;
+            const studentName = currentDeleteRecord.studentName;
+            
+            try {
+                // إظهار حالة التحميل
+                confirmDeleteBtn.innerHTML = '<div class="loading" style="display: inline-block; width: 16px; height: 16px; margin-left: 8px;"></div> جاري الحذف...';
+                confirmDeleteBtn.disabled = true;
+                
+                await callGoogleScript('deleteRecord', { id: recordId });
+                
+                // تحديث البيانات المحلية
+                allRecords = allRecords.filter(r => r.id !== recordId);
+                filteredRecords = filteredRecords.filter(r => r.id !== recordId);
+                
+                // إخفاء نافذة التأكيد
+                hideDeleteConfirmation();
+                
+                // تحديث العرض
+                updateDisplay();
+                
+                // إظهار إشعار النجاح
+                showNotification('نجاح', `تم حذف سجل الطالبة ${studentName} بنجاح`, 'success');
+                
+            } catch (error) {
+                console.error('Error deleting record:', error);
+                
+                // إعادة تعيين زر الحذف
+                confirmDeleteBtn.innerHTML = 'نعم، احذف السجل';
+                confirmDeleteBtn.disabled = false;
+                
+                let errorMessage = 'خطأ في حذف السجل: ';
+                if (error.message.includes('انتهت مهلة الاتصال') || error.message.includes('فشل في الاتصال')) {
+                    errorMessage += 'فشل في الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.';
+                } else {
+                    errorMessage += error.message;
+                }
+                
+                showNotification('خطأ', errorMessage, 'error');
+            }
+        }
+
+        // حذف السجل
+        function deleteRecord(recordId, event = null) {
+            // منع الانتشار الافتراضي للحدث
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            // عرض نافذة تأكيد الحذف البسيطة
+            showDeleteConfirmation(recordId);
+        }
+
+        // تحديث الإحصائيات
         function updateStatistics() {
             const today = new Date().toISOString().split('T')[0];
             const todayRecords = filteredRecords.filter(record => {
@@ -2385,28 +2178,93 @@ async function toggleReviewStatus(recordId) {
                 return recordDate === today;
             });
             const reviewedRecords = filteredRecords.filter(record => record.reviewed);
-            const pendingReview = filteredRecords.filter(record => !record.reviewed);
+            const whatsappSent = filteredRecords.filter(record => record.whatsappSent);
             
             document.getElementById('totalRecords').textContent = filteredRecords.length;
             document.getElementById('todayRecordsCount').textContent = todayRecords.length;
             document.getElementById('reviewedRecords').textContent = reviewedRecords.length;
-            document.getElementById('pendingReview').textContent = pendingReview.length;
+            document.getElementById('whatsappSentCount').textContent = whatsappSent.length;
         }
 
-        // ✅ تحديث العرض
+        // تحديث العرض
         function updateDisplay() {
             const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
             
             if (activeTab === 'today') {
                 displayTodayRecords();
-            } else {
+            } else if (activeTab === 'all') {
                 displayAllRecords();
+            } else if (activeTab === 'whatsapp') {
+                updateWhatsappTab();
             }
             
             updateStatistics();
         }
 
-        // ✅ عرض سجلات اليوم - مع الترتيب الجديد
+        // تحديث تبويب الواتساب
+        function updateWhatsappTab() {
+            const tbody = document.getElementById('whatsappRecordsBody');
+            const emptyState = document.getElementById('whatsappEmptyState');
+            
+            // تصفية السجلات حسب الحالة
+            let filteredWhatsappRecords = filteredRecords.filter(record => record.whatsappSent);
+            
+            if (currentWhatsappFilter !== 'all') {
+                filteredWhatsappRecords = filteredWhatsappRecords.filter(record => 
+                    record.status === currentWhatsappFilter
+                );
+            }
+            
+            if (filteredWhatsappRecords.length === 0) {
+                emptyState.style.display = 'block';
+                tbody.innerHTML = '';
+            } else {
+                emptyState.style.display = 'none';
+                const sortedRecords = [...filteredWhatsappRecords].reverse();
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                tbody.innerHTML = sortedRecords.map(record => {
+                    const statusClass = getStatusClass(record.status);
+                    const sentTime = record.whatsappSentTime || 'غير محدد';
+                    
+                    return `
+                    <tr>
+                        <td class="expandable">${highlightText(record.date, searchTerm)}</td>
+                        <td class="expandable">${highlightText(record.day, searchTerm)}</td>
+                        <td class="expandable">${highlightText(record.studentName, searchTerm)}</td>
+                        <td>${highlightText(record.class, searchTerm)}</td>
+                        <td>${highlightText(record.section, searchTerm)}</td>
+                        <td>${highlightText(record.period, searchTerm)}</td>
+                        <td class="expandable">968${record.parentPhone}</td>
+                        <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
+                        <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
+                        <td>
+                            <span class="message-sent-badge">
+                                <i class="fab fa-whatsapp"></i>
+                                تم الإرسال
+                            </span>
+                        </td>
+                        <td>${sentTime}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-whatsapp" onclick="resendWhatsAppMessage('${record.id}')" title="إعادة إرسال واتساب">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        // عرض سجلات اليوم
         function displayTodayRecords() {
             const today = new Date().toISOString().split('T')[0];
             const todayRecords = filteredRecords.filter(record => {
@@ -2426,6 +2284,10 @@ async function toggleReviewStatus(recordId) {
                 
                 tbody.innerHTML = todayRecords.map(record => {
                     const statusClass = getStatusClass(record.status);
+                    const whatsappBadge = record.whatsappSent ? 
+                        '<span class="message-sent-badge"><i class="fab fa-whatsapp"></i> مرسل</span>' :
+                        '<span class="message-not-sent-badge"><i class="fab fa-whatsapp"></i> لم يرسل</span>';
+                    
                     return `
                     <tr>
                         <td class="expandable">${highlightText(record.date, searchTerm)}</td>
@@ -2439,53 +2301,27 @@ async function toggleReviewStatus(recordId) {
                         <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
                         <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
                         <td>
-                            ${record.attachment ? 
-                                `<div class="attachment-container" 
-                                      onmouseenter="showAttachmentPreview('${record.id}', '${record.attachment}', '${record.studentName}')" 
-                                      onmouseleave="hideAttachmentPreview('${record.id}')">
-                                    
-                                    ${isImageFile(record.attachment) ? 
-                                        `<img src="${record.attachment}" 
-                                              alt="معاينة الصورة" 
-                                              class="attachment-thumbnail"
-                                              onclick="openAttachment('${record.attachment}')">` 
-                                        : 
-                                        `<div class="file-preview" onclick="openAttachment('${record.attachment}')">
-                                            <i class="fas ${getAttachmentIcon(record.attachment)} file-icon"></i>
-                                            <span class="file-text">PDF</span>
-                                        </div>`
-                                    }
-                                    
-                                    <!-- معاينة التكبير -->
-                                    <div id="preview-${record.id}" class="attachment-preview-tooltip"></div>
-                                    
-                                </div>` 
-                                : 'لا يوجد'
-                            }
-                        </td>
-                        <td>
                             <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
                                 ${record.reviewed ? 'بـعـذر' : 'بـدون عـذر'}
                             </span>
                         </td>
+                        <td>${whatsappBadge}</td>
                         <td>
-
-                         <div class="action-buttons">
-    <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
-        onclick="toggleReviewStatus('${record.id}')" 
-        title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
-        <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
-    </button>
-    <button class="btn-icon btn-whatsapp" onclick="sendWhatsAppMessage('${record.id}')" title="إرسال واتساب">
-        <i class="fab fa-whatsapp"></i>
-    </button>
-    <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
-        <i class="fas fa-edit"></i>
-    </button>
-    <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
-        <i class="fas fa-trash"></i>
-    </button>
-</div>
+                            <div class="action-buttons">
+                                <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
+                                    onclick="toggleReviewStatus('${record.id}')" 
+                                    title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
+                                    <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
+                                </button>
+                                <button class="btn-icon btn-whatsapp" onclick="showWhatsAppConfirmation('${record.id}')" title="إرسال واتساب">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -2494,7 +2330,7 @@ async function toggleReviewStatus(recordId) {
             }
         }
 
-        // ✅ عرض جميع السجلات - مع الترتيب الجديد
+        // عرض جميع السجلات
         function displayAllRecords() {
             const tbody = document.getElementById('allRecordsBody');
             const emptyState = document.getElementById('allEmptyState');
@@ -2509,6 +2345,10 @@ async function toggleReviewStatus(recordId) {
                 
                 tbody.innerHTML = sortedRecords.map(record => {
                     const statusClass = getStatusClass(record.status);
+                    const whatsappBadge = record.whatsappSent ? 
+                        '<span class="message-sent-badge"><i class="fab fa-whatsapp"></i> مرسل</span>' :
+                        '<span class="message-not-sent-badge"><i class="fab fa-whatsapp"></i> لم يرسل</span>';
+                    
                     return `
                     <tr>
                         <td class="expandable">${highlightText(record.date, searchTerm)}</td>
@@ -2522,49 +2362,23 @@ async function toggleReviewStatus(recordId) {
                         <td><span class="status-badge status-${statusClass}">${highlightText(record.status, searchTerm)}</span></td>
                         <td class="expandable">${highlightText(record.notes, searchTerm)}</td>
                         <td>
-                            <div id="attachmentCell-${record.id}" style="text-align: center;">
-                                ${record.attachment ? 
-                                    `<div class="attachment-container" 
-                                          onmouseenter="showAttachmentPreview('${record.id}', '${record.attachment}', '${record.studentName}')" 
-                                          onmouseleave="hideAttachmentPreview('${record.id}')">
-                                        
-                                        ${isImageFile(record.attachment) ? 
-                                            `<img src="${record.attachment}" 
-                                                  alt="معاينة الصورة" 
-                                                  class="attachment-thumbnail"
-                                                  onclick="openAttachment('${record.attachment}')">` 
-                                            : 
-                                            `<div class="file-preview" onclick="openAttachment('${record.attachment}')">
-                                                <i class="fas ${getAttachmentIcon(record.attachment)} file-icon"></i>
-                                                <span class="file-text">PDF</span>
-                                            </div>`
-                                        }
-                                        
-                                        <!-- معاينة التكبير -->
-                                        <div id="preview-${record.id}" class="attachment-preview-tooltip"></div>
-                                        
-                                    </div>` 
-                                    : 'لا يوجد'
-                                }
-                            </div>
-                        </td>
-                        <td>
                             <span class="reviewed-badge ${record.reviewed ? 'reviewed-yes' : 'reviewed-no'}">
                                 ${record.reviewed ? 'بـعـذر' : 'بدون عـذر'}
                             </span>
                         </td>
+                        <td>${whatsappBadge}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon btn-whatsapp" onclick="sendWhatsAppMessage('${record.id}')" title="إرسال واتساب">
-                                    <i class="fab fa-whatsapp"></i>
-                                </button>
                                 <button class="btn-icon ${record.reviewed ? 'btn-unreview' : 'btn-review'}" 
                                     onclick="toggleReviewStatus('${record.id}')" 
                                     title="${record.reviewed ? 'إلغاء المراجعة' : 'تمت المراجعة'}">
                                     <i class="fas ${record.reviewed ? 'fa-check' : 'fa-times'}"></i>
+                                </button>
+                                <button class="btn-icon btn-whatsapp" onclick="showWhatsAppConfirmation('${record.id}')" title="إرسال واتساب">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                                <button class="btn-icon btn-edit" onclick="openEditModal('${record.id}')" title="تعديل">
+                                    <i class="fas fa-edit"></i>
                                 </button>
                                 <button class="btn-icon btn-delete" onclick="deleteRecord('${record.id}', event)" title="حذف السجل">
                                     <i class="fas fa-trash"></i>
@@ -2577,123 +2391,26 @@ async function toggleReviewStatus(recordId) {
             }
         }
 
-        // ✅ حذف السجل مع رسالة تأكيد مخصصة - النسخة المصححة
-        async function deleteRecord(recordId, event = null) {
-            const record = allRecords.find(r => r.id === recordId);
-            if (!record) {
-                showCustomAlert('لم يتم العثور على السجل المطلوب', 'خطأ', 'error');
-                return;
-            }
-            
+        function convertToISODate(dateString) {
+            if (!dateString) return '';
             try {
-                // عرض رسالة تأكيد مخصصة
-                const confirmation = await showCustomConfirm(
-                    `هل أنت متأكد من حذف سجل الطالبة "<strong>${record.studentName}</strong>"؟<br><br><small style="color: #666;">هذا الإجراء لا يمكن التراجع عنه.</small>`,
-                    'تأكيد الحذف'
-                );
-                
-                if (!confirmation) return;
-                
-                // إظهار حالة التحميل إذا كان event متاحاً
-                let deleteBtn = null;
-                if (event && event.target) {
-                    deleteBtn = event.target.closest('.btn-delete');
-                    if (deleteBtn) {
-                        const originalHTML = deleteBtn.innerHTML;
-                        deleteBtn.innerHTML = '<div class="loading" style="display: inline-block; width: 14px; height: 14px;"></div>';
-                        deleteBtn.disabled = true;
+                if (dateString.includes('/')) {
+                    const parts = dateString.split('/');
+                    if (parts.length === 3) {
+                        const day = parts[0].padStart(2, '0');
+                        const month = parts[1].padStart(2, '0');
+                        const year = parts[2];
+                        return `${year}-${month}-${day}`;
                     }
                 }
-                
-                // تنفيذ الحذف
-                await callGoogleScript('deleteRecord', { id: recordId });
-                
-                // تحديث البيانات المحلية
-                allRecords = allRecords.filter(r => r.id !== recordId);
-                filteredRecords = filteredRecords.filter(r => r.id !== recordId);
-                
-                updateDisplay();
-                showQuickSuccess(`تم حذف سجل الطالبة ${record.studentName} بنجاح`);
-                
-            } catch (error) {
-                console.error('Error deleting record:', error);
-                showCustomAlert('خطأ في حذف السجل: ' + error.message, 'خطأ', 'error');
-                
-                // إعادة تعيين الزر إذا كان event متاحاً
-                if (event && event.target) {
-                    const deleteBtn = event.target.closest('.btn-delete');
-                    if (deleteBtn) {
-                        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-                        deleteBtn.disabled = false;
-                    }
-                }
+                return dateString;
+            } catch (e) {
+                console.error('Error converting date:', e);
+                return '';
             }
         }
 
-        // ✅ التهيئة - تم التحسين
-        document.addEventListener('DOMContentLoaded', function() {
-            loadRecords();
-            
-            // تبويبات
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                    
-                    this.classList.add('active');
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(`${tabId}Tab`).classList.add('active');
-                    
-                    performSearch();
-                });
-            });
-            
-            // استماع لأحداث البحث والفلاتر
-            searchInput.addEventListener('input', handleSearchInput);
-            searchClear.addEventListener('click', clearSearch);
-            filterReview.addEventListener('change', performSearch);
-            filterSection.addEventListener('change', performSearch);
-            filterStatus.addEventListener('change', performSearch);
-            filterDate.addEventListener('change', performSearch);
-            filterAttachment.addEventListener('change', performSearch); // فلتر المرفقات الجديد
-            
-            // استماع لأحداث نافذة التعديل - تم التأكد من الربط
-            if (editForm) {
-                editForm.addEventListener('submit', saveEditChanges);
-            }
-            if (cancelEditBtn) {
-                cancelEditBtn.addEventListener('click', closeEditModal);
-            }
-            
-            // إغلاق نافذة التعديل عند النقر خارجها
-            if (editModal) {
-                editModal.addEventListener('click', function(e) {
-                    if (e.target === editModal) {
-                        closeEditModal();
-                    }
-                });
-            }
-            
-            // إغلاق نافذة التعديل بالزر ESC
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && editModal.classList.contains('show')) {
-                    closeEditModal();
-                }
-            });
-
-            // فحص الاتصال عند تحميل الصفحة
-            checkConnection().then(isConnected => {
-                showConnectionStatus(isConnected);
-            });
-
-            // فحص الاتصال دورياً كل دقيقة
-            setInterval(async () => {
-                const isConnected = await checkConnection();
-                showConnectionStatus(isConnected);
-            }, 60000);
-        });
-
-        // ✅ البحث الفوري أثناء الكتابة
+        // البحث الفوري أثناء الكتابة
         function handleSearchInput() {
             const searchTerm = searchInput.value;
             
@@ -2706,14 +2423,13 @@ async function toggleReviewStatus(recordId) {
                 clearTimeout(searchTimeout);
             }
             
-            // بحث فوري بدون تأخير
             searchTimeout = setTimeout(() => {
                 performSearch();
                 searchIcon.style.color = 'var(--gray)';
             }, 50);
         }
 
-        // ✅ مسح حقل البحث
+        // مسح حقل البحث
         function clearSearch() {
             searchInput.value = '';
             searchClear.classList.remove('visible');
@@ -2721,9 +2437,10 @@ async function toggleReviewStatus(recordId) {
             searchInput.focus();
         }
 
-        // ✅ تحميل السجلات - تم التصحيح هنا
+        // تحميل السجلات
         async function loadRecords() {
             try {
+                // إظهار حالة التحميل
                 document.getElementById('todayRecordsBody').innerHTML = `
                     <tr>
                         <td colspan="13" style="text-align: center; padding: 2rem;">
@@ -2742,151 +2459,213 @@ async function toggleReviewStatus(recordId) {
                     </tr>
                 `;
 
-                const [todayRecordsData, allRecordsData] = await Promise.all([
+                document.getElementById('whatsappRecordsBody').innerHTML = `
+                    <tr>
+                        <td colspan="12" style="text-align: center; padding: 2rem;">
+                            <div class="loading"></div>
+                            <div style="margin-top: 1rem;">جاري تحميل المراسلات...</div>
+                        </td>
+                    </tr>
+                `;
+                
+                console.log('🔄 بدء تحميل السجلات...');
+                
+                // جلب البيانات من الخادم
+                const [todayRecordsResult, allRecordsResult] = await Promise.all([
                     callGoogleScript('getTodayRecords'),
                     callGoogleScript('getRecords')
                 ]);
                 
-                allRecords = allRecordsData;
+                console.log('📥 تم استلام البيانات:', {
+                    today: todayRecordsResult ? todayRecordsResult.length : 0,
+                    all: allRecordsResult ? allRecordsResult.length : 0
+                });
+                
+                // تحديث البيانات المحلية
+                allRecords = allRecordsResult || [];
                 filteredRecords = [...allRecords];
                 
-                // تحديث قائمة الشعب
-                updateSectionsList();
+                // التأكد من وجود خصائص الواتساب في جميع السجلات
+                allRecords.forEach(record => {
+                    if (!record.hasOwnProperty('whatsappSent')) {
+                        record.whatsappSent = false;
+                    }
+                    if (!record.hasOwnProperty('whatsappSentTime')) {
+                        record.whatsappSentTime = '';
+                    }
+                });
                 
+                updateSectionsList();
                 updateStatistics();
                 updateDisplay();
                 
+                console.log('✅ تم تحميل السجلات بنجاح');
+                
             } catch (error) {
-                showCustomAlert('خطأ في تحميل السجلات', 'خطأ', 'error');
+                console.error('❌ خطأ في تحميل السجلات:', error);
+                showNotification('خطأ', 'فشل في تحميل السجلات: ' + error.message, 'error');
+                
+                // إظهار حالة فارغة في حالة الخطأ
+                document.getElementById('todayRecordsBody').innerHTML = `
+                    <tr>
+                        <td colspan="13" style="text-align: center; padding: 2rem; color: var(--gray);">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <div>فشل في تحميل السجلات</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">يرجى تحديث الصفحة والمحاولة مرة أخرى</div>
+                        </td>
+                    </tr>
+                `;
+                
+                document.getElementById('allRecordsBody').innerHTML = `
+                    <tr>
+                        <td colspan="13" style="text-align: center; padding: 2rem; color: var(--gray);">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <div>فشل في تحميل السجلات</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">يرجى تحديث الصفحة والمحاولة مرة أخرى</div>
+                        </td>
+                    </tr>
+                `;
+                
+                document.getElementById('whatsappRecordsBody').innerHTML = `
+                    <tr>
+                        <td colspan="12" style="text-align: center; padding: 2rem; color: var(--gray);">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <div>فشل في تحميل المراسلات</div>
+                            <div style="font-size: 0.8rem; margin-top: 0.5rem;">يرجى تحديث الصفحة والمحاولة مرة أخرى</div>
+                        </td>
+                    </tr>
+                `;
             }
         }
 
-       function convertToISODate(dateString) {
-    if (!dateString) return '';
-    try {
-        if (dateString.includes('/')) {
-            const parts = dateString.split('/');
-            if (parts.length === 3) {
-                const day = parts[0].padStart(2, '0');
-                const month = parts[1].padStart(2, '0');
-                const year = parts[2];
-                return `${year}-${month}-${day}`;
-            }
-        }
-        return dateString;
-    } catch (e) {
-        console.error('Error converting date:', e);
-        return '';
-    }
-}
-
-// ✅ دالة إرسال واتساب - محدثة مع الشرط الجديد
-function sendWhatsAppMessage(recordId) {
-    try {
-        const record = allRecords.find(r => r.id === recordId);
-        if (!record) {
-            showCustomAlert('لم يتم العثور على السجل المطلوب', 'خطأ', 'error');
-            return;
-        }
-        
-        const phoneNumber = `968${record.parentPhone}`;
-        let message;
-        
-        // إذا كانت الحالة "إشعار ولي الأمر" - استخدم الملاحظة فقط
-        if (record.status === "إشعار ولي الأمر") {
-            message = record.notes || "لا توجد ملاحظات";
-        } 
-        // إذا كانت أي حالة أخرى - استخدم الرسالة الأصلية
-        else {
-            const statusMessage = getStatusMessage(record.status);
-            message = `السلام عليكم .
-الفاضل/ ولي أمر الطالبة. ${record.studentName}..
-نفيدكم بأن إبنتكم قد ${statusMessage}
-بتاريخ ${record.date} للعلم بذلك .
-إدارة المدرسة`;
-        }
-        
-        // استخدام الرابط الرسمي لواتساب
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-        
-        // فتح نافذة جديدة لإرسال الرسالة
-        window.open(whatsappUrl, '_blank', 'width=600,height=700');
-        
-        // إشعار نجاح
-        showQuickSuccess('تم فتح تطبيق واتساب لإرسال الرسالة');
-        
-    } catch (error) {
-        console.error('Error in WhatsApp sending:', error);
-        showCustomAlert('خطأ في فتح تطبيق واتساب', 'خطأ', 'error');
-    }
-}
-
-function getStatusMessage(status) {
-    switch(status) {
-        case 'غياب': return 'تغيبت عن المدرسة.';
-        case 'تأخير عن الحصة': return 'تأخرت عن الحصة.';
-        case 'تسيَّب من الحصة': return 'تسيبت من الحصة.';
-        case 'إستأذان خارج المدرسة': return 'أستأذنت خارج المدرسة.';
-        case 'إشعار ولي الأمر': return 'يوجد إشعار لولي الأمر.'; // أضف هذا السطر
-        default: return status + '.';
-    }
-}
-
-// ✅ دالة إظهار حالة الاتصال
-function showConnectionStatus(isConnected) {
-    if (!isConnected) {
-        showCustomAlert('فقدان الاتصال بالخادم. قد لا تعمل بعض الميزات بشكل صحيح.', 'تحذير', 'warning');
-    }
-}
-
-// ✅ دالة فتح المرفق
-function openAttachment(url) {
-    if (!url) return;
-    
-    if (isImageFile(url)) {
-        openImageCenter(url);
-    } else {
-        openPDF(url);
-    }
-}
-
-// ✅ دالة إظهار معاينة المرفق
-function showAttachmentPreview(recordId, attachmentUrl, studentName) {
-    const previewElement = document.getElementById(`preview-${recordId}`);
-    if (!previewElement) return;
-    
-    if (isImageFile(attachmentUrl)) {
-        previewElement.innerHTML = `
-            <img src="${attachmentUrl}" class="preview-image" alt="معاينة الصورة">
-            <div class="preview-student-name">${studentName}</div>
-            <a href="${attachmentUrl}" target="_blank" class="attachment-link">فتح الصورة</a>
-        `;
-    } else {
-        previewElement.innerHTML = `
-            <div class="preview-pdf">
-                <i class="fas fa-file-pdf preview-pdf-icon"></i>
-                <div class="preview-pdf-text">ملف PDF</div>
-                <div class="preview-file-name">${attachmentUrl.split('/').pop() || 'ملف مرفق'}</div>
-            </div>
-            <div class="preview-student-name">${studentName}</div>
-            <a href="${attachmentUrl}" target="_blank" class="attachment-link">فتح الملف</a>
-        `;
-    }
-    
-    previewElement.classList.add('show');
-}
-
-// ✅ دالة إخفاء معاينة المرفق
-function hideAttachmentPreview(recordId) {
-    const previewElement = document.getElementById(`preview-${recordId}`);
-    if (previewElement) {
-        previewElement.classList.remove('show');
-    }
-}
+        // التهيئة عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecords();
+            
+            // تبويبات
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}Tab`).classList.add('active');
+                    
+                    // إذا كان التبويب النشط هو الواتساب، نقوم بتحديثه
+                    if (tabId === 'whatsapp') {
+                        updateWhatsappTab();
+                    } else {
+                        performSearch();
+                    }
+                });
+            });
+            
+            // استماع لأحداث البحث والفلاتر
+            searchInput.addEventListener('input', handleSearchInput);
+            searchClear.addEventListener('click', clearSearch);
+            filterReview.addEventListener('change', performSearch);
+            filterSection.addEventListener('change', performSearch);
+            filterStatus.addEventListener('change', performSearch);
+            filterDate.addEventListener('change', performSearch);
+            filterWhatsapp.addEventListener('change', performSearch);
+            
+            // استماع لأحداث نافذة التعديل
+            editForm.addEventListener('submit', saveEditChanges);
+            cancelEditBtn.addEventListener('click', closeEditModal);
+            
+            // إغلاق نافذة التعديل عند النقر خارجها
+            editModal.addEventListener('click', function(e) {
+                if (e.target === editModal) {
+                    closeEditModal();
+                }
+            });
+            
+            // إغلاق نافذة التعديل بالزر ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && editModal.classList.contains('show')) {
+                    closeEditModal();
+                }
+            });
+            
+            // استماع لأحداث نافذة تأكيد الحذف
+            cancelDeleteBtn.addEventListener('click', hideDeleteConfirmation);
+            confirmDeleteBtn.addEventListener('click', executeDelete);
+            
+            // إغلاق نافذة تأكيد الحذف عند النقر خارجها
+            deleteConfirmOverlay.addEventListener('click', function(e) {
+                if (e.target === deleteConfirmOverlay) {
+                    hideDeleteConfirmation();
+                }
+            });
+            
+            // إغلاق نافذة تأكيد الحذف بالزر ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && deleteConfirmOverlay.classList.contains('show')) {
+                    hideDeleteConfirmation();
+                }
+            });
+            
+            // نضيف المستمعين لفلتر الواتساب
+            document.querySelectorAll('.filter-badge').forEach(badge => {
+                badge.addEventListener('click', function() {
+                    // إزالة النشط من جميع الأزرار
+                    document.querySelectorAll('.filter-badge').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // إضافة النشط للزر المختار
+                    this.classList.add('active');
+                    
+                    // تحديث الفلتر
+                    currentWhatsappFilter = this.getAttribute('data-filter');
+                    
+                    // تحديث العرض إذا كان التبويب النشط هو الواتساب
+                    const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
+                    if (activeTab === 'whatsapp') {
+                        updateWhatsappTab();
+                    }
+                });
+            });
+            
+            // استماع لأحداث نافذة تأكيد الواتساب
+            confirmWhatsAppBtn.addEventListener('click', function() {
+                if (currentWhatsappRecord) {
+                    sendWhatsAppMessage(currentWhatsappRecord.id);
+                    hideWhatsAppConfirmation();
+                }
+            });
+            
+            cancelWhatsAppBtn.addEventListener('click', hideWhatsAppConfirmation);
+            
+            // إغلاق نافذة تأكيد الواتساب عند النقر خارجها
+            whatsappConfirmationModal.addEventListener('click', function(e) {
+                if (e.target === whatsappConfirmationModal) {
+                    hideWhatsAppConfirmation();
+                }
+            });
+            
+            // إغلاق نافذة تأكيد الواتساب بالزر ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && whatsappConfirmationModal.classList.contains('show')) {
+                    hideWhatsAppConfirmation();
+                }
+            });
+            
+            // تحديث البيانات تلقائياً كل دقيقة
+            setInterval(loadRecords, 60000);
+            
+            // فحص الاتصال دورياً كل دقيقة
+            setInterval(async () => {
+                const isConnected = await checkConnection();
+                showConnectionStatus(isConnected);
+            }, 60000);
+            
+            // فحص الاتصال الأولي
+            checkConnection().then(isConnected => {
+                showConnectionStatus(isConnected);
+            });
+        });
     </script>
 </body>
 </html>
-
-
-
-
