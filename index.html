@@ -17,6 +17,7 @@
             --dark: #212529;
             --gray: #6c757d;
             --orange: #ff9e1a;
+            --selected-red: #8B0000; /* اللون الأحمر الغامق للطالبات المختارة */
         }
         
         * {
@@ -499,6 +500,13 @@
             color: #1a365d !important;
         }
 
+        /* تلوين الطالبات المختارة في القائمة المنسدلة باللون الأحمر */
+        #studentName option.selected {
+            background-color: var(--selected-red) !important;
+            color: white !important;
+            font-weight: 800;
+        }
+
         #section option:checked,
         #studentName option:checked {
             color: blue;
@@ -895,7 +903,7 @@
         .remove-student {
             background: none;
             border: none;
-            color: #e63946;
+            color: var(--danger);
             cursor: pointer;
             padding: 4px 8px;
             border-radius: 4px;
@@ -947,7 +955,7 @@
             background: #5a6268;
         }
         
-        /* نافذة التأكيد الجماعية */
+        /* نافذة التأكيد الجماعية - تم تحسينها للهواتف */
         .bulk-confirmation-modal {
             position: fixed;
             top: 0;
@@ -962,6 +970,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+            padding: 15px;
         }
         
         .bulk-confirmation-modal.show {
@@ -972,34 +981,38 @@
         .bulk-confirmation-content {
             background: white;
             border-radius: 15px;
-            padding: 2rem;
+            padding: 1.5rem;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
+            width: 100%;
+            max-height: 85vh;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
         
         .bulk-students-list {
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
             margin: 15px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 10px;
+            background: #f8f9fa;
         }
         
         .bulk-student-item {
-            padding: 8px;
+            padding: 10px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
         
         .bulk-student-item:last-child {
             border-bottom: none;
         }
         
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -1071,6 +1084,62 @@
             .bulk-actions {
                 flex-direction: column;
             }
+            
+            /* تحسينات إضافية للهواتف */
+            .bulk-confirmation-content {
+                padding: 1rem;
+                max-height: 90vh;
+            }
+            
+            .bulk-students-list {
+                max-height: 150px;
+            }
+            
+            .bulk-student-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .whatsapp-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .whatsapp-details .detail-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .selected-students-list {
+                max-height: 150px;
+            }
+            
+            .selected-student-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .bulk-confirmation-content {
+                padding: 0.8rem;
+            }
+            
+            .bulk-students-list {
+                max-height: 120px;
+            }
+            
+            .selected-students-list {
+                max-height: 120px;
+            }
+            
+            .whatsapp-message {
+                font-size: 0.9rem;
+                padding: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -1141,7 +1210,7 @@
         </div>
     </div>
 
-    <!-- نافذة التأكيد الجماعية -->
+    <!-- نافذة التأكيد الجماعية - تم تحسينها للهواتف -->
     <div class="bulk-confirmation-modal" id="bulkConfirmationModal">
         <div class="bulk-confirmation-content">
             <div class="whatsapp-header">
@@ -1354,6 +1423,7 @@
                     <div class="form-group">
                         <label for="notes">ملاحظة</label>
                         <textarea id="notes" rows="3" placeholder="أضف ملاحظة إضافية (اختياري)"></textarea>
+                        <div class="error-message" id="notesError" style="display: none;">يرجى كتابة الإشعار في حالة اختيار "إشعار ولي الأمر"</div>
                     </div>
 
                     <div class="form-group">
@@ -1840,6 +1910,22 @@
             currentAttachment = null;
         }
 
+        // التحقق من صحة النموذج
+        function validateForm() {
+            const status = document.getElementById('status').value;
+            const notes = document.getElementById('notes').value.trim();
+            const notesError = document.getElementById('notesError');
+            
+            // إذا كانت الحالة "إشعار ولي الأمر" يجب كتابة ملاحظة
+            if (status === 'إشعار ولي الأمر' && !notes) {
+                notesError.style.display = 'block';
+                return false;
+            } else {
+                notesError.style.display = 'none';
+                return true;
+            }
+        }
+
         // عرض نافذة تأكيد الواتساب
         function showWhatsAppConfirmation(recordData) {
             whatsappStudentName.textContent = recordData.studentName;
@@ -1864,38 +1950,41 @@
             currentRecord = null;
         }
 
-        // إنشاء رسالة الواتساب
+        // إنشاء رسالة الواتساب - تم التعديل حسب المتطلبات الجديدة
         function createWhatsAppMessage(record) {
-            const statusMessages = {
-                'غياب': 'تغيبت عن المدرسة',
-                'تأخير عن الحصة': 'تأخرت عن الحصة',
-                'تسيَّب من الحصة': 'تسيبت من الحصة',
-                'إستأذان خارج المدرسة': 'استأذنت خارج المدرسة',
-                'إشعار ولي الأمر': 'يوجد إشعار لولي الأمر'
-            };
-            
-            const statusMessage = statusMessages[record.status] || record.status;
-            
-            if (record.status === "إشعار ولي الأمر" && record.notes) {
-                return record.notes;
-            } else {
-                return `السلام عليكم ورحمة الله وبركاته
-
-🔔 *رسالة من إدارة المدرسة* 🔔
+            if (record.status === "إشعار ولي الأمر") {
+                // رسالة خاصة لحالة "إشعار ولي الأمر"
+                return `السلام عليكم
 
 الفاضل/ ولي أمر الطالبة ${record.studentName}
-الصف: ${record.class} - الشعبة: ${record.section}
 
-نفيدكم بأن ابنتكم قد ${statusMessage}
-بتاريخ: ${record.date}
+، ${record.notes}
 
-📞 *رقم المدرسة للتواصل:* 96898839479
+ل للعلم بذلك
 
-نأمل منكم التواصل مع إدارة المدرسة
-لتوضيح الأسباب ومتابعة الحالة
+إدارة المدرسة`;
+            } else {
+                // رسالة للحالات الأخرى
+                let message = `السلام عليكم
 
-مع خالص التحية
-إدارة مدرسة إمامة بنت ابي العاص`;
+الفاضل/ ولي أمر الطالبة ${record.studentName}
+
+نفيدكم بأن إبنتكم قد ${record.status}`;
+                
+                // إضافة الحصة إذا تم اختيارها
+                if (record.period && record.period !== "") {
+                    message += `\n${record.period}`;
+                }
+                
+                // إضافة التاريخ
+                message += `\nبتاريخ ${record.date}`;
+                
+                // إضافة الختام
+                message += `\nل للعلم بذلك
+
+إدارة المدرسة`;
+                
+                return message;
             }
         }
 
@@ -1968,6 +2057,9 @@ function addStudentToSelection() {
     selectedStudents.push(student);
     updateSelectedStudentsList();
     
+    // تحديث تلوين الطالبات المختارة في القائمة المنسدلة
+    updateSelectedStudentsInDropdown();
+    
     // إعادة تعيين الاختيار
     studentSelect.value = '';
 }
@@ -2010,14 +2102,76 @@ function removeStudent(studentId) {
     });
     
     updateSelectedStudentsList();
+    updateSelectedStudentsInDropdown();
 }
 
+        // دالة تحديث تلوين الطالبات المختارة في القائمة المنسدلة
+        function updateSelectedStudentsInDropdown() {
+            const studentSelect = document.getElementById('studentName');
+            const options = studentSelect.options;
+            
+            // إعادة تعيين جميع الخيارات
+            for (let i = 0; i < options.length; i++) {
+                options[i].classList.remove('selected');
+            }
+            
+            // تلوين الطالبات المختارة
+            selectedStudents.forEach(student => {
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].value === student.name) {
+                        options[i].classList.add('selected');
+                        break;
+                    }
+                }
+            });
+        }
 
         // دالة مسح جميع الطالبات
         function clearSelectedStudents() {
             selectedStudents = [];
             updateSelectedStudentsList();
+            updateSelectedStudentsInDropdown();
             showNotification('تم', 'تم مسح جميع الطالبات المختارة', 'success');
+        }
+
+        // دالة إنشاء رسالة واتساب جماعية
+        function createBulkWhatsAppMessage(student, status) {
+            if (status === "إشعار ولي الأمر") {
+                // رسالة خاصة لحالة "إشعار ولي الأمر"
+                return `السلام عليكم
+
+الفاضل/ ولي أمر الطالبة ${student.name}
+
+"" ${document.getElementById('notes').value}
+
+ للعلم بذلك
+
+إدارة المدرسة`;
+            } else {
+                // رسالة للحالات الأخرى
+                let message = `السلام عليكم
+
+الفاضل/ ولي أمر الطالبة ${student.name}
+
+نفيدكم بأن إبنتكم قد ${status}`;
+                
+                // إضافة الحصة إذا تم اختيارها
+                const period = document.getElementById('period').value;
+                if (period && period !== "") {
+                    message += `\n${period}`;
+                }
+                
+                // إضافة التاريخ
+                const date = document.getElementById('date').value;
+                message += `\nبتاريخ ${date}`;
+                
+                // إضافة الختام
+                message += `\nل للعلم بذلك
+
+إدارة المدرسة`;
+                
+                return message;
+            }
         }
 
         // دالة عرض نافذة التأكيد الجماعية
@@ -2030,6 +2184,11 @@ function removeStudent(studentId) {
             const status = document.getElementById('status').value;
             if (!status) {
                 showNotification('خطأ', 'يرجى اختيار حالة الغياب', 'error');
+                return;
+            }
+            
+            // التحقق من صحة النموذج
+            if (!validateForm()) {
                 return;
             }
             
@@ -2063,38 +2222,6 @@ function removeStudent(studentId) {
             
             // إظهار النافذة
             document.getElementById('bulkConfirmationModal').classList.add('show');
-        }
-
-        // دالة إنشاء رسالة واتساب جماعية
-        function createBulkWhatsAppMessage(student, status) {
-            const statusMessages = {
-                'غياب': 'تغيبت عن المدرسة',
-                'تأخير عن الحصة': 'تأخرت عن الحصة',
-                'تسيَّب من الحصة': 'تسيبت من الحصة',
-                'إستأذان خارج المدرسة': 'استأذنت خارج المدرسة',
-                'إشعار ولي الأمر': 'يوجد إشعار لولي الأمر'
-            };
-            
-            const statusMessage = statusMessages[status] || status;
-            const currentDate = document.getElementById('date').value;
-            
-            return `السلام عليكم ورحمة الله وبركاته
-
-🔔 *رسالة من إدارة المدرسة* 🔔
-
-الفاضل/ ولي أمر الطالبة ${student.name}
-الصف: ${student.className} - الشعبة: ${student.section}
-
-نفيدكم بأن ابنتكم قد ${statusMessage}
-بتاريخ: ${currentDate}
-
-📞 *رقم المدرسة للتواصل:* 96898839479
-
-نأمل منكم التواصل مع إدارة المدرسة
-لتوضيح الأسباب ومتابعة الحالة
-
-مع خالص التحية
-إدارة مدرسة إمامة بنت ابي العاص`;
         }
 
         // دالة الإرسال الجماعي
@@ -2219,9 +2346,25 @@ function removeStudent(studentId) {
                 }
             });
             
+            // التحقق من حقل الملاحظة عند تغيير الحالة
+            document.getElementById('status').addEventListener('change', function() {
+                if (this.value === 'إشعار ولي الأمر') {
+                    document.getElementById('notes').setAttribute('required', 'required');
+                    document.querySelector('label[for="notes"]').innerHTML = 'الإشعار <span style="color: red;">*</span>';
+                } else {
+                    document.getElementById('notes').removeAttribute('required');
+                    document.querySelector('label[for="notes"]').innerHTML = 'ملاحظة';
+                }
+            });
+            
             // إرسال النموذج (للطالبة الواحدة)
             absenceForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                
+                // التحقق من صحة النموذج
+                if (!validateForm()) {
+                    return;
+                }
                 
                 // إذا كان هناك طالبات مختارة، استخدم النظام الجماعي
                 if (selectedStudents.length > 0) {
