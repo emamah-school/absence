@@ -19,7 +19,44 @@
             --orange: #ff9e1a;
             --selected-red: #8B0000; /* اللون الأحمر الغامق للطالبات المختارة */
         }
-        
+        /* تلوين الطالبات المختارة في القائمة المنسدلة - متوافق مع الهواتف */
+#studentName option.selected {
+    background-color: var(--selected-red) !important;
+    color: white !important;
+    font-weight: 800;
+}
+
+/* تحسين عرض القائمة المنسدلة على الهواتف */
+#studentName {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23187DD0'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: left 15px center;
+    background-size: 16px;
+    padding-right: 15px;
+    padding-left: 40px;
+}
+
+/* تحسينات للهواتف */
+@media (max-width: 768px) {
+    #studentName {
+        font-size: 16px; /* منع التكبير في iOS */
+        padding: 12px 15px 12px 40px;
+    }
+    
+    .selected-students-list {
+        max-height: 150px;
+    }
+    
+    .selected-student-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        padding: 10px;
+    }
+}
         * {
             margin: 0;
             padding: 0;
@@ -2456,4 +2493,5 @@ function removeStudent(studentId) {
     </script>
 </body>
 </html>
+
 
